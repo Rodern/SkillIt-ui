@@ -9,10 +9,6 @@ const strategy = new workbox.strategies.NetworkFirst();
 
 const cacheName = 'skillItCache';
 const urls = [
-    '/',
-    '/index.html',
-    '/styles/index.css',
-    '/scripts/index.js',
     '/manifest.json',
     'favicon.ico',
     'apple-touch-icon.png',
