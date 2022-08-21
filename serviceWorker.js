@@ -10,13 +10,13 @@ const strategy = new workbox.strategies.NetworkFirst();
 const cacheName = 'skillItCache';
 const urls = [
     '/manifest.json',
-    'favicon.ico',
-    'apple-touch-icon.png',
+    '/favicon.ico',
+    '/apple-touch-icon.png',
     '/serviceWorker.js',
     '/assets/vendors/jquery-3.6.0.min.js',
-    '/assets/vendors/tailwind/font.awesome.css.js',
-    '/assets/vendors/tailwind/tailwindcss.elements.min.css',
-    '/assets/vendors/tailwind/tailwindcss.elements.min.js',
+    '/assets/vendors/tailwind/font.awesome.css',
+    '/assets/vendors/tailwind/tailwind.elements.min.css',
+    '/assets/vendors/tailwind/tailwind.elements.min.js',
     '/assets/vendors/tailwind/tailwindcss.css',
     '/assets/vendors/tailwind/tailwindcss.js',
     '/assets/vendors/workbox/workbox-v6.5.4/workbox-sw.js',
