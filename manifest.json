@@ -10,37 +10,37 @@
     "display": "standalone",
     "icons": [
         {
-            "src": "assets/images/skill_it.png",
+            "src": "assets/icons/skill_it.png",
             "sizes": "512x512",
             "type": "image/png"
         },
         {
-            "src": "assets/images/skill_it 256x256.png",
+            "src": "assets/icons/skill_it 256x256.png",
             "sizes": "256x256",
             "type": "image/png"
         },
         {
-            "src": "assets/images/skill_it 128x128.png",
+            "src": "assets/icons/skill_it 128x128.png",
             "sizes": "128x128",
             "type": "image/png"
         },
         {
-            "src": "assets/images/skill_it 64x64.png",
+            "src": "assets/icons/skill_it 64x64.png",
             "sizes": "64x64",
             "type": "image/png"
         },
         {
-            "src": "assets/images/skill_it 32x32.png",
+            "src": "assets/icons/skill_it 32x32.png",
             "sizes": "32x32",
             "type": "image/png"
         },
         {
-            "src": "assets/images/skill_it 16x16.png",
+            "src": "assets/icons/skill_it 16x16.png",
             "sizes": "16x16",
             "type": "image/png"
         },
         {
-            "src": "assets/images/skill_it 8x8.png",
+            "src": "assets/icons/skill_it 8x8.png",
             "sizes": "8x8",
             "type": "image/png"
         }
