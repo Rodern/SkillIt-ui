@@ -83,6 +83,8 @@ class Router {
 const _ROUTER = new Router();
 _ROUTER.mode = 'hash';
 _ROUTER.root = window.location.origin;
-/* 
-_ROUTER.add({ name: 'Dashboard', path: '/dashboard', handler: () => Loader() });
-_ROUTER.add({ name: 'Welcome', path: '/welcome', handler: () => loadWelcome() }); */
+
+_ROUTER.add({ name: 'Dashboard', path: '/dashboard', handler: () => loadDashbaord() });
+_ROUTER.add({ name: 'Home', path: '/home', handler: () => loadLandingPage() });
+_ROUTER.add({ name: 'About', path: '/about', handler: () => loadAbout() });
+_ROUTER.add({ name: 'Catalogs', path: '/catalogs', handler: () => loadCatalog() });

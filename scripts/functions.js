@@ -4,6 +4,8 @@ function IsValid(val) {
     if (val.success == true) console.log(true)
 }
 
+var g_img = ''
+
 const KeyExists = (key) => {
     return (localStorage.hasOwnProperty(key))
 }
@@ -97,8 +99,12 @@ const IsTokenValid = (token, callback = () => { console.info(" ") }) => {
         data: '',
         success: (responseModel) => {
             if (responseModel.success == true) {
-                callback(responseModel)
+                callback()
                 isValid = responseModel.success
+            }
+            else {
+                var cred = decryptToken(Token)
+                AuthenticateUser(new UserCredential(cred.email, decodeText(getKeyValue('pass')), false, "", ""))
             }
         }
     })
@@ -126,6 +132,9 @@ const AuthenticateUser = (userCredential) => {
                 getUser(data.userId, data.token)
                 setKeyValue(userIdKey, encodeText(`${UserId}`))
                 setKeyValue(tokenKey, encodeText(Token))
+                setKeyValue('pass', encodeText(userCredential.password))
+                _ROUTER.navigate('/dashboard')
+                chAuth()
                 return
             }
             console.log(responseModel.message)
@@ -143,8 +152,6 @@ const addUser = (user) => {
         error: function(error) {console.log(error.responseText)},
         success: (responseModel) => {
             if (responseModel.success == true) {
-                //callback(responseModel)
-                isValid = responseModel.success
                 console.log(responseModel)
                 return
             }
@@ -166,8 +173,7 @@ const updateUser = (userId, user, token) => {
         error: function(error) {console.log(error.responseText)},
         success: (responseModel) => {
             if (responseModel.success == true) {
-                //callback(responseModel)
-                isValid = responseModel.success
+                getUser(UserId, Token)
                 console.log(responseModel)
                 return
             }
@@ -185,9 +191,12 @@ const getUser = (userId, token) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
         success: (user) => {
+            _user = user
             console.log(user)
             getAccountDetail(userId, token)
             getCatalogs(token)
+            getUserSkill(userId, token)
+            getUserSocial(userId, token)
         }
     })
 }
@@ -200,21 +209,25 @@ const getAccountDetail = (userId, token) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
         success: (detail) => {
+            _Detail = detail
             console.log(detail)
         }
     })
 }
 
-const getCatalogs = (token) => {
+const getCatalogs = (token, callback = () => {}) => {
     $.ajax({
         type: 'get',
         url: `${BaseURL}api/Catalog/GetAllCatalogs`,
-        beforeSend: (xhr) => {
+        /* beforeSend: (xhr) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
-        },
+        }, */
         success: (catalogs) => {
+            Catalogs = catalogs
             console.log(catalogs)
         }
+    }).done(()=>{
+        callback(cat_template)
     })
 }
 
@@ -225,8 +238,9 @@ const getCatalog = (catalogId, token) => {
         beforeSend: (xhr) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
-        success: (catalog) => {
-            console.log(catalog)
+        success: (cat) => {
+            catalog = cat
+            console.log(cat)
         }
     })
 }
@@ -246,8 +260,13 @@ const addCatalog = (catalog, token) => {
         beforeSend: (xhr) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
+        error: function(error) {
+            console.log(error)
+        },
         success: (responseModel) => {
             if (responseModel.success == true) {
+                getCatalogs(Token)
+                loadCatalog()
                 console.log(responseModel.message)
                 return
             }
@@ -273,6 +292,8 @@ const updateCatalog = (catalogId, catalog, token) => {
         },
         success: (responseModel) => {
             if (responseModel.success == true) {
+                getCatalogs(Token)
+                loadCatalog()
                 console.log(responseModel.message)
                 return
             }
@@ -301,10 +322,21 @@ const getUserSkill = (userId, token) => {
         beforeSend: (xhr) => {
             xhr.setRequestHeader("Authorization", `Bearer ${token}`);
         },
-        success: (catalog) => {
-            console.log(catalog);
+        success: (skills) => {
+            userSkills = skills;
+            console.log(skills);
         },
-    });
+    }).done(()=> {
+        loadSkills()
+        $('.sk-del').click((e) => {
+            let id = e.target.parentElement.id.substring(6) || e.target.id.substring(6);
+            deleteUserSkill(id)
+            $(e.target.closest('.skill')).remove()
+        })
+
+        modalInit()
+        loader.addClass('hidden')
+    })
 }
 
 const addUserSkills = (userSkill, token) => {
@@ -319,6 +351,7 @@ const addUserSkills = (userSkill, token) => {
         },
         success: (responseModel) => {
             if (responseModel.success == true) {
+                getUserSkill(UserId, Token)
                 console.log(responseModel.message)
                 return
             }
@@ -334,11 +367,15 @@ const updateUserSkill = (id, userSkill, token) => {
         data: JSON.stringify(userSkill),
         dataType: 'json',
         contentType: 'application/json',
+        error: (error) => {
+            console.log(error)
+        },
         beforeSend: (xhr) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
         success: (responseModel) => {
             if (responseModel.success == true) {
+                getUserSkill(UserId, Token)
                 console.log(responseModel.message)
                 return
             }
@@ -354,7 +391,11 @@ const deleteUserSkill = (id, token) => {
         beforeSend: (xhr) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
+        error: (error) => {
+            console.log(error)
+        },
         success: (catalog) => {
+            getUserSkill(UserId, Token)
             console.log(catalog)
         }
     })
@@ -367,8 +408,8 @@ const getUserSocials = (token) => {
         beforeSend: (xhr) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
-        success: (catalogs) => {
-            console.log(catalogs)
+        success: (socials) => {
+            console.log(socials)
         }
     })
 }
@@ -380,10 +421,19 @@ const getUserSocial = (userId, token) => {
         beforeSend: (xhr) => {
             xhr.setRequestHeader("Authorization", `Bearer ${token}`);
         },
-        success: (catalog) => {
-            console.log(catalog);
+        success: (socials) => {
+            userSocials = socials;
+            console.log(socials);
         },
-    });
+    }).done(() => {
+        loadSocials()
+
+        $('.sc-del').click((e) => {
+            let id = e.target.id.substring(6) || e.target.parentElement.id.substring(6);
+            deleteUserSocial(id)
+            $(e.target.closest('.social')).remove()
+        })
+    })
 }
 
 const addUserSocial = (userSocial, token) => {
@@ -398,6 +448,7 @@ const addUserSocial = (userSocial, token) => {
         },
         success: (responseModel) => {
             if (responseModel.success == true) {
+                getUserSocial(UserId, Token)
                 console.log(responseModel.message)
                 return
             }
@@ -418,6 +469,7 @@ const updateUserSocial = (id, userSocial, token) => {
         },
         success: (responseModel) => {
             if (responseModel.success == true) {
+                getUserSocial(UserId, Token)
                 console.log(responseModel.message)
                 return
             }
@@ -433,8 +485,11 @@ const deleteUserSocial = (id, token) => {
         beforeSend: (xhr) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
-        success: (catalog) => {
-            console.log(catalog)
+        success: (responseModel) => {
+            if(responseModel.success == true){
+                getUserSocial(UserId, Token)
+            }
+            console.log(responseModel.message)
         }
     })
 }

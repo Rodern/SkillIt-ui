@@ -1,0 +1,170 @@
+<div class="dashboard-page cursor-default w-full h-[100vh] ">
+    <header class="landing-header text-white flex flex-row shadow items-center px-3 h-12">
+        <a class="org-info flex flex-row items-center gap-2">
+            <img src="assets/icons/skill_it 32x32.png" alt="">
+            <h4 class="org-name ml-2 font-bold text-lg">SkillIT</h4>
+        </a>
+        <button id="menu_btn"
+            class="flex md:hidden flex-row hover:bg-rose-500 hover:shadow-md focus:shadow-lg focus:bg-rose-600 rounded px-1 py-1 ml-auto gap-1 border border-slate-200 focus:border-1 focus:bg-rose-600 hover:border-transparent"
+            id="l-menu-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-6 h-6">
+                <path fill="white" style="fill: white; stroke: white;" stroke-linecap="round" stroke-linejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+            Menu
+        </button>
+        <nav class="header-nav hidden md:flex ml-auto gap-5 flex-row text-slate-200">
+            <a
+                class="nav-links n-usr flex flex-row justify-between hover:bg-blue-700 hover:shadow-md focus:bg-blue-800 rounded w-auto px-3 py-1 border border-slate-200 hover:border-transparent ">
+                <span class="nav-un">AlainKimbu</span>
+                <img src="assets/icons/user.png" class="w-5 h-5 ml-5" alt="">
+            </a>
+            <a
+                class="nav-links nc-btn flex flex-row justify-between hover:bg-blue-700 hover:shadow-md focus:bg-blue-800 rounded w-auto px-3 py-1 border border-slate-200 hover:border-transparent ">
+                Catalogs
+            </a>
+            <a
+                class="nav-links nlg-btn flex flex-row justify-between hover:bg-red-700 hover:shadow-md focus:bg-red-800 rounded w-auto px-3 py-1 border border-slate-200 hover:border-transparent ">
+                Logout
+            </a>
+        </nav>
+    </header>
+    <nav
+        class="menu hidden absolute ml-auto top-12 right-3 h-auto w-40 rounded-md shadow-2xl text-white text-md p-3 backdrop-blur-sm backdrop-opacity-25 ">
+        <ul class="menu-items">
+            <li
+                class="menu-items m-usr flex flex-row justify-between items-center pr-2 hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                <span class="nav-un">AlainKimbu</span>
+                <img src="assets/icons/user.png" class="w-5 h-5" alt="">
+            </li>
+            <li
+                class="menu-items mc-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                Catalogs
+            </li>
+            <li
+                class="menu-items mlg-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                Logout
+            </li>
+        </ul>
+    </nav>
+    <div class="dash-body flex flex-row w-[100vw] h-full text-slate-700">
+        <div
+            class="side min-w-[100vw] md:min-w-[36vw] absolute md:relative  md:flex flex-col shadow-lg h-full bg-white p-4 overflow-y-auto items-center">
+            <div class="avt w-40 h-40 mb-10 mx-auto">
+                <img src="assets/images/user-def.png" alt="">
+                <button class="edit-avt bg-amber-500 h-10 w-10 p-2 flex justify-center items-center"><img
+                        class=" h-9 w-9 m-5 " src="assets/icons/edit.svg" alt=""></button>
+            </div>
+            <div class="info-groups-p flex flex-col w-full">
+                <div class="info mt-1 w-full text-center">
+                    <span class="c font-bold text-center text-3xl u-name">Alain Kimbu</span>
+                </div>
+                <div class="info mt-1 text-center">
+                    <span class="c text-center text-xl u-email">alainkimbu@gmail.com</span>
+                </div>
+                <div class="info mt-1 text-center w-ful">
+                    <span class="c text-center text-xl d-phone"></span>
+                    <button id="d-phone"
+                        class="edit-info h-8 w-8 bg-slate-200 p-[.1rem] ml-auto rounded-md flex justify-center items-center">
+                        <img class=" h-8 w-8 m-5 " src="assets/icons/edit.svg" alt="">
+                    </button>
+                </div>
+                <div class="info mt-1 flex flex-row w-full">
+                    <span class="c text-star text-lg u-dob w-full">ahaskfj</span>
+                    <button id="u_dob"
+                        class="edit-info h-8 w-8 bg-slate-200 p-[.1rem] ml-auto rounded-md flex justify-center items-center">
+                        <img class=" h-8 w-8 m-5 " src="assets/icons/edit.svg" alt="">
+                    </button>
+                </div>
+                <div class="info mt-1 flex flex-row w-full">
+                    <span class="c text-star text-lg u-g w-full">ahaskfj</span>
+                    <button id="u_g"
+                        class="edit-info h-8 w-8 bg-slate-200 p-[.1rem] ml-auto rounded-md flex justify-center items-center">
+                        <img class=" h-8 w-8 m-5 " src="assets/icons/edit.svg" alt="">
+                    </button>
+                </div>
+                <div class="info mt-1 flex flex-row w-full">
+                    <span class="c text-star text-lg u-address w-full">ahaskfj</span>
+                    <button id="u_address"
+                        class="edit-info h-8 w-8 bg-slate-200 p-[.1rem] ml-auto rounded-md flex justify-center items-center">
+                        <img class=" h-8 w-8 m-5 " src="assets/icons/edit.svg" alt="">
+                    </button>
+                </div>
+            </div>
+            <h1 class="font-bold text-start w-full mr-auto mt-6">Socials</h1>
+            <div class="info-groups socials flex flex-col w-full rounded-lg shadow-lg">
+                <div class="social bg-white w-full flex flex-row h-9  items-center rounded-md shadow-md">
+                    <img src="assets/icons/fb.png" alt="" class="ml-1 mr-2 s-img h-8 w-8">
+                    <a href="" class="s-name">fax</a>
+                    <button
+                        class="sc-del  h-7 w-7 ml-auto mr-1 text-black flex justify-center items-center text-2xl text-center text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" fill="black" stroke-linejoin="round"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="info-groups add-socials flex flex-col mt-6 w-full rounded-lg shadow-lg">
+                <h1 class="font-bold">Add Social</h1>
+                <div class="password-wrapper flex flex-row gap-2">
+                    <div class="input-wrapper rounded-md flex flex-row w-6/12 h-9 border overflow-hidden"
+                        style="border-radius: 5px;">
+                        <input class="w-full px-2 py-1" type="text" name="name" id="nscn" placeholder="Name" />
+                    </div>
+                    <div class="input-wrapper rounded-md flex flex-row w-full h-9 border overflow-hidden"
+                        style="border-radius: 5px;">
+                        <input class="w-full px-2 py-1" type="url" name="link" id="nscp" placeholder="Link" />
+                    </div>
+                </div>
+            </div>
+            <button
+                class="save-social-btn text-md ml-auto font-bold text-white bg-blue-600 w-24 md:text-center hover:shadow-lg hover:bg-blue-700 rounded px-2 sm:px-4 py-1 mt-2 "
+                role="button">Add</button>
+            <h1 class="font-bold text-start w-full mr-auto mt-6">Skill</h1>
+            <div class="info-groups skills flex flex-col w-full rounded-lg shadow-lg">
+                <div class="skill bg-white w-full flex flex-row h-9 pl-2 items-center rounded-md shadow-md">
+                    <p class="sk-name font-bold">name&nbsp;|</p>
+                    <p class="sk-level">&nbsp;name</p>
+                    <button
+                        class="sk_del  h-7 w-7 ml-auto mr-1 text-black flex justify-center items-center text-2xl text-center text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" fill="black" stroke-linejoin="round"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="info-groups add-skils flex flex-col mt-6 w-full rounded-lg shadow-lg">
+                <h1 class="font-bold">Add skill</h1>
+                <div class="password-wrapper flex flex-row gap-2">
+                    <div class="input-wrapper rounded-md flex flex-row w-6/12 h-9 border overflow-hidden"
+                        style="border-radius: 5px;">
+                        <input class="w-full px-2 py-1" type="text" name="name" id="nskn" placeholder="Name" />
+                    </div>
+                    <div class="input-wrapper rounded-md flex flex-row w-full h-9 border overflow-hidden"
+                        style="border-radius: 5px;">
+                        <input class="w-full px-2 py-1" type="url" name="link" id="nskp" placeholder="Level"
+                            list="level_list" />
+                        <datalist id="level_list">
+                            <option value="Beginner" />
+                            <option value="Amatuer" />
+                            <option value="Intermediate" />
+                            <option value="Professional" />
+                            <option value="Professional" />
+                        </datalist>
+                    </div>
+                </div>
+            </div>
+            <button
+                class="save-skill-btn text-md ml-auto font-bold text-white bg-blue-600 w-24 md:text-center hover:shadow-lg hover:bg-blue-700 rounded px-2 sm:px-4 py-1 mt-2 "
+                role="button">Add</button>
+        </div>
+        <div class="main-view h-full text-center font-bold text-white w-full flex justify-center items-center">
+            More coming soon...
+        </div>
+    </div>
+</div>

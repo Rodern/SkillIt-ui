@@ -12,7 +12,7 @@ let Token = ''
 let skill = new Skill(9, 'Xamarin.Forms', Level[1])
 let userSkill = new UserSkill(9, 9, UserId, skill)
 let userSkills = new Array();
-userSkills.push(userSkill)
+//userSkills.push(userSkill)
 
 let userLocation
 getGeoLoc()
@@ -33,7 +33,8 @@ let userSocials = new Array()
 
 let responseModel = new ResponseModel();
 
-const _Detail = new AccountDetail()
+let _Detail = new AccountDetail()
+let _user = new User();
 
 var userCredential = new UserCredential(
 	email = "k.n.alain@gmail.com",
@@ -44,6 +45,7 @@ var userCredential = new UserCredential(
 
 let catalog = new Catalog('New version of Jetbrains', 'Have you tried out the new version of JetBrains', 'https://learners.jetbrains.space/d/3MniFw3UDJQg?f=0.jpg', 'learners.jetbrains.space')
 
+let Catalogs = new Array()
 
 window.addEventListener("DOMContentLoaded", () => {
 	if ('serviceWorker' in navigator) {
@@ -60,6 +62,9 @@ if(KeyExists(tokenKey)){
 	try {
 		Token = (decodeText(getKeyValue(tokenKey)))
 		UserId = decodeText(getKeyValue(userIdKey))
+		IsTokenValid(Token, () => {
+			getUser(UserId, Token)
+		})
 	} catch (error) {
 		console.info(`Error parsing token and userId: ${error}`)
 	}
@@ -76,5 +81,6 @@ if(KeyExists("ip_address")){
 
 getIP();
 
-IsTokenValid(Token, IsValid)
 
+initPage()
+modalInit()
