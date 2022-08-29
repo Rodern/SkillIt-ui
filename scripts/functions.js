@@ -236,6 +236,8 @@ const AuthenticateUser = (userCredential, callback = () => {}) => {
             loader.addClass('hidden')
             popUpBox('alert', 'Please check you credentials', 'catAlert')
         }
+    }).done((e)=>{
+        chAuth()
     })
 }
 
