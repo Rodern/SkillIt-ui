@@ -202,7 +202,8 @@ const info_edit_template = (name, type, max, placeholder, callback) => {
             popUpBox('info', 'Failed: Input was empty.', 'catAlert')
             return
         }
-        callback(val)
+        let temp_user = new User(UserId, _user.gender, _user.firstName, _user.lastName, _user.email, decodeText(getKeyValue('pass')), _user.dob, _user.address, _user.dateCreated, _user.phone, _user.imgBase64, JSON.parse(_Detail.loginInfo), JSON.parse(_Detail.loginAttemp))
+        callback(val, temp_user)
         $('.in').remove()
     })
     })

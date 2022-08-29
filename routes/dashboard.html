@@ -173,43 +173,41 @@
             $('input').val('')
         })
 
+        $('').click((e)=>{
+            
+        })
+
         $('#d_phone').click((e) => {
-            function cb(val) {
-                user.phone = val;
-                user.username = 'undefined';
-                updateUser(UserId, _user, Token)
+            function cb(val, u) {
+                u.phone = val;
+                updateUser(UserId, u, Token)
                 $('.u-phone').text(val)
             }
             info_edit_template('phone', 'tel', 9, 'Enter phone number', cb)
         })
 
         $('#u_dob').click((e) => {
-            function cb(val) {
-                user.dob = val;
-                user.username = 'undefined';
-                updateUser(UserId, _user, Token)
+            function cb(val, u) {
+                u.dob = val;
+                updateUser(UserId, u, Token)
                 $('.u-dob').text(val)
             }
             info_edit_template('dob', 'date', 100, 'Date', cb)
         })
 
         $('#u_g').click((e) => {
-            function cb(val) {
-                if (val.toLowerCase() == 'm')
-                    user.userSKillId = 0;
-                else user.userSKillId = 1;
-                user.username = 'undefined';
-                updateUser(UserId, _user, Token)
+            function cb(val, u) {
+                u.gender = val
+                updateUser(UserId, u, Token)
                 $('.u-g').text(val)
             }
             info_edit_template('g', 'text', 1, 'M or F', cb)
         })
 
         $('#u_address').click((e) => {
-            function cb(val) {
-                user.address = val;
-                user.username = 'undefined';
-                updateUser(UserId, _user, Token)
+            function cb(val, u) {
+                u.address = val;
+                updateUser(UserId, u, Token)
                 $('.u-address').text(val)
             }
             info_edit_template('add', 'text', 100, 'Address', cb)
