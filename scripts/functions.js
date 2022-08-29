@@ -1,4 +1,66 @@
 
+function popUpBox(boxType, boxMsg, OKCN, cancelCN = "CN_Class", CallBack = function () {
+    $(globalAlertConfirm).removeClass(OKCN);
+    clearPopUpBox();
+}) {
+    if (boxType == "done") {
+        $('.typeImg').attr('src', 'assets/icons/done.png');
+        $('.typeName').text("Done!");
+        $('.alertBody').text(boxMsg);
+    } else if (boxType == "alert") {
+        $('.typeImg').attr('src', 'assets/icons/alert.png');
+        $('.typeName').text("Alert!");
+        $('.alertBody').text(boxMsg);
+        $('.alertCancel').show();
+    } else if (boxType == "notify") {
+        $('.typeImg').attr('src', 'assets/icons/notify.png');
+        $('.typeName').text("Notification");
+        $('.alertBody').text(boxMsg);
+    } else if (boxType == "info") {
+        $('.typeImg').attr('src', 'assets/icons/info.png');
+        $('.typeName').text("Notification");
+        $('.alertBody').text(boxMsg);
+    } else if (boxType == "warn") {
+        $('.typeImg').attr('src', 'assets/icons/warning.png');
+        $('.typeName').text("Warning!");
+        $('.alertBody').text(boxMsg);
+    }
+    $('.alertCover').attr('tabindex', -1).focus(function () {
+        //console.log('hit');
+    });
+    $('.alertCover').on('keyup', function (e) {
+        if (e.which === 13 && $('.alertCover').css('display') == 'flex') {
+            e.preventDefault();
+            CallBack();
+        }
+    })
+
+    $('.alertCover').fadeIn(150);
+    $('.alertCover').css('display', 'flex');
+
+    $(globalAlertConfirm).addClass(OKCN);
+    $(globalAlertCancel).addClass(cancelCN);
+
+    $(globalAlertCancel).on('click', function () {
+        $(globalAlertConfirm).removeClass(OKCN);
+        $(globalAlertCancel).removeClass(cancelCN);
+        clearPopUpBox();
+    });
+
+    $(globalAlertConfirm).on('click', function () {
+        CallBack();
+        $(globalAlertConfirm).removeClass(OKCN);
+    });
+}
+
+function clearPopUpBox() {
+    $('.alertCover').fadeOut(150, function () {
+        $('.typeImg').attr('src', '');
+        $('.typeName').text("");
+        $('.alertBody').text("");
+        $('.alertCancel').hide();
+    });
+}
 
 function IsValid(val) {
     if (val.success == true) console.log(true)
@@ -46,21 +108,31 @@ const getResetCode = (email) => {
         data: '',
         success: (responseModel) => {
             if (responseModel.success == true) {
-                console.log(responseModel.message)
+                popUpBox('notify', 'Check your mail box for the reset code. Donot close this page yet', 'catAlert')
                 return
             }
-            console.log(responseModel.message)
+            popUpBox('notify', responseModel.message, 'catAlert')
         }
     })
 }
 
 const newUserId = () => {
-    return Math.floor(Date.now() / 5000)
+    return Math.floor(Date.now())
+}
+
+function TrimSpace(text, pos = 1, UP = false) {
+    if (pos == -1)
+        return text.trimStart();
+    if (pos == 0)
+        return text.trimEnd();
+    if (pos == 1)
+        return text.trim();
 }
 
 const getGeoLoc = () => {
     navigator.geolocation.getCurrentPosition((location) => {
         userLocation = location
+        console.log(location)
     })
 }
 
@@ -78,10 +150,17 @@ const resetPassword = (userCredential) => {
         contentType: "application/json",
         success: (responseModel) => {
             if (responseModel.success == true) {
-                console.log(responseModel.message)
+                function cb(){
+                    clearFlc('floating-content-2')
+                    loadSignin()
+                }
+                popUpBox('notify', responseModel.message, 'catAlert', 'caR', cb)
                 return
             }
-            console.log(responseModel.message)
+            function cb() {
+
+            }
+            popUpBox('notify', 'Failed: Restart the reset process', 'catAlert', '', cb)
         }
     })
 }
@@ -100,7 +179,7 @@ const IsTokenValid = (token, callback = () => { console.info(" ") }) => {
         success: (responseModel) => {
             if (responseModel.success == true) {
                 callback()
-                isValid = responseModel.success
+                console.log(responseModel.success)
             }
             else {
                 var cred = decryptToken(Token)
@@ -111,7 +190,24 @@ const IsTokenValid = (token, callback = () => { console.info(" ") }) => {
 
 }
 
-const AuthenticateUser = (userCredential) => {
+const checkEmail = (email, callback = () => {}) => {
+    $.ajax({
+        type: 'post',
+        url: `https://localhost:7165/api/User/CheckEmailExistence?email=${email}`,
+        error: (error) => {
+            console.log(error)
+        },
+        success: (message) => {
+            if(message.status == false){
+                popUpBox('alert', 'This email exists already!', 'catAlert')
+                return
+            }
+            callback()
+        }
+    })
+}
+
+const AuthenticateUser = (userCredential, callback = () => {}) => {
     $.ajax({
         type: 'post',
         url: `${BaseURL}api/Authenticate`,
@@ -127,22 +223,22 @@ const AuthenticateUser = (userCredential) => {
             if (responseModel.success == true) {
                 console.log(responseModel.message)
                 let data = JSON.parse(responseModel.message)
-                UserId = data.userId;
+                UserId = parseInt(data.userId);
                 Token = data.token;
                 getUser(data.userId, data.token)
                 setKeyValue(userIdKey, encodeText(`${UserId}`))
                 setKeyValue(tokenKey, encodeText(Token))
                 setKeyValue('pass', encodeText(userCredential.password))
-                _ROUTER.navigate('/dashboard')
+                callback()
                 chAuth()
                 return
             }
-            console.log(responseModel.message)
+            popUpBox('alert', 'Please check you credentials', 'catAlert')
         }
     })
 }
 
-const addUser = (user) => {
+const addUser = (user, callback = () => {}) => {
     $.ajax({
         type: 'post',
         url: `${BaseURL}api/User/AddUser`,
@@ -153,17 +249,18 @@ const addUser = (user) => {
         success: (responseModel) => {
             if (responseModel.success == true) {
                 console.log(responseModel)
+                callback()
                 return
             }
-            console.log(responseModel)
+            popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
         }
     })
 }
 
 const updateUser = (userId, user, token) => {
     $.ajax({
-        type: 'put',
-        url: `${BaseURL}api/User/UpdateUser/${userId}`,
+        type: 'post',
+        url: `${BaseURL}api/User/UpdateUser?userId=${userId}`,
         data: JSON.stringify(user),
         dataType: "json",
         contentType: "application/json",
@@ -177,9 +274,20 @@ const updateUser = (userId, user, token) => {
                 console.log(responseModel)
                 return
             }
-            console.log(responseModel)
+            popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
         }
     })
+}
+
+const logout = () => {
+    UserId = 0;
+    Token = '';
+    _user = new User()
+    deleteKey(userIdKey)
+    deleteKey(tokenKey)
+    deleteKey('pass')
+    _ROUTER.navigate('/home');
+    chAuth()
 }
 
 const getUser = (userId, token) => {
@@ -194,11 +302,21 @@ const getUser = (userId, token) => {
             _user = user
             console.log(user)
             getAccountDetail(userId, token)
-            getCatalogs(token)
-            getUserSkill(userId, token)
-            getUserSocial(userId, token)
         }
+    }).done(()=>{
+        loadDash();
     })
+}
+
+function loadDash() {
+    $('.u-name').text(_user.firstName + " " + _user.lastName)
+    $('.u-email').text(_user.email)
+    $('.u-phone').text(_user.phone)
+    $('.u-dob').text(_user.dob === Date ? _user.dob.toDateString() : _user.dob)
+    $('.u-g').text(_user.gender)
+    $('.u-address').text(_user.address)
+    getUserSkill(UserId, Token)
+    getUserSocial(UserId, Token)
 }
 
 const getAccountDetail = (userId, token) => {
@@ -207,6 +325,9 @@ const getAccountDetail = (userId, token) => {
         url: `${BaseURL}api/AccountDetail/GetAccountDetail?userId=${userId}`,
         beforeSend: (xhr) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
+        },
+        error: (error) => {
+            console.log(error)
         },
         success: (detail) => {
             _Detail = detail
@@ -228,6 +349,8 @@ const getCatalogs = (token, callback = () => {}) => {
         }
     }).done(()=>{
         callback(cat_template)
+        modalInit()
+        chAuth()
     })
 }
 
@@ -249,12 +372,7 @@ const addCatalog = (catalog, token) => {
     $.ajax({
         type: 'post',
         url: `${BaseURL}api/Catalog/AddCatalog`,
-        data: `{
-			"caption": "${catalog.caption}",
-			"description": "${catalog.description}",
-			"imgLink": "${catalog.imgLink}",
-			"catalogLink": "${catalog.catalog}"
-		}`,
+        data: JSON.stringify(catalog),
         dataType: "json",
         contentType: "application/json",
         beforeSend: (xhr) => {
@@ -270,21 +388,16 @@ const addCatalog = (catalog, token) => {
                 console.log(responseModel.message)
                 return
             }
-            console.log(responseModel.message)
+            popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
         }
     })
 }
 
 const updateCatalog = (catalogId, catalog, token) => {
     $.ajax({
-        type: 'put',
+        type: 'post',
         url: `${BaseURL}api/Catalog/UpdateCatalog?id=${catalogId}`,
-        data: `{
-			"caption": "${catalog.caption}",
-			"description": "${catalog.description}",
-			"imgLink": "${catalog.imgLink}",
-			"catalogLink": "${catalog.catalog}"
-		}`,
+        data: JSON.stringify(catalog),
         dataType: 'json',
         contentType: 'application/json',
         beforeSend: (xhr) => {
@@ -297,7 +410,7 @@ const updateCatalog = (catalogId, catalog, token) => {
                 console.log(responseModel.message)
                 return
             }
-            console.log(responseModel.message)
+            popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
         }
     })
 }
@@ -335,7 +448,7 @@ const getUserSkill = (userId, token) => {
         })
 
         modalInit()
-        loader.addClass('hidden')
+        //loader.addClass('hidden')
     })
 }
 
@@ -355,7 +468,7 @@ const addUserSkills = (userSkill, token) => {
                 console.log(responseModel.message)
                 return
             }
-            console.log(responseModel.message)
+            popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
         }
     })
 }
@@ -379,7 +492,7 @@ const updateUserSkill = (id, userSkill, token) => {
                 console.log(responseModel.message)
                 return
             }
-            console.log(responseModel.message)
+            popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
         }
     })
 }
@@ -394,9 +507,9 @@ const deleteUserSkill = (id, token) => {
         error: (error) => {
             console.log(error)
         },
-        success: (catalog) => {
+        success: (responseModel) => {
             getUserSkill(UserId, Token)
-            console.log(catalog)
+            popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
         }
     })
 }
@@ -452,7 +565,7 @@ const addUserSocial = (userSocial, token) => {
                 console.log(responseModel.message)
                 return
             }
-            console.log(responseModel.message)
+            popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
         }
     })
 }
@@ -473,23 +586,24 @@ const updateUserSocial = (id, userSocial, token) => {
                 console.log(responseModel.message)
                 return
             }
-            console.log(responseModel.message)
+            popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
         }
     })
 }
 
 const deleteUserSocial = (id, token) => {
     $.ajax({
-        type: 'post',
+        type: 'delete',
         url: `${BaseURL}api/UserSocial/DeleteUserSocial?id=${id}`,
         beforeSend: (xhr) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
+        error: (error) => {console.log(error)},
         success: (responseModel) => {
             if(responseModel.success == true){
                 getUserSocial(UserId, Token)
             }
-            console.log(responseModel.message)
+            popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
         }
     })
 }

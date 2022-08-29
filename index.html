@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="assets/vendors/tailwind/font.awesome.css">
 	<!-- <link rel="stylesheet" href="assets/vendors/tailwind/tailwind.elements.min.css"> -->
 	<link rel="stylesheet" href="assets/vendors/tailwind/tailwindcss.css">
+	<link rel="stylesheet" href="styles/popups-modal.css">
 	<link rel="stylesheet" href="styles/index.css">
 	<!-- <link rel="stylesheet" href="styles/index.css">
 	<link rel="stylesheet" href="styles/index.css">
@@ -23,9 +24,7 @@
 	<script src="scripts/route.module.js"></script>
 </head>
 <body>
-
-
-	
+	<div class="pg-section"></div>
 	<div class="loading-frame absolute flex flex-col justify-center items-center text-center">
 		<div class="loadframe flex flex-col items-center ">
 			<svg id="spinner" class=" h-10 w-10 mb-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg"
@@ -38,6 +37,24 @@
 			<p class="text-lg text-white">Loading</p>
 		</div>
 	</div>
+	<div class="alertCover">
+		<div class="alertBox w-72 md:w-[30vw]">
+			<div class="infoHead">
+				<img src="" alt="Image" class="typeImg">
+				<h2 class="typeName"></h2>
+			</div>
+			<div class="alertBody">
+	
+			</div>
+			<div class="alertOptions">
+				<button type="submit" class="alertCancel" id="cancelHandler">Cancel</button>
+				<button type="button" class="alertConfirm" id="alertBtnHandler">OK</button:button>
+			</div>
+		</div>
+	</div>
+	<div class="floating-content-1 flc"></div>
+	<div class="floating-content-2 flc"></div>
+	<div class="floating-content-3 flc"></div>
 	<script src="scripts/functions.js"></script>
 	<script src="scripts/index.js"></script>
 	<script src="scripts/init.js"></script>

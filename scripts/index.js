@@ -30,15 +30,13 @@ class ResponseModel {
 }
 
 class LoginInfo {
-    constructor(longitude, latitude, dateTime, isOnline, isLoggedOut, ip, deviveName, imgBase64, accountType) {
+    constructor(longitude, latitude, dateTime, isOnline, isLoggedOut, ip) {
         this.longitude = longitude
         this.latitude = latitude
         this.dateTime = dateTime
         this.isOnline = isOnline
         this.isLoggedOut = isLoggedOut
         this.ip = ip
-        this.deviceName = deviveName
-        this.imgBase64 = imgBase64
     }
 }
 
@@ -51,9 +49,9 @@ class LoginAttemp {
 }
 
 class User {
-    constructor(userId, username, firstname, lastname, email, password, dob, address, dateCreated, phone, loginInfos, loginAttemps){
+    constructor(userId, gender, firstname, lastname, email, password, dob, address, dateCreated, phone, imgBase64, loginInfos, loginAttemps){
         this.userId = userId
-        this.username = username
+        this.gender = gender
         this.firstName = firstname
         this.lastName = lastname
         this.email = email
@@ -62,18 +60,18 @@ class User {
         this.address = address
         this.dateCreated = dateCreated
         this.phone = phone
-        this.userSocialId = 0
-        this.userSKillId = 0
+        this.imgBase64 = imgBase64
         this.loginInfos = loginInfos
         this.loginAttemps = loginAttemps
     }
 }
 
 class AccountDetail {
-    constructor(acId, userId, lastLogin, loginInfos, accountStatus, loginAttemps) {
+    constructor(acId, userId, lastLogin, accountType, loginInfos, accountStatus, loginAttemps) {
         this.acId = acId
         this.userId = userId
         this.lastLogin = lastLogin
+        this.accountType = accountType
         this.loginInfo = loginInfos
         this.accountStatus = accountStatus
         this.loginAttemp = loginAttemps
@@ -82,10 +80,10 @@ class AccountDetail {
 }
 
 class Catalog {
-    constructor(caption, description, imgLink, catalogLink) {
+    constructor(caption, description, imgBase64, catalogLink = 'not set') {
         this.caption = caption
         this.description = description
-        this.imgLink = imgLink
+        this.imgBase64 = imgBase64
         this.catalogLink = catalogLink
     }
 }
@@ -152,7 +150,7 @@ const loader = $('.loading-frame')
 
 let cat_template = (catalog) => {
     return `<div class="catalog flex flex-col justify-center shadow-lg rounded-lg w-60 h-auto h-max px-2" id=${catalog.catalogId}>
-                <img src="${catalog.imgLink}" alt="" class="w-full h-40 rounded-md">
+                <img src="${catalog.imgBase64}" alt="" class="w-full h-40 rounded-md">
                 <h4 class="cat-name font-bold text-lg">${catalog.caption}</h4>
                 <p class="cat-desc brak-words truncate  pb-4">${catalog.description}</p>
                 <a
@@ -165,7 +163,7 @@ let socialTemplate = (socail, img) => {
     return `<div id="${socail.socialId}" class="social w-full flex flex-row h-9 my-1 items-center rounded-md shadow-md">
 						<img src="${img}"  alt="" class="ml-1 mr-2 s-img h-8 w-8 ">
 						<a href="${socail.link}" class="s-name">${socail.name}</a>
-						<button id="sc_del${socail.socialId}" class="sc-del  h-7 w-7 ml-auto mr-1 text-black flex justify-center items-center text-2xl text-center text-white">
+						<button id="sc_del${socail.socialId}" class="sc-del  h-7 w-7 ml-auto mr-1 text-white flex justify-center items-center text-2xl text-center text-white">
 							<svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
 								class="w-6 h-6">
 								<path stroke-linecap="round" fill="black" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -175,7 +173,7 @@ let socialTemplate = (socail, img) => {
 }
 
 let skillTemplate = (skill) => {
-    return `<div id="skill${skill.skillId}" class="skill bg-white w-full flex flex-row h-9 my-1 pl-2 items-center rounded-md shadow-md">
+    return `<div id="skill${skill.skillId}" class="skill text-slate-800 bg-white w-full flex flex-row h-auto my-1 pl-2 pb-1 items-center rounded-md shadow-md">
 						<p class="sk-name font-bold">${skill.name}&nbsp;|</p>
 						<p class="sk-level">&nbsp;${skill.level}</p>
 						<button id="sk_del${skill.skillId}" class="sk-del  h-7 w-7 ml-auto mr-1 text-black flex justify-center items-center text-2xl text-center text-white">
@@ -188,7 +186,6 @@ let skillTemplate = (skill) => {
 }
 
 const info_edit_template = (name, type, max, placeholder, callback) => {
-
     $('.in').remove()
     let t = `<div id="fl_edit" class="in  absolute bg-white  flex flex-row h-10 rounded-lg border shadow-2xl w-60 justify-center items-center">
                 <input  type="${type}" maxlength="${max}" placeholder="${placeholder}" class="w-full px-1 mx-1">
@@ -197,11 +194,13 @@ const info_edit_template = (name, type, max, placeholder, callback) => {
                     <img class=" h-8 w-8 m-5 " src="assets/icons/save.svg" alt="">
                 </button>
             </div>`
-    $('.info-groups-p').append(t).ready(()=>{
+    $('.personal').append(t).ready(()=>{
         
     $(`#save-${name}`).click(()=>{
         let val = $('.in input').val()
-        if(val=='') return
+        if (val == '') {
+            popUpBox('info', 'Failed: Input was empty.', 'catAlert')
+        }
         callback(val)
         $('.in').remove()
     })
@@ -216,108 +215,79 @@ $(document).click((e)=>{
 })
 
 const loadLandingPage = () => {
+    loader.removeClass('hidden')
     $('.page, .modal').remove();
-    $.ajax({
-        type: 'get',
-        url: `routes/landing.html`,
-        error: function (error) {
-            console.log(error)
-        },
-        success: function(page) {
-            $('body').append(page);
-        }
-    }).done(() => {
+
+    $('.pg-section').load('routes/landing.html').ready(() => {
         modalInit()
-        loader.addClass('hidden')
-        chAuth()
     })
 }
 
 const loadDashbaord = () => {
+    loader.removeClass('hidden')
     $('.page, .modal').remove();
-    $.ajax({
-        type: 'get',
-        url: `routes/dashboard.html`,
-        error: function (error) {
-            console.log(error)
-        },
-        success: function (page) {
-            $('body').append(page);
-        }
-    }).done(() => {
-       /*  $('.u-email').text(_user.email)
-        $('.d-phone').text(_user.phone)
-        $('.u-dob').text(_user.dob)
-        $('.u-g').text('M')
-        $('.u-address').text(_user.address) */
-        //modalInit()
+    if (_Detail.userId === undefined || _user.userId === undefined) {
+        _ROUTER.navigate('/home')
+        return
+    }
+    $('.pg-section').load('routes/dashboard.html').ready(() => {
+        modalInit()
     })
 }
 
 const loadCatalog = () => {
-    $('.page, .modal').remove();
-    $.ajax({
-        type: 'get',
-        url: `routes/catalogs.html`,
-        error: function (error) {
-            console.log(error)
-        },
-        success: function (page) {
-            $('body').append(page);
-        }
-    }).done(() => {
-        let = catList = $('.cat-list')
-        function gt(cat_template){
-            try {
-                catList.html('')
-                Catalogs.forEach(catalog => {
-                    catList.append(cat_template(catalog));
-                });
-                loader.addClass('hidden')
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        getCatalogs(Token, gt)
+    loader.removeClass('hidden')
+    $('.page, .modal').remove()
+    $('.pg-section').load('routes/catalogs.html').ready(() => {
         modalInit()
     })
 }
 
 const loadSignup = () => {
-    $.ajax({
-        type: 'get',
-        url: `routes/signup.html`,
-        error: function (error) {
-            console.log(error)
-        },
-        success: function (page) {
-            $('body').append(page);
-        }
-    }).done(() => {
+    loader.removeClass('hidden')
+    $('.modal').remove()
+    $('.floating-content-1').load('routes/signup.html').ready(() => {
         modalInit()
     })
 }
 
-const loadSignin = () => {
-    $.ajax({
-        type: 'get',
-        url: `routes/login.html`,
-        error: function (error) {
-            console.log(error)
-        },
-        success: function (page) {
-            $('body').append(page);
-        }
-    }).done(() => {
+function clearFlc(s = '.flc'){
+    $('.flc').html('')
+}
+
+let loadSignin = () => {
+    loader.removeClass('hidden')
+    $('.modal').remove()
+    $('.floating-content-1').load('routes/login.html').ready(() => {
+        modalInit()
+    })
+}
+
+const loadReset = () => {
+    loader.removeClass('hidden')
+    $('.modal').remove()
+    $('.floating-content-2').load('routes/reset.html').ready(() => {
         modalInit()
     })
 }
 
 const loadAbout = () => {
+    if ('about' == location.href.substring(location.href.lastIndexOf('#') + 1)){
+        setTimeout(() => {
+            location.href = location.origin+"#about"
+        }, 500)
+        return
+    }
+    if ('home' == location.href.substring(location.href.lastIndexOf('#') + 1)){
+        setTimeout(() => {
+            location.href = location.origin + "#about"
+        }, 500)
+        return
+    }
     _ROUTER.navigate('/home')
     setTimeout(()=> {
-        location.href = location.href
-    }, 1000)
+        location.href = location.origin + "#about"
+    }, 500)
 }
 
 const loadSocials = () => {
@@ -343,8 +313,6 @@ const loadSocials = () => {
         
     }
 }
-const list1 = ".ms-btn, .ns-btn, .bs-btn, .ml-btn, .nl-btn, .bl-btn"
-const list2 = ".m-usr, .n-usr"
 
 const loadSkills = () => {
     try {
@@ -363,19 +331,28 @@ const initPage = () => {
     if((page.substring(location.href.lastIndexOf('#') + 1).substring(0, page.substring(location.href.lastIndexOf('#') + 1).lastIndexOf('/')) == location.origin || page == 'home')){
         _ROUTER.navigate('/home')
     }
-    if(page == 'about'){
-        _ROUTER.navigate('/about')
+    if (page == 'about') {
+        _ROUTER.navigate('/home')
+        setTimeout(() => {
+            location.href = location.origin + "#about"
+        }, 500)
     }
     if(page == 'catalogs'){
         _ROUTER.navigate('/catalogs')
     }
     if(page == 'dashboard'){
+        if (_Detail.userId === undefined || _user.userId === undefined){
+            _ROUTER.navigate('/home')
+            return
+        }
         _ROUTER.navigate('/dashboard')
     }
     modalInit()
     chAuth()
 }
 
+const list1 = ".ms-btn, .ns-btn, .bs-btn, .ml-btn, .nl-btn, .bl-btn, .for-o"
+const list2 = ".m-usr, .n-usr, .for-l"
 function chAuth(){
     if (_Detail.userId === undefined || _user.userId === undefined) {
         console.log(true)
@@ -402,8 +379,18 @@ const exitModal = (callback = () => {}) => {
     callback();
 }
 
-function modalInit() {
 
+function modalInit() {
+    console.log('yes')
+    $('.org-info').click((e)=>{
+        loadLandingPage()
+    })
+    $('.menu ul li').click(()=>{
+        $('.menu').fadeOut(200)
+    })
+    $('.about').click((e)=>{
+        loadAbout()
+    })
     $('#menu_btn').click(() => {
         $('.menu').fadeIn(200)
     })
@@ -415,11 +402,13 @@ function modalInit() {
         e.preventDefault()
         loadSignup()
     })
+
     $('.bc-btn, .mc-btn').click((e) => {
         e.preventDefault()
         _ROUTER.navigate('/catalogs')
         $('.page, .modal').remove();
     })
+
     let c_img = $('#catImg')
     $(c_img).on('change', () => {
         if (c_img[0].files[0] === undefined) return
@@ -429,7 +418,7 @@ function modalInit() {
         loader.removeClass('hidden')
         catalog = new Catalog($('#catCaption').val(), $('#catDesc').val(), g_img, "link")
         if ((catalog.caption == null || catalog.caption == "") || (catalog.description == null || catalog.description == "") || c_img[0].files[0] === undefined){
-            console.log("Fill all form")
+            popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
             loader.addClass('hidden')
             return
         }
@@ -437,47 +426,124 @@ function modalInit() {
         addCatalog(catalog, Token)
         catalog = new Catalog();
         g_img = ''
+        $('input').val('')
     })
-    $('.save-social-btn').click((e)=>{
-        social = new Social(0, $('.nscn').val(), $('.nscp').val())
-        console.log(social)
-    })
+
     $('.exit').click((e) => {
         e.preventDefault()
         exitModal()
     })
 
-    $('.login-btn').click((e)=>{
-        let cred = new UserCredential($('#email').val(), $('#password').val(), false, "");
-        if(cred.email == '' || cred.password == '') return
-        AuthenticateUser(cred)
-        chAuth()
+    //Login and signup
+    const toggleEye = document.querySelectorAll(".toggleLock");
+
+    toggleEye.forEach(e => {
+        const password = e.nextElementSibling;
+        e.addEventListener("click", function () {
+            //toggle the type attribute
+            let type = "";
+            let src = "";
+            type = password.getAttribute("type", type) === "password" ? "text" : "password";
+            password.setAttribute("type", type);
+
+            //toggle icon
+            src = password.getAttribute("type", src) === "password" ? "../assets/icons/locked.svg" : "../assets/icons/unlocked.svg";
+            e.children[0].setAttribute("src", src);
+        });
+    });
+
+    $('.to-signup').click(()=>{
+        loadSignup()
     })
 
+    $('.to-login').click(()=>{
+        loadSignin()
+    })
+
+    $('.forgot').click(()=>{
+        loadReset()
+    })
+
+    $('.login-btn').click((e)=>{
+        let cred = new UserCredential($('#email').val(), $('#password').val(), false, "");
+        if (cred.email == '' || cred.password == '') {
+            popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
+        }
+        AuthenticateUser(cred, ()=>{
+            _ROUTER.navigate('/dashboard')
+        })
+        
+        $('input').val('')
+    })
+
+    $('.signup-btn').click((e)=>{
+        let password = $('#password').val()
+        let cpassword = $('#cpassword').val()
+        if(password != cpassword){
+            console.log('No password match')
+            return
+        }
+        let this_user = new User(newUserId(), 'm', TrimSpace($('#firstname').val()), TrimSpace($('#lastname').val()), TrimSpace($('#user_email').val()), TrimSpace(cpassword), new Date(), 'Address', new Date(), $('#phone').val(), "img")
+        if (this_user.firstName == '' || this_user.lastName == '' || this_user.email == '' || this_user.password == '' || this_user.phone == '') {
+            popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
+            return
+        }
+        let this_lgs = Array()
+        let this_lgas = Array()
+        this_lgs.push(new LoginInfo(`${newUserId()}`, `${newUserId()}`, new Date(), false, true, ip_address.ip))
+        this_lgas.push(new LoginAttemp(new Date(), 'Justified', 'success'))
+        this_user.loginAttemps = this_lgas
+        this_user.loginInfos = this_lgs
+        console.log(this_user)
+        checkEmail(this_user.email, ()=>{
+            addUser(this_user, () => {
+                AuthenticateUser(new UserCredential(this_user.email, this_user.password, false, ''), () => {
+                    _ROUTER.navigate('/dashboard')
+                })
+            })
+            
+            chAuth()
+        })
+        //addUser(this_user)
+        $('input').val('')
+    })
+
+    $('.mlg-btn, .nlg-btn').click((e)=>{
+        logout()
+    })
 
     //Dashboard
+    $('.ds-btn, .m-usr, .n-usr').click(()=>{
+        _ROUTER.navigate('/dashboard')
+    })
     $('.save-social-btn').click((e) => {
         social = new Social(0, $('#nscn').val(), $('#nscp').val())
-        if (social.name == '' || social.link == '') return
+        if (social.name == '' || social.link == '') {
+            popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
+        }
         userSocial = new UserSocial(0, 0, UserId, social)
         addUserSocial(userSocial, Token)
+        $('input').val('')
     })
 
     $('.save-skill-btn').click((e) => {
         skill = new Skill(0, $('#nskn').val(), $('#nskp').val())
-        if (skill.name == '' || skill.level == '') return
+        if (skill.name == '' || skill.level == '') {
+            popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
+        }
         let us = new UserSkill(0, 0, UserId, skill)
         let skills = new Array()
         skills.push(us)
         console.log(skills)
         addUserSkills(skills, Token)
+        $('input').val('')
     })
 
-    $('#d-phone').click((e) => {
+    $('#d_phone').click((e) => {
         function cb(val) {
             user.phone = val;
             user.username = 'undefined';
-            updateUser(UserId, user, Token)
+            updateUser(UserId, _user, Token)
             $('.u-phone').text(val)
         }
         info_edit_template('phone', 'tel', 9, 'Enter phone number', cb)
@@ -487,7 +553,7 @@ function modalInit() {
         function cb(val) {
             user.dob = val;
             user.username = 'undefined';
-            updateUser(UserId, user, Token)
+            updateUser(UserId, _user, Token)
             $('.u-dob').text(val)
         }
         info_edit_template('dob', 'date', 100, 'Date', cb)
@@ -499,7 +565,7 @@ function modalInit() {
                 user.userSKillId = 0;
             else user.userSKillId = 1;
             user.username = 'undefined';
-            updateUser(UserId, user, Token)
+            updateUser(UserId, _user, Token)
             $('.u-g').text(val)
         }
         info_edit_template('g', 'text', 1, 'M or F', cb)
@@ -509,7 +575,7 @@ function modalInit() {
         function cb(val) {
             user.address = val;
             user.username = 'undefined';
-            updateUser(UserId, user, Token)
+            updateUser(UserId, _user, Token)
             $('.u-address').text(val)
         }
         info_edit_template('add', 'text', 100, 'Address', cb)

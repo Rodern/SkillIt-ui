@@ -1,61 +1,142 @@
-<div class="catalog-page page text-slate-700 overflow-hidden bg-white p-6 md:p-2 h-full flex flex-col-reverse md:flex-row bottom-0 top-0 left-0 right-0">
+<div class="catalog-page page cursor-default text-white flex flex-col bottom-0 top-0 left-0 right-0">
+    <header class="landing-header flex flex-row shadow items-center px-3 h-12">
+        <a class="org-info flex flex-row items-center gap-2">
+            <img src="assets/icons/skill_it 32x32.png" alt="">
+            <h4 class="org-name ml-2 font-bold text-lg">SkillIT</h4>
+        </a>
+        <button id="menu_btn"
+            class="flex md:hidden flex-row hover:bg-rose-500 hover:shadow-md focus:shadow-lg focus:bg-rose-600 rounded px-1 py-1 ml-auto gap-1 border border-slate-200 focus:border-1 focus:bg-rose-600 hover:border-transparent"
+            id="l-menu-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                class="w-6 h-6">
+                <path fill="white" stroke-linecap="round" stroke-linejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+            Menu
+        </button>
+        <nav class="header-nav hidden md:flex ml-auto gap-5 flex-row text-slate-200">
+            <a
+                class="nav-links n-usr flex flex-row justify-between hover:bg-blue-700 hover:shadow-md focus:bg-blue-800 rounded w-auto px-3 py-1 border border-slate-200 hover:border-transparent ">
+                <span class="nav-un">AlainKimbu</span>
+                <img src="assets/icons/user.png" class="w-5 h-5 ml-5" alt="">
+            </a>
+            <a
+                class="nav-links nl-btn hover:bg-rose-500 hover:shadow-md focus:bg-rose-600 rounded px-3 py-1 border border-slate-200 hover:border-transparent">Sign
+                In</a>
+            <a
+                class="nav-links ns-btn hover:bg-blue-500 hover:shadow-md focus:bg-blue-600 rounded px-3 py-1 border border-slate-200 hover:border-transparent ">Sign
+                Up</a>
+            <a class="nav-links about hover:shadow-md hover:bg-amber-500 focus:bg-amber-600 rounded px-3 py-1 border border-slate-200 hover:border-transparent ">About</a>
+        </nav>
+    </header>
+    <nav
+        class="menu hidden absolute ml-auto top-12 right-3 h-auto w-40 rounded-md shadow-2xl text-white text-md p-3 backdrop-blur-sm backdrop-opacity-25 ">
+        <ul class="menu-items">
+            <li
+                class="menu-items m-usr flex flex-row justify-between items-center pr-2 hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                <span class="nav-un">AlainKimbu</span>
+                <img src="assets/icons/user.png" class="w-5 h-5" alt="">
+            </li>
+            <li
+                class="menu-items mc-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                Catalogs
+            </li>
+            <li
+                class="menu-items ms-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                Sign Up
+            </li>
+            <li
+                class="menu-items ml-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                Sign In
+            </li>
+            <li
+                class="menu-items about hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                <a >About</a>
+            </li>
+        </ul>
+    </nav>
     <script>
         $('.loading-frame').removeClass('hidden')
     </script>
-    <div
-        class="add-catalog-form flex flex-col min-w-[auto] md:min-w-[35vh] justify-center items-center h-auto md:h-full mt-24 md:mt-0">
-        <h1 class="font-bold text-2xl mb-10 text-center">Add new catalog</h1>
-        <div class="cat-form rounded-lg shadow-lg px-4 py-5">
-            <div class="input-group mb-6 flex flex-col">
-                <h4 class="text-lg font-md ">Name</h4>
-                <div class="input-wrapper rounded-md flex flex-row w-full h-10 border shadow overflow-hidden"
-                    style="border-radius: 5px;">
-                    <label for="catCaption">
-                        <img class="h-9 w-9 mx-1" src="assets/icons/cat-name-icon.svg" alt="">
-                    </label>
-                    <input class="w-full px-2 py-1" type="text" name="catalog-caption" id="catCaption"
-                        placeholder="catalog caption" title="Catalog caption" />
-                </div>
-            </div>
-            <div class="input-group mb-6">
-                <label class="text-lg font-md " for="catName">Description</h4>
-                    <div class="input-wrapper rounded-md flex flex-row w-full h-24 border shadow overflow-hidden"
+    <div class="cats-body flex flex-col-reverse md:flex-row text-slate-700 bg-white p-6 md:p-2">
+        <div class="add-catalog-form hidden flex flex-col min-w-[auto] md:min-w-[38vh] justify-center items-center h-auto md:h-full mt-24 md:mt-0">
+            <h1 class="font-bold text-2xl mb-10 text-center">Add new catalog</h1>
+            <div class="cat-form rounded-lg shadow-lg px-4 py-5">
+                <div class="input-group mb-6 flex flex-col">
+                    <h4 class="text-lg font-md ">Name</h4>
+                    <div class="input-wrapper rounded-md flex flex-row w-full h-10 border shadow overflow-hidden"
                         style="border-radius: 5px;">
-                        <textarea class="h-full w-full px-2 py-1" type="text" name="catalog-desc"
-                            placeholder="description" id="catDesc" title="Catalog name"></textarea>
+                        <label for="catCaption">
+                            <img class="h-9 w-9 mx-1" src="assets/icons/cat-name-icon.svg" alt="">
+                        </label>
+                        <input class="w-full px-2 py-1" type="text" name="catalog-caption" id="catCaption"
+                            placeholder="catalog caption" title="Catalog caption" />
                     </div>
-            </div>
-            <div class="input-group mb-6">
-                <h4 class="text-lg font-md ">Image</h4>
-                <div
-                    class="input-wrapper items-center rounded-md flex flex-row w-full h-10 border shadow overflow-hidden">
-                    <input class="w-full px-2 py-1" type="file" name="catalog-img" id="catImg"
-                        placeholder="catalog's image" title="Catalog name" />
+                </div>
+                <div class="input-group mb-6">
+                    <label class="text-lg font-md " for="catName">Description</h4>
+                        <div class="input-wrapper rounded-md flex flex-row w-full h-24 border shadow overflow-hidden"
+                            style="border-radius: 5px;">
+                            <textarea class="h-full w-full px-2 py-1" type="text" name="catalog-desc" placeholder="description"
+                                id="catDesc" title="Catalog name"></textarea>
+                        </div>
+                </div>
+                <div class="input-group mb-6">
+                    <h4 class="text-lg font-md ">Image</h4>
+                    <div class="input-wrapper items-center rounded-md flex flex-row w-full h-10 border shadow overflow-hidden">
+                        <input class="w-full px-2 py-1" type="file" name="catalog-img" id="catImg" placeholder="catalog's image"
+                            title="Catalog name" />
+                    </div>
+                </div>
+                <div class="input-group mt-6 flex justify-center">
+                    <button
+                        class="save-cat-btn text-md font-bold text-white bg-blue-600 w-44 md:text-center hover:shadow-lg hover:bg-blue-700 rounded px-2 sm:px-4 py-2 "
+                        role="button">SAVE</button>
                 </div>
             </div>
-            <div class="input-group mt-6 flex justify-center">
-                <button
-                    class="save-cat-btn text-md font-bold text-white bg-blue-600 w-44 md:text-center hover:shadow-lg hover:bg-blue-700 rounded px-2 sm:px-4 py-2 "
-                    role="button">SAVE</button>
+        </div>
+        <div class="catalog-list p-2 w-full overflow-y-auto">
+            <div class="list-header mb-12 w-full">
+                <h1 class="font-bold text-2xl text-center">All catalogs</h1>
             </div>
-        </div>
-    </div>
-    <div class="catalog-list p-2 w-full overflow-y-auto">
-        <div class="list-header mb-12 w-full">
-            <h1 class="font-bold text-2xl text-center">All catalogs</h1>
-        </div>
-        <div class="cat-list flex flex-row flex-wrap gap-14 justify-center md:justify-between overflow-y-auto h-[800px] p-3">
-            <div class="catalog flex flex-col justify-center shadow-lg rounded-lg w-60 h-auto h-max px-2 mx-4">
-                <div class="img w-full h-40 rounded-md style="background-image: url(assets/images/ignite-100859919-large.jpg)"></div>
-                <h4 class="cat-name font-bold text-lg">Learn .NET today</h4>
-                <p class="cat-desc brak-words truncate">fo;d jsdfa hfojdasfuif fiuif g dhfjhi uiofjefui daufd ajfkfie
-                    atha t jiteo jt ioja apoj fsdaf hfaffoif faifkdiflafiaisyrtiokldzvhigjklkgj vzgijrag 0isjkglwjf
-                    asgjkaj sgreaj gdsgkaj fsikl dsf are tyou kidding me n ringht right now sajfd ag ir jiwrelaj
-                    weoijhifwaio j wejfafjhw jofn fa joknf jf as fjdflkasdhgig gaskgdghajgi ug[raj gsg agijio g[agj[
-                    gag[jagoaigoiwepisdg ajgkghiadkdihgikdg] DGJAP JKJ GAI[GAJ[IGI IJjskdfgj fgf </p>
-                <a
-                    class="view-cat text-md mt-auto text-center text-white bg-blue-600 w-24 hover:shadow-lg hover:bg-blue-700 rounded px-2 py-1">View</a>
+            <div class="cat-list flex flex-row flex-wrap gap-14 justify-center md:justify-between overflow-y-auto h-[800px] p-3">
+                <div class="catalog flex flex-col justify-center shadow-lg rounded-lg w-60 h-auto h-max px-2 mx-4">
+                    <div class="img w-full h-40 rounded-md style=" background-image:
+                        url(assets/images/ignite-100859919-large.jpg)"></div>
+                    <h4 class="cat-name font-bold text-lg">Learn .NET today</h4>
+                    <p class="cat-desc brak-words truncate">fo;d jsdfa hfojdasfuif fiuif g dhfjhi uiofjefui daufd ajfkfie
+                        atha t jiteo jt ioja apoj fsdaf hfaffoif faifkdiflafiaisyrtiokldzvhigjklkgj vzgijrag 0isjkglwjf
+                        asgjkaj sgreaj gdsgkaj fsikl dsf are tyou kidding me n ringht right now sajfd ag ir jiwrelaj
+                        weoijhifwaio j wejfafjhw jofn fa joknf jf as fjdflkasdhgig gaskgdghajgi ug[raj gsg agijio g[agj[
+                        gag[jagoaigoiwepisdg ajgkghiadkdihgikdg] DGJAP JKJ GAI[GAJ[IGI IJjskdfgj fgf </p>
+                    <a
+                        class="view-cat text-md mt-auto text-center text-white bg-blue-600 w-24 hover:shadow-lg hover:bg-blue-700 rounded px-2 py-1">View</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    let = catList = $('.cat-list')
+        function gt(cat_template) {
+            try {
+                catList.html('')
+                Catalogs.forEach(catalog => {
+                    catList.append(cat_template(catalog));
+                });
+                loader.addClass('hidden')
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        modalInit()
+        getCatalogs(Token, gt)
+        setTimeout(() => {
+            chAuth()
+            modalInit()
+            loader.addClass('hidden')
+        }, 2000);
+        if (_Detail.accountType == 'admin') {
+            $('.add-catalog-form').removeClass('hidden')
+        }
+</script>
