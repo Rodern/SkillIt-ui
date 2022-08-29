@@ -361,6 +361,7 @@ function chAuth(){
     }
     else {
         console.log(false)
+        $(' .m-usr > span, .n-usr > span').text(_user.firstName + " " + _user.lastName);
         $("" + list1 + "").hide()
         $("" + list2 + "").show()
     }
