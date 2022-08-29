@@ -193,7 +193,7 @@ const IsTokenValid = (token, callback = () => { console.info(" ") }) => {
 const checkEmail = (email, callback = () => {}) => {
     $.ajax({
         type: 'post',
-        url: `https://localhost:7165/api/User/CheckEmailExistence?email=${email}`,
+        url: `${BaseURL}api/User/CheckEmailExistence?email=${email}`,
         error: (error) => {
             console.log(error)
         },
