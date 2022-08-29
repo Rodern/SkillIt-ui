@@ -200,6 +200,7 @@ const info_edit_template = (name, type, max, placeholder, callback) => {
         let val = $('.in input').val()
         if (val == '') {
             popUpBox('info', 'Failed: Input was empty.', 'catAlert')
+            return
         }
         callback(val)
         $('.in').remove()
@@ -468,6 +469,7 @@ function modalInit() {
         let cred = new UserCredential($('#email').val(), $('#password').val(), false, "");
         if (cred.email == '' || cred.password == '') {
             popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
+            return
         }
         loader.removeClass('hidden')
         AuthenticateUser(cred, ()=>{
@@ -525,6 +527,7 @@ function modalInit() {
         social = new Social(0, $('#nscn').val(), $('#nscp').val())
         if (social.name == '' || social.link == '') {
             popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
+            return
         }
         userSocial = new UserSocial(0, 0, UserId, social)
         addUserSocial(userSocial, Token)
@@ -535,6 +538,7 @@ function modalInit() {
         skill = new Skill(0, $('#nskn').val(), $('#nskp').val())
         if (skill.name == '' || skill.level == '') {
             popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
+            return
         }
         let us = new UserSkill(0, 0, UserId, skill)
         let skills = new Array()

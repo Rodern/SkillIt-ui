@@ -510,10 +510,10 @@ const deleteUserSkill = (id, token) => {
         },
         error: (error) => {
             console.log(error)
+            popUpBox('notify', `Failed: ${error} `, 'catAlert')
         },
         success: (responseModel) => {
             getUserSkill(UserId, Token)
-            popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
         }
     })
 }
