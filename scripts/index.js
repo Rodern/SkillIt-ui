@@ -417,12 +417,6 @@ function modalInit() {
         $('.page, .modal').remove();
     })
 
-    let c_img = $('#catImg')
-    $(c_img).on('change', () => {
-        if (c_img[0].files[0] === undefined) return
-        toBase64(c_img[0].files[0])
-    })
-
     $('.exit').click((e) => {
         e.preventDefault()
         exitModal()
