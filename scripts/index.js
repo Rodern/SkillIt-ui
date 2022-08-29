@@ -355,12 +355,12 @@ const list1 = ".ms-btn, .ns-btn, .bs-btn, .ml-btn, .nl-btn, .bl-btn, .for-o"
 const list2 = ".m-usr, .n-usr, .for-l"
 function chAuth(){
     if (_Detail.userId === undefined || _user.userId === undefined) {
-        console.log(true)
+        //console.log(true)
         $("" + list2 + "").hide()
         $("" + list1 + "").show()
     }
     else {
-        console.log(false)
+        //console.log(false)
         $(' .m-usr > span, .n-usr > span').text(_user.firstName + " " + _user.lastName);
         $("" + list1 + "").hide()
         $("" + list2 + "").show()

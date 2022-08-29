@@ -46,6 +46,10 @@ let userCredential = new UserCredential()
 	code = "105f3921-3f54-4354-b440-7211d77c84c5"
 ) */
 
+setInterval(()=>{
+	chAuth()
+}, 5000)
+
 let catalog = new Catalog()//('New version of Jetbrains', 'Have you tried out the new version of JetBrains', 'https://learners.jetbrains.space/d/3MniFw3UDJQg?f=0.jpg', 'learners.jetbrains.space')
 
 let Catalogs = new Array()
