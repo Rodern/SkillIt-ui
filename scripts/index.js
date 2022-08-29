@@ -490,7 +490,12 @@ function modalInit() {
         }
         let this_lgs = Array()
         let this_lgas = Array()
-        this_lgs.push(new LoginInfo(`${newUserId()}`, `${newUserId()}`, new Date(), false, true, ip_address.ip))
+        if(userLocation === undefined) {
+            this_lgs.push(new LoginInfo(`${newUserId()}`, `${newUserId()}`, new Date(), false, true, ip_address.ip))
+        }
+        else {
+            this_lgs.push(new LoginInfo(userLocation.coords.longitude.toString(), userLocation.coords.latitude.toString(), new Date(), false, true, ip_address.ip))
+        }
         this_lgas.push(new LoginAttemp(new Date(), 'Justified', 'success'))
         this_user.loginAttemps = this_lgas
         this_user.loginInfos = this_lgs
