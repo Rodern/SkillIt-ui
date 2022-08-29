@@ -93,7 +93,7 @@ const decodeText = (text) => {
 const getIP = () => {
     $.ajax({
         type: 'get',
-        url: 'https:api.ipify.org/?format=json',
+        url: 'https://api.ipify.org/?format=json',
         success: (ipAdress) => {
             ip_address = ipAdress;
             setKeyValue('ip_address', JSON.stringify(ipAdress))
