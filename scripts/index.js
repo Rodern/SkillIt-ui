@@ -382,7 +382,6 @@ const exitModal = (callback = () => {}) => {
 
 
 function modalInit() {
-    console.log('yes')
     $('.org-info').click((e)=>{
         loadLandingPage()
     })
@@ -470,10 +469,10 @@ function modalInit() {
         if (cred.email == '' || cred.password == '') {
             popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
         }
+        loader.removeClass('hidden')
         AuthenticateUser(cred, ()=>{
             _ROUTER.navigate('/dashboard')
         })
-        
         $('input').val('')
     })
 

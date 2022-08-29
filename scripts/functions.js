@@ -233,6 +233,7 @@ const AuthenticateUser = (userCredential, callback = () => {}) => {
                 chAuth()
                 return
             }
+            loader.addClass('hidden')
             popUpBox('alert', 'Please check you credentials', 'catAlert')
         }
     })
@@ -303,7 +304,8 @@ const getUser = (userId, token) => {
             console.log(user)
             getAccountDetail(userId, token)
         }
-    }).done(()=>{
+    }).done(() => {
+        loader.addClass('hidden')
         loadDash();
     })
 }
