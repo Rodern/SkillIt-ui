@@ -308,7 +308,7 @@ const getUser = (userId, token) => {
         }
     }).done(() => {
         loader.addClass('hidden')
-        loadDash();
+        //loadDash();
     })
 }
 
@@ -355,6 +355,7 @@ const getCatalogs = (token, callback = () => {}) => {
         callback(cat_template)
         modalInit()
         chAuth()
+        loader.addClass('hidden')
     })
 }
 

@@ -148,5 +148,71 @@
         chAuth()
         modalInit()
         loader.addClass('hidden')
+        $('.save-social-btn').click((e) => {
+            social = new Social(0, $('#nscn').val(), $('#nscp').val())
+            if (social.name == '' || social.link == '') {
+                popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
+                return
+            }
+            userSocial = new UserSocial(0, 0, UserId, social)
+            addUserSocial(userSocial, Token)
+            $('input').val('')
+        })
+
+        $('.save-skill-btn').click((e) => {
+            skill = new Skill(0, $('#nskn').val(), $('#nskp').val())
+            if (skill.name == '' || skill.level == '') {
+                popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
+                return
+            }
+            let us = new UserSkill(0, 0, UserId, skill)
+            let skills = new Array()
+            skills.push(us)
+            console.log(skills)
+            addUserSkills(skills, Token)
+            $('input').val('')
+        })
+
+        $('#d_phone').click((e) => {
+            function cb(val) {
+                user.phone = val;
+                user.username = 'undefined';
+                updateUser(UserId, _user, Token)
+                $('.u-phone').text(val)
+            }
+            info_edit_template('phone', 'tel', 9, 'Enter phone number', cb)
+        })
+
+        $('#u_dob').click((e) => {
+            function cb(val) {
+                user.dob = val;
+                user.username = 'undefined';
+                updateUser(UserId, _user, Token)
+                $('.u-dob').text(val)
+            }
+            info_edit_template('dob', 'date', 100, 'Date', cb)
+        })
+
+        $('#u_g').click((e) => {
+            function cb(val) {
+                if (val.toLowerCase() == 'm')
+                    user.userSKillId = 0;
+                else user.userSKillId = 1;
+                user.username = 'undefined';
+                updateUser(UserId, _user, Token)
+                $('.u-g').text(val)
+            }
+            info_edit_template('g', 'text', 1, 'M or F', cb)
+        })
+
+        $('#u_address').click((e) => {
+            function cb(val) {
+                user.address = val;
+                user.username = 'undefined';
+                updateUser(UserId, _user, Token)
+                $('.u-address').text(val)
+            }
+            info_edit_template('add', 'text', 100, 'Address', cb)
+        })
     }, 2000);
 </script>

@@ -134,7 +134,22 @@
         setTimeout(() => {
             chAuth()
             modalInit()
-            loader.addClass('hidden')
+            //loader.addClass('hidden')
+
+            $('.save-cat-btn').click(function () {
+                loader.removeClass('hidden')
+                catalog = new Catalog($('#catCaption').val(), $('#catDesc').val(), g_img, "link")
+                if ((catalog.caption == null || catalog.caption == "") || (catalog.description == null || catalog.description == "") || c_img[0].files[0] === undefined) {
+                    popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
+                    loader.addClass('hidden')
+                    return
+                }
+                console.log(catalog)
+                addCatalog(catalog, Token)
+                catalog = new Catalog();
+                g_img = ''
+                $('input').val('')
+            })
         }, 2000);
         if (_Detail.accountType == 'admin') {
             $('.add-catalog-form').removeClass('hidden')

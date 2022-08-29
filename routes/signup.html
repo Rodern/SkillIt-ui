@@ -90,4 +90,41 @@
     modalInit()
     loader.addClass('hidden')
     chAuth()
+    
+    $('.signup-btn').click((e) => {
+        let password = $('#password').val()
+        let cpassword = $('#cpassword').val()
+        if (password != cpassword) {
+            console.log('No password match')
+            return
+        }
+        let this_user = new User(newUserId(), 'm', TrimSpace($('#firstname').val()), TrimSpace($('#lastname').val()), TrimSpace($('#user_email').val()), TrimSpace(cpassword), new Date(), 'Address', new Date(), $('#phone').val(), "img")
+        if (this_user.firstName == '' || this_user.lastName == '' || this_user.email == '' || this_user.password == '' || this_user.phone == '') {
+            popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
+            return
+        }
+        let this_lgs = Array()
+        let this_lgas = Array()
+        if (userLocation === undefined) {
+            this_lgs.push(new LoginInfo(`${newUserId()}`, `${newUserId()}`, new Date(), false, true, ip_address.ip))
+        }
+        else {
+            this_lgs.push(new LoginInfo(userLocation.coords.longitude.toString(), userLocation.coords.latitude.toString(), new Date(), false, true, ip_address.ip))
+        }
+        this_lgas.push(new LoginAttemp(new Date(), 'Justified', 'success'))
+        this_user.loginAttemps = this_lgas
+        this_user.loginInfos = this_lgs
+        console.log(this_user)
+        checkEmail(this_user.email, () => {
+            addUser(this_user, () => {
+                AuthenticateUser(new UserCredential(this_user.email, this_user.password, false, ''), () => {
+                    _ROUTER.navigate('/dashboard')
+                })
+            })
+
+            chAuth()
+        })
+        //addUser(this_user)
+        $('input').val('')
+    })
 </script>

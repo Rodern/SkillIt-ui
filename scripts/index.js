@@ -174,15 +174,15 @@ let socialTemplate = (socail, img) => {
 
 let skillTemplate = (skill) => {
     return `<div id="skill${skill.skillId}" class="skill text-slate-800 bg-white w-full flex flex-row h-auto my-1 pl-2 pb-1 items-center rounded-md shadow-md">
-						<p class="sk-name font-bold">${skill.name}&nbsp;|</p>
-						<p class="sk-level">&nbsp;${skill.level}</p>
-						<button id="sk_del${skill.skillId}" class="sk-del  h-7 w-7 ml-auto mr-1 text-black flex justify-center items-center text-2xl text-center text-white">
-							<svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-								class="w-6 h-6">
-								<path stroke-linecap="round" fill="black" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-							</svg>
-						</button>
-					</div>`
+                <p class="sk-name font-bold">${skill.name}&nbsp;|</p>
+                <p class="sk-level">&nbsp;${skill.level}</p>
+                <button id="sk_del${skill.skillId}" class="sk-del  h-7 w-7 ml-auto mr-1 text-black flex justify-center items-center text-2xl text-center text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                        class="w-6 h-6">
+                        <path stroke-linecap="round" fill="black" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>`
 }
 
 const info_edit_template = (name, type, max, placeholder, callback) => {
@@ -216,6 +216,7 @@ $(document).click((e)=>{
 })
 
 const loadLandingPage = () => {
+    $('title').text('SkillIT - Home')
     loader.removeClass('hidden')
     $('.page, .modal').remove();
 
@@ -225,6 +226,7 @@ const loadLandingPage = () => {
 }
 
 const loadDashbaord = () => {
+    $('title').text('SkillIT - Dashbaord')
     loader.removeClass('hidden')
     $('.page, .modal').remove();
     if (_Detail.userId === undefined || _user.userId === undefined) {
@@ -237,6 +239,7 @@ const loadDashbaord = () => {
 }
 
 const loadCatalog = () => {
+    $('title').text('SkillIT - Catalog')
     loader.removeClass('hidden')
     $('.page, .modal').remove()
     $('.pg-section').load('routes/catalogs.html').ready(() => {
@@ -245,6 +248,7 @@ const loadCatalog = () => {
 }
 
 const loadSignup = () => {
+    $('title').text('SkillIT - Sign Up')
     loader.removeClass('hidden')
     $('.modal').remove()
     $('.floating-content-1').load('routes/signup.html').ready(() => {
@@ -257,6 +261,7 @@ function clearFlc(s = '.flc'){
 }
 
 let loadSignin = () => {
+    $('title').text('SkillIT - Sign In')
     loader.removeClass('hidden')
     $('.modal').remove()
     $('.floating-content-1').load('routes/login.html').ready(() => {
@@ -287,6 +292,7 @@ const loadAbout = () => {
     }
     _ROUTER.navigate('/home')
     setTimeout(()=> {
+        $('title').text('SkillIT - About')
         location.href = location.origin + "#about"
     }, 500)
 }
@@ -384,7 +390,7 @@ const exitModal = (callback = () => {}) => {
 
 function modalInit() {
     $('.org-info').click((e)=>{
-        loadLandingPage()
+        _ROUTER.navigate('/home')
     })
     $('.menu ul li').click(()=>{
         $('.menu').fadeOut(200)
@@ -404,7 +410,7 @@ function modalInit() {
         loadSignup()
     })
 
-    $('.bc-btn, .mc-btn').click((e) => {
+    $('.bc-btn, .nc-btn, .mc-btn').click((e) => {
         e.preventDefault()
         _ROUTER.navigate('/catalogs')
         $('.page, .modal').remove();
@@ -414,20 +420,6 @@ function modalInit() {
     $(c_img).on('change', () => {
         if (c_img[0].files[0] === undefined) return
         toBase64(c_img[0].files[0])
-    })
-    $('.save-cat-btn').click(function(){
-        loader.removeClass('hidden')
-        catalog = new Catalog($('#catCaption').val(), $('#catDesc').val(), g_img, "link")
-        if ((catalog.caption == null || catalog.caption == "") || (catalog.description == null || catalog.description == "") || c_img[0].files[0] === undefined){
-            popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
-            loader.addClass('hidden')
-            return
-        }
-        console.log(catalog)
-        addCatalog(catalog, Token)
-        catalog = new Catalog();
-        g_img = ''
-        $('input').val('')
     })
 
     $('.exit').click((e) => {
@@ -465,55 +457,6 @@ function modalInit() {
         loadReset()
     })
 
-    $('.login-btn').click((e)=>{
-        let cred = new UserCredential($('#email').val(), $('#password').val(), false, "");
-        if (cred.email == '' || cred.password == '') {
-            popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
-            return
-        }
-        loader.removeClass('hidden')
-        AuthenticateUser(cred, ()=>{
-            _ROUTER.navigate('/dashboard')
-        })
-        $('input').val('')
-    })
-
-    $('.signup-btn').click((e)=>{
-        let password = $('#password').val()
-        let cpassword = $('#cpassword').val()
-        if(password != cpassword){
-            console.log('No password match')
-            return
-        }
-        let this_user = new User(newUserId(), 'm', TrimSpace($('#firstname').val()), TrimSpace($('#lastname').val()), TrimSpace($('#user_email').val()), TrimSpace(cpassword), new Date(), 'Address', new Date(), $('#phone').val(), "img")
-        if (this_user.firstName == '' || this_user.lastName == '' || this_user.email == '' || this_user.password == '' || this_user.phone == '') {
-            popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
-            return
-        }
-        let this_lgs = Array()
-        let this_lgas = Array()
-        if(userLocation === undefined) {
-            this_lgs.push(new LoginInfo(`${newUserId()}`, `${newUserId()}`, new Date(), false, true, ip_address.ip))
-        }
-        else {
-            this_lgs.push(new LoginInfo(userLocation.coords.longitude.toString(), userLocation.coords.latitude.toString(), new Date(), false, true, ip_address.ip))
-        }
-        this_lgas.push(new LoginAttemp(new Date(), 'Justified', 'success'))
-        this_user.loginAttemps = this_lgas
-        this_user.loginInfos = this_lgs
-        console.log(this_user)
-        checkEmail(this_user.email, ()=>{
-            addUser(this_user, () => {
-                AuthenticateUser(new UserCredential(this_user.email, this_user.password, false, ''), () => {
-                    _ROUTER.navigate('/dashboard')
-                })
-            })
-            
-            chAuth()
-        })
-        //addUser(this_user)
-        $('input').val('')
-    })
 
     $('.mlg-btn, .nlg-btn').click((e)=>{
         logout()
@@ -523,71 +466,6 @@ function modalInit() {
     $('.ds-btn, .m-usr, .n-usr').click(()=>{
         _ROUTER.navigate('/dashboard')
     })
-    $('.save-social-btn').click((e) => {
-        social = new Social(0, $('#nscn').val(), $('#nscp').val())
-        if (social.name == '' || social.link == '') {
-            popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
-            return
-        }
-        userSocial = new UserSocial(0, 0, UserId, social)
-        addUserSocial(userSocial, Token)
-        $('input').val('')
-    })
-
-    $('.save-skill-btn').click((e) => {
-        skill = new Skill(0, $('#nskn').val(), $('#nskp').val())
-        if (skill.name == '' || skill.level == '') {
-            popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
-            return
-        }
-        let us = new UserSkill(0, 0, UserId, skill)
-        let skills = new Array()
-        skills.push(us)
-        console.log(skills)
-        addUserSkills(skills, Token)
-        $('input').val('')
-    })
-
-    $('#d_phone').click((e) => {
-        function cb(val) {
-            user.phone = val;
-            user.username = 'undefined';
-            updateUser(UserId, _user, Token)
-            $('.u-phone').text(val)
-        }
-        info_edit_template('phone', 'tel', 9, 'Enter phone number', cb)
-    })
-
-    $('#u_dob').click((e) => {
-        function cb(val) {
-            user.dob = val;
-            user.username = 'undefined';
-            updateUser(UserId, _user, Token)
-            $('.u-dob').text(val)
-        }
-        info_edit_template('dob', 'date', 100, 'Date', cb)
-    })
-
-    $('#u_g').click((e) => {
-        function cb(val) {
-            if (val.toLowerCase() == 'm')
-                user.userSKillId = 0;
-            else user.userSKillId = 1;
-            user.username = 'undefined';
-            updateUser(UserId, _user, Token)
-            $('.u-g').text(val)
-        }
-        info_edit_template('g', 'text', 1, 'M or F', cb)
-    })
-
-    $('#u_address').click((e) => {
-        function cb(val) {
-            user.address = val;
-            user.username = 'undefined';
-            updateUser(UserId, _user, Token)
-            $('.u-address').text(val)
-        }
-        info_edit_template('add', 'text', 100, 'Address', cb)
-    })
+    
 }
 

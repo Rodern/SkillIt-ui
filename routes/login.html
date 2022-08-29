@@ -53,4 +53,18 @@
     modalInit()
     loader.addClass('hidden')
     chAuth()
+    
+
+    $('.login-btn').click((e) => {
+        let cred = new UserCredential($('#email').val(), $('#password').val(), false, "");
+        if (cred.email == '' || cred.password == '') {
+            popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
+            return
+        }
+        loader.removeClass('hidden')
+        AuthenticateUser(cred, () => {
+            _ROUTER.navigate('/dashboard')
+        })
+        $('input').val('')
+    })
 </script>
