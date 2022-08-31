@@ -49,10 +49,10 @@
         </ul>
     </nav>
     <div class="dash-body flex flex-row text-slate-300 ">
-        <div class="user-section p-3 absolute md:relative w-full md:w-[38vw] flex-col flex ">
+        <div class="user-section p-3 absolute md:relative w-full md:w-[38vw] h-[100vh] flex-col flex ">
             <div class="avt w-40 h-40 mb-10 mx-auto">
-                <img src="assets/images/user-def.png" alt="">
-                <button class="edit-avt bg-amber-500 h-10 w-10 p-2 flex justify-center items-center hover:shadow-md">
+                <img class="u-img w-40 h-40 rounded-[85px]" src="assets/images/user-def.png" alt="">
+                <button id="edit-avt" title="Change image" class="edit-avt bg-amber-500 h-10 w-10 p-2 flex justify-center items-center hover:shadow-md">
                     <img class=" h-9 w-9 m-5 " src="assets/icons/edit.svg" alt="">
                 </button>
             </div>
@@ -64,28 +64,28 @@
                     <span class="c text-center text-xl u-email">alainkimbu@gmail.com</span>
                 </div>
                 <div class="info mt-1 text-center flex flex-row w-full px-[30%] md:px-[15%]">
-                    <span class="c text-start text-xl u-phone"></span>
-                    <button id="d_phone" class="edit-info hover:bg-red-600  h-8 w-8 bg-slate-200 p-[0.1rem] ml-auto rounded-md flex justify-center items-center">
+                    <a class="c text-start text-xl u-phone"  aria-label="call"></a>
+                    <button id="d_phone" title="Edit phone" class="edit-info hover:bg-red-600  h-8 w-8 bg-slate-200 p-[0.1rem] ml-auto rounded-md flex justify-center items-center">
                         <img class=" h-8 w-8 m-5 " src="assets/icons/edit.svg" alt="">
                     </button>
                 </div>
                 <div class="info mt-1 flex flex-row w-full px-[30%] md:px-[15%]">
                     <span class="c text-start text-lg u-dob w-full">ahaskfj</span>
-                    <button id="u_dob"
+                    <button id="u_dob" title="Change Date of Birth"
                         class="edit-info hover:bg-red-600  h-8 w-8 bg-slate-200 p-[0.1rem] ml-auto rounded-md flex justify-center items-center">
                         <img class=" h-8 w-8 m-5 " src="assets/icons/edit.svg" alt="">
                     </button>
                 </div>
                 <div class="info mt-1 flex flex-row w-full px-[30%] md:px-[15%]">
                     <span class="c text-start text-lg u-g w-full">ahaskfj</span>
-                    <button id="u_g"
+                    <button id="u_g" title="Change gender"
                         class="edit-info hover:bg-red-600  h-8 w-8 bg-slate-200 p-[0.1rem] ml-auto rounded-md flex justify-center items-center">
                         <img class=" h-8 w-8 m-5 " src="assets/icons/edit.svg" alt="">
                     </button>
                 </div>
                 <div class="info mt-1 flex flex-row w-full px-[30%] md:px-[15%]">
                     <span class="c text-start text-lg u-address w-full">ahaskfj</span>
-                    <button id="u_address"
+                    <button id="u_address" title="Edit address"
                         class="edit-info hover:bg-red-600  h-8 w-8 bg-slate-200 p-[0.1rem] ml-auto rounded-md flex justify-center items-center">
                         <img class=" h-8 w-8 m-5 " src="assets/icons/edit.svg" alt="">
                     </button>
@@ -100,10 +100,10 @@
                     <h1 class="font-bold">Add skill</h1>
                     <div class="skill-wrapper flex flex-row gap-2">
                         <div class="input-wrapper rounded-md flex flex-row w-6/12 h-9 border overflow-hidden" style="border-radius: 5px;">
-                            <input class="w-full px-2 py-1" type="text" name="name" id="nskn" placeholder="Name" />
+                            <input class="w-full side-in px-2 py-1" type="text" name="name" id="nskn" placeholder="Name" />
                         </div>
                         <div class="input-wrapper rounded-md flex flex-row w-full h-9 border overflow-hidden" style="border-radius: 5px;">
-                            <input class="w-full px-2 py-1" type="url" name="link" id="nskp" placeholder="Level" list="level_list">
+                            <input class="w-full side-in px-2 py-1" type="url" name="link" id="nskp" placeholder="Level" list="level_list">
                             <datalist id="level_list">
                                 <option value="Beginner">
                                 <option value="Amatuer">
@@ -113,7 +113,7 @@
                             </datalist>
                         </div>
                     </div>
-                    <button
+                    <button title="Save skill"
                         class="save-skill-btn text-md ml-auto font-bold text-white bg-blue-600 w-24 md:text-center hover:shadow-lg hover:bg-blue-700 rounded px-2 sm:px-4 py-1 mt-2 "
                         role="button">Add</button>
                 </div>
@@ -127,22 +127,23 @@
                     <h1 class="font-bold">Add Social</h1>
                     <div class="social-wrapper flex flex-row gap-2">
                         <div class="input-wrapper rounded-md flex flex-row w-6/12 h-9 border" style="border-radius: 5px;">
-                            <input class="w-full px-2 py-1" type="text" name="name" id="nscn" placeholder="Name" />
+                            <input class="w-full side-in px-2 py-1" type="text" name="name" id="nscn" placeholder="Name" />
                         </div>
                         <div class="input-wrapper rounded-md flex flex-row w-full h-9 border " style="border-radius: 5px;">
-                            <input class="w-full px-2 py-1" type="url" name="link" id="nscp" placeholder="Link" />
+                            <input class="w-full side-in px-2 py-1" type="url" name="link" id="nscp" placeholder="Link" />
                         </div>
                     </div>
-                    <button id="this" class="save-social-btn relative text-md ml-auto font-bold text-white bg-blue-600 w-24 md:text-center hover:shadow-lg hover:bg-blue-700 rounded px-2 sm:px-4 py-1 mt-2 " role="button">Add</button>
+                    <button id="this" title="Save social" class="save-social-btn relative text-md ml-auto font-bold text-white bg-blue-600 w-24 md:text-center hover:shadow-lg hover:bg-blue-700 rounded px-2 sm:px-4 py-1 mt-2 " role="button">Add</button>
                 </div>
             </div>
         </div>
-        <div class="main-view text-center font-bold bg-amber-500 text-white w-[100%] h-full flex flex-col justify-center items-center">
+        <div class="main-view pb-1 text-center text-xl font-bold bg-amber-500 text-white w-[100%] h-full flex flex-col justify-center items-center">
             More coming soon...
         </div>
     </div>
 </div>
 <script>
+    
     setTimeout(() => {
         loadDash()
         chAuth()
@@ -173,8 +174,13 @@
             $('input').val('')
         })
 
-        $('').click((e)=>{
-            
+        $('#edit-avt').click((e)=>{
+            function cb(val, u) {
+                u.imgBase64 = val;
+                updateUser(UserId, u, Token)
+                $('.u-img').attr('src', val)
+            }
+            info_edit_template('image', 'file', 0, 'image', cb, '.jpg, .png, .raw')
         })
 
         $('#d_phone').click((e) => {

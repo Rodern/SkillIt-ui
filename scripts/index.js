@@ -134,12 +134,13 @@ class UserSocial {
     }
 }
 
-function toBase64(imglink) {
+function toBase64(imglink, u = '', callback = () => {}) {
     var imgSRC = new FileReader();
     imgSRC.readAsDataURL(imglink)//($('.' + tclass + ' > #imageSelect')[0].files[0]);
 
     imgSRC.onload = function () {
         g_img = imgSRC.result;
+        callback(imgSRC.result, u)
     }
     imgSRC.error = function (error) {
         console.log('Error: ', error);
@@ -160,10 +161,11 @@ let cat_template = (catalog) => {
 
 
 let socialTemplate = (socail, img) => {
+    //if()
     return `<div id="${socail.socialId}" class="social w-full flex flex-row h-9 my-1 items-center rounded-md shadow-md">
 						<img src="${img}"  alt="" class="ml-1 mr-2 s-img h-8 w-8 ">
-						<a href="${socail.link}" class="s-name">${socail.name}</a>
-						<button id="sc_del${socail.socialId}" class="sc-del  h-7 w-7 ml-auto mr-1 text-white flex justify-center items-center text-2xl text-center text-white">
+						<a href="${socail.link}" target="_blank" rel="noreferrer noopener" class="s-name">${socail.name}</a>
+						<button id="sc_del${socail.socialId}" title="Delete" class="sc-del  h-7 w-7 ml-auto mr-1 text-white flex justify-center items-center text-2xl text-center text-white">
 							<svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
 								class="w-6 h-6">
 								<path stroke-linecap="round" fill="black" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -176,7 +178,7 @@ let skillTemplate = (skill) => {
     return `<div id="skill${skill.skillId}" class="skill text-slate-800 bg-white w-full flex flex-row h-auto my-1 pl-2 pb-1 items-center rounded-md shadow-md">
                 <p class="sk-name font-bold">${skill.name}&nbsp;|</p>
                 <p class="sk-level">&nbsp;${skill.level}</p>
-                <button id="sk_del${skill.skillId}" class="sk-del  h-7 w-7 ml-auto mr-1 text-black flex justify-center items-center text-2xl text-center text-white">
+                <button id="sk_del${skill.skillId}" title="Delete" class="sk-del  h-7 w-7 ml-auto mr-1 text-black flex justify-center items-center text-2xl text-center text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                         class="w-6 h-6">
                         <path stroke-linecap="round" fill="black" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -185,27 +187,46 @@ let skillTemplate = (skill) => {
             </div>`
 }
 
-const info_edit_template = (name, type, max, placeholder, callback) => {
+const info_edit_template = (name, type, max, placeholder, callback, accept = '') => {
     $('.in').remove()
-    let t = `<div id="fl_edit" class="in  absolute bg-white  flex flex-row h-10 rounded-lg border shadow-2xl w-60 justify-center items-center">
+    let t = '';
+    if(type != 'file') t = `<div id="fl_edit" class="in  absolute bg-white  flex flex-row h-10 rounded-lg border shadow-2xl w-60 justify-center items-center">
                 <input  type="${type}" maxlength="${max}" placeholder="${placeholder}" class="w-full px-1 mx-1">
-                <button id="save-${name}"
+                <button id="save-${name}" title="save change"
                     class="edit-info h-8 w-8 mr-1 hover:bg-blue-600 focus:bg-blue-700 bg-slate-200 p-[.1rem] ml-auto rounded-md flex justify-center items-center">
                     <img class=" h-8 w-8 m-5 " src="assets/icons/save.svg" alt="">
                 </button>
             </div>`
+    else t = `<div id="fl_edit" class="in  absolute bg-white  flex flex-row h-10 rounded-lg border shadow-2xl w-60 justify-center items-center">
+                <input  type="file"  accept="${accept}" class="w-full px-1 mx-1">
+                <button id="save-${name}" title="save change"
+                    class="edit-info h-8 w-8 mr-1 hover:bg-blue-600 focus:bg-blue-700 bg-slate-200 p-[.1rem] ml-auto rounded-md flex justify-center items-center">
+                    <img class=" h-8 w-8 m-5 " src="assets/icons/save.svg" alt="">
+                </button>
+            </div>`
+    $('.avt').append(t)
     $('.personal').append(t).ready(()=>{
         
-    $(`#save-${name}`).click(()=>{
-        let val = $('.in input').val()
-        if (val == '') {
-            popUpBox('info', 'Failed: Input was empty.', 'catAlert')
-            return
-        }
-        let temp_user = new User(UserId, _user.gender, _user.firstName, _user.lastName, _user.email, decodeText(getKeyValue('pass')), _user.dob, _user.address, _user.dateCreated, _user.phone, _user.imgBase64, JSON.parse(_Detail.loginInfo), JSON.parse(_Detail.loginAttemp))
-        callback(val, temp_user)
-        $('.in').remove()
-    })
+        $(`#save-${name}`).click(()=>{
+            if (type == 'file') {
+                let file = $('.in input')
+                if (file[0].files[0] === undefined) {
+                    popUpBox('error1', 'No img selected.', 'catAlert')
+                    return
+                }
+                toBase64(file[0].files[0], new User(UserId, _user.gender, _user.firstName, _user.lastName, _user.email, decodeText(getKeyValue('pass')), _user.dob, _user.address, _user.dateCreated, _user.phone, _user.imgBase64, JSON.parse(_Detail.loginInfo), JSON.parse(_Detail.loginAttemp)), callback)
+                return
+            }
+            let val = $('.in input').val()
+            if (val == '') {
+                popUpBox('error1', 'Input was empty.', 'catAlert')
+                return
+            }
+            let temp_user = new User(UserId, _user.gender, _user.firstName, _user.lastName, _user.email, decodeText(getKeyValue('pass')), _user.dob, _user.address, _user.dateCreated, _user.phone, _user.imgBase64, JSON.parse(_Detail.loginInfo), JSON.parse(_Detail.loginAttemp))
+            
+            callback(val, temp_user)
+            $('.in').remove()
+        })
     })
 }
 
@@ -230,13 +251,21 @@ const loadDashbaord = () => {
     $('title').text('SkillIT - Dashbaord')
     loader.removeClass('hidden')
     $('.page, .modal').remove();
-    if (_Detail.userId === undefined || _user.userId === undefined) {
+    if (KeyExists(tokenKey) == false) {
         _ROUTER.navigate('/home')
         return
     }
-    $('.pg-section').load('routes/dashboard.html').ready(() => {
-        modalInit()
-    })
+    function cb(){
+        $('.pg-section').load('routes/dashboard.html').ready(() => {
+            modalInit()
+        })
+    }
+    if (_Detail.userId !== undefined || _user.userId !== undefined){
+        cb()
+        return
+    }
+    initiateUser(cb)
+    
 }
 
 const loadCatalog = () => {
@@ -349,10 +378,6 @@ const initPage = () => {
         _ROUTER.navigate('/catalogs')
     }
     if(page == 'dashboard'){
-        if (_Detail.userId === undefined || _user.userId === undefined){
-            _ROUTER.navigate('/home')
-            return
-        }
         _ROUTER.navigate('/dashboard')
     }
     modalInit()

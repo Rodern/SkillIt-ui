@@ -1,6 +1,6 @@
-//const BaseURL = 'http://localhost:5000/'
+const BaseURL = 'http://localhost:5000/'
 //const BaseURL = 'https://localhost:7165/'
-const BaseURL = 'https://skillitapi.herokuapp.com/'
+//const BaseURL = 'https://skillitapi.herokuapp.com/'
 const ipAddressKey = 'ip_address'
 const tokenKey = 'skillit-user-token'
 const userIdKey = 'userId'
@@ -65,18 +65,12 @@ window.addEventListener("DOMContentLoaded", () => {
 	}
 })
 
-if(KeyExists(tokenKey)){
-	try {
-		Token = (decodeText(getKeyValue(tokenKey)))
-		UserId = parseInt(decodeText(getKeyValue(userIdKey)))
-		IsTokenValid(Token, () => {
-			getUser(UserId, Token)
-		})
-	} catch (error) {
-		console.info(`Error parsing token and userId: ${error}`)
+/* setTimeout(()=>{
+	let initCPage = location.href.substring(location.href.lastIndexOf('#') + 1)
+	if (initCPage != 'dashboard') {
+		
 	}
-}
-
+}, 2000) */
 
 if(KeyExists("ip_address")){
 	try {

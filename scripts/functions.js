@@ -24,6 +24,12 @@ function popUpBox(boxType, boxMsg, OKCN, cancelCN = "CN_Class", CallBack = funct
         $('.typeImg').attr('src', 'assets/icons/warning.png');
         $('.typeName').text("Warning!");
         $('.alertBody').text(boxMsg);
+    } else if (boxType == "error") {
+        $('.typeImg').attr('src', 'assets/icons/error.png');
+        $('.typeName').text("Error!");
+    } else if (boxType == "error1") {
+        $('.typeImg').attr('src', 'assets/icons/error.png');
+        $('.typeName').text("Failed!");
     }
     $('.alertCover').attr('tabindex', -1).focus(function () {
         //console.log('hit');
@@ -190,6 +196,21 @@ const IsTokenValid = (token, callback = () => { console.info(" ") }) => {
 
 }
 
+function initiateUser(callback = () => {}) {
+    if (KeyExists(tokenKey)) {
+        try {
+            Token = (decodeText(getKeyValue(tokenKey)))
+            UserId = parseInt(decodeText(getKeyValue(userIdKey)))
+            IsTokenValid(Token, () => {
+                getUser(UserId, Token, callback)
+            })
+        } catch (error) {
+            console.info(`Error parsing token and userId: ${error}`)
+            popUpBox('error1', `Error parsing token and userId:: ${error} `, 'catAlert')
+        }
+    }
+}
+
 const checkEmail = (email, callback = () => {}) => {
     $.ajax({
         type: 'post',
@@ -202,6 +223,7 @@ const checkEmail = (email, callback = () => {}) => {
                 popUpBox('alert', 'This email exists already!', 'catAlert')
                 return
             }
+            console.log(message)
             callback()
         }
     })
@@ -293,7 +315,7 @@ const logout = () => {
     chAuth()
 }
 
-const getUser = (userId, token) => {
+const getUser = (userId, token, callback = () => {}) => {
     $.ajax({
         type: 'post',
         url: `${BaseURL}api/User/GetUser?id=${userId}`,
@@ -308,6 +330,7 @@ const getUser = (userId, token) => {
         }
     }).done(() => {
         loader.addClass('hidden')
+        callback()
         //loadDash();
     })
 }
@@ -316,6 +339,7 @@ function loadDash() {
     $('.u-name').text(_user.firstName + " " + _user.lastName)
     $('.u-email').text(_user.email)
     $('.u-phone').text(_user.phone)
+    $('.u-phone').attr('href', `tel:${_user.phone}`)
     $('.u-dob').text(_user.dob === Date ? _user.dob.toDateString() : _user.dob)
     $('.u-g').text(_user.gender)
     $('.u-address').text(_user.address)

@@ -157,3 +157,11 @@ button.edit-avt {
     margin-right: 8px;
     border-radius: 50%;
 }
+
+input.side-in {
+    color: black;
+}
+
+input.side-in::placeholder {
+    color: black;
+}

@@ -61,7 +61,7 @@
     <div class="cats-body flex flex-col-reverse md:flex-row text-slate-700 bg-white p-6 md:p-2">
         <div class="add-catalog-form hidden flex flex-col min-w-[auto] md:min-w-[38vh] justify-center items-center h-auto md:h-full mt-24 md:mt-auto md:mb-auto">
             <h1 class="font-bold text-2xl mb-10 text-center">Add new catalog</h1>
-            <div class="cat-form rounded-lg shadow-lg px-4 py-5">
+            <div class="cat-form roun12ded-lg shadow-lg px-4 py-5">
                 <div class="input-group mb-6 flex flex-col">
                     <h4 class="text-lg font-md ">Name</h4>
                     <div class="input-wrapper rounded-md flex flex-row w-full h-10 border shadow overflow-hidden"
@@ -101,8 +101,7 @@
             </div>
             <div class="cat-list flex flex-row flex-wrap gap-14 justify-center md:justify-between overflow-y-auto h-[800px] p-3">
                 <div class="catalog flex flex-col justify-center shadow-lg rounded-lg w-60 h-auto h-max px-2 mx-4">
-                    <div class="img w-full h-40 rounded-md style=" background-image:
-                        url(assets/images/ignite-100859919-large.jpg)"></div>
+                    <div class="img w-full h-40 rounded-md" ></div>
                     <h4 class="cat-name font-bold text-lg">Learn .NET today</h4>
                     <p class="cat-desc brak-words truncate">fo;d jsdfa hfojdasfuif fiuif g dhfjhi uiofjefui daufd ajfkfie
                         atha t jiteo jt ioja apoj fsdaf hfaffoif faifkdiflafiaisyrtiokldzvhigjklkgj vzgijrag 0isjkglwjf
@@ -117,6 +116,7 @@
     </div>
 </div>
 <script>
+    if (_Detail.userId === undefined || _user.userId === undefined) initiateUser()
     let = catList = $('.cat-list')
         function gt(cat_template) {
             try {
