@@ -1,4 +1,5 @@
 //const BaseURL = 'http://localhost:5000/'
+//const BaseURL = 'https://localhost:5001/'
 //const BaseURL = 'https://localhost:7165/'
 const BaseURL = 'https://skillitapi.herokuapp.com/'
 const ipAddressKey = 'ip_address'
@@ -19,6 +20,27 @@ var globalAlertConfirm = document.getElementById('alertBtnHandler');
 
 let userLocation
 getGeoLoc()
+
+function AddCategogry() {
+    $.ajax({
+        type: 'post',
+		url: `https://storeprojectapi.herokuapp.com/api/CategoryService/AddCategory`,
+		data: `{"categoryId":0,"name":"Groceries","noP":56,"imgBase64":"image","items":[]}`,
+        dataType: 'json',
+        CORS: true ,
+        contentType:'application/json',
+        secure: true,
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+        },
+        error: function(error) {
+            console.log(error)
+        },
+        success: function(data) {
+            console.log(data)
+        }
+    })
+}
 
 let loginInfos = new Array()
 let loginAttemps = new Array()

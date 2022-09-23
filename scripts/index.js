@@ -93,7 +93,7 @@ const Level = [
     'Amatuer',
     'Intermediate',
     'Professional',
-    'Professional'
+    'GodLevel &#128516'
 ]
 
 class Skill {
@@ -187,36 +187,23 @@ let skillTemplate = (skill) => {
             </div>`
 }
 
-const info_edit_template = (name, type, max, placeholder, callback, accept = '') => {
+const info_edit_template = (name, type, max, placeholder, callback) => {
     $('.in').remove()
-    let t = '';
-    if(type != 'file') t = `<div id="fl_edit" class="in  absolute bg-white  flex flex-row h-10 rounded-lg border shadow-2xl w-60 justify-center items-center">
+    let t = `<div id="fl_edit" class="in  absolute bg-white  flex flex-row h-10 rounded-lg border shadow-2xl w-60 justify-center items-center">
                 <input  type="${type}" maxlength="${max}" placeholder="${placeholder}" class="w-full px-1 mx-1">
                 <button id="save-${name}" title="save change"
                     class="edit-info h-8 w-8 mr-1 hover:bg-blue-600 focus:bg-blue-700 bg-slate-200 p-[.1rem] ml-auto rounded-md flex justify-center items-center">
                     <img class=" h-8 w-8 m-5 " src="assets/icons/save.svg" alt="">
                 </button>
             </div>`
-    else t = `<div id="fl_edit" class="in  absolute bg-white  flex flex-row h-10 rounded-lg border shadow-2xl w-60 justify-center items-center">
-                <input  type="file"  accept="${accept}" class="w-full px-1 mx-1">
-                <button id="save-${name}" title="save change"
-                    class="edit-info h-8 w-8 mr-1 hover:bg-blue-600 focus:bg-blue-700 bg-slate-200 p-[.1rem] ml-auto rounded-md flex justify-center items-center">
-                    <img class=" h-8 w-8 m-5 " src="assets/icons/save.svg" alt="">
-                </button>
-            </div>`
-    $('.avt').append(t)
-    $('.personal').append(t).ready(()=>{
-        
-        $(`#save-${name}`).click(()=>{
-            if (type == 'file') {
-                let file = $('.in input')
-                if (file[0].files[0] === undefined) {
-                    popUpBox('error1', 'No img selected.', 'catAlert')
-                    return
-                }
-                toBase64(file[0].files[0], new User(UserId, _user.gender, _user.firstName, _user.lastName, _user.email, decodeText(getKeyValue('pass')), _user.dob, _user.address, _user.dateCreated, _user.phone, _user.imgBase64, JSON.parse(_Detail.loginInfo), JSON.parse(_Detail.loginAttemp)), callback)
-                return
+    $('.personal').append(t).ready(() => {
+        $('.in input').keyup(function (e) {
+            e.preventDefault();
+            if(e.which === 13) {
+                //$(`#${e.target.nextElementSibling.id}`);
             }
+        })
+        $(`#save-${name}`).click(()=>{
             let val = $('.in input').val()
             if (val == '') {
                 popUpBox('error1', 'Input was empty.', 'catAlert')
@@ -225,6 +212,35 @@ const info_edit_template = (name, type, max, placeholder, callback, accept = '')
             let temp_user = new User(UserId, _user.gender, _user.firstName, _user.lastName, _user.email, decodeText(getKeyValue('pass')), _user.dob, _user.address, _user.dateCreated, _user.phone, _user.imgBase64, JSON.parse(_Detail.loginInfo), JSON.parse(_Detail.loginAttemp))
             
             callback(val, temp_user)
+            $('.in').remove()
+        })
+    })
+}
+
+const info_img_template = (name, callback, accept = '') => {
+    $('.in').remove()
+    let t = '';
+    t = `<div id="fl_edit" class="in  absolute bg-white  flex flex-row h-10 rounded-lg border shadow-2xl w-60 justify-center items-center">
+                <input  type="file"  accept="${accept}" class="w-full px-1 mx-1">
+                <button id="save-${name}" title="save change"
+                    class="edit-info h-8 w-8 mr-1 hover:bg-blue-600 focus:bg-blue-700 bg-slate-200 p-[.1rem] ml-auto rounded-md flex justify-center items-center">
+                    <img class=" h-8 w-8 m-5 " src="assets/icons/save.svg" alt="">
+                </button>
+            </div>`
+    $('.avt').append(t);
+    $('.avt').append(t).ready(()=>{
+        $('.in input').focus(function (e) { 
+            e.preventDefault();
+            
+        })
+        $(`#save-${name}`).click(()=>{
+            let file = $('.in input')
+            if (file[0].files[0] === undefined) {
+                popUpBox('error1', 'No img selected.', 'catAlert')
+                return
+            }
+            toBase64(file[0].files[0], new User(UserId, _user.gender, _user.firstName, _user.lastName, _user.email, decodeText(getKeyValue('pass')), _user.dob, _user.address, _user.dateCreated, _user.phone, _user.imgBase64, JSON.parse(_Detail.loginInfo), JSON.parse(_Detail.loginAttemp)), callback)
+            
             $('.in').remove()
         })
     })
@@ -356,6 +372,7 @@ const loadSkills = () => {
         let sDom = $('.skills')
         sDom.html('')
         userSkills.forEach(us => {
+            if (us.skill.level == "GodLevel") us.skill.level = Level[4]
             sDom.append(skillTemplate(us.skill))
         })
     } catch (error) {

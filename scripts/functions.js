@@ -284,8 +284,8 @@ const addUser = (user, callback = () => {}) => {
 
 const updateUser = (userId, user, token) => {
     $.ajax({
-        type: 'post',
-        url: `${BaseURL}api/User/UpdateUser?userId=${userId}`,
+        type: 'put',
+        url: `${BaseURL}api/User/UpdateUser/${userId}`,
         data: JSON.stringify(user),
         dataType: "json",
         contentType: "application/json",
@@ -296,7 +296,7 @@ const updateUser = (userId, user, token) => {
         success: (responseModel) => {
             if (responseModel.success == true) {
                 getUser(UserId, Token)
-                console.log(responseModel)
+                popUpBox('notify', `Message: Change successful`, 'catAlert')
                 return
             }
             popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
@@ -343,6 +343,8 @@ function loadDash() {
     $('.u-dob').text(_user.dob === Date ? _user.dob.toDateString() : _user.dob)
     $('.u-g').text(_user.gender)
     $('.u-address').text(_user.address)
+    if (_user.imgBase64 != "" || _user.imgBase64 != "")
+        $('.u-img').attr('src', _user.imgBase64)
     getUserSkill(UserId, Token)
     getUserSocial(UserId, Token)
 }
@@ -424,8 +426,8 @@ const addCatalog = (catalog, token) => {
 
 const updateCatalog = (catalogId, catalog, token) => {
     $.ajax({
-        type: 'post',
-        url: `${BaseURL}api/Catalog/UpdateCatalog?id=${catalogId}`,
+        type: 'put',
+        url: `${BaseURL}api/Catalog/UpdateCatalog/${catalogId}`,
         data: JSON.stringify(catalog),
         dataType: 'json',
         contentType: 'application/json',
@@ -472,7 +474,7 @@ const getUserSkill = (userId, token) => {
         loadSkills()
         $('.sk-del').click((e) => {
             let id = e.target.parentElement.id.substring(6) || e.target.id.substring(6);
-            deleteUserSkill(id)
+            deleteUserSkill(id, Token)
             $(e.target.closest('.skill')).remove()
         })
 
@@ -504,8 +506,8 @@ const addUserSkills = (userSkill, token) => {
 
 const updateUserSkill = (id, userSkill, token) => {
     $.ajax({
-        type: 'post',
-        url: `${BaseURL}api/UserSkill/UpdateUserSkill?id=${id}`,
+        type: 'put',
+        url: `${BaseURL}api/UserSkill/UpdateUserSkill/${id}`,
         data: JSON.stringify(userSkill),
         dataType: 'json',
         contentType: 'application/json',
@@ -528,8 +530,8 @@ const updateUserSkill = (id, userSkill, token) => {
 
 const deleteUserSkill = (id, token) => {
     $.ajax({
-        type: 'post',
-        url: `${BaseURL}api/UserSkill/DeleteUserSkill?id=${id}`,
+        type: 'delete',
+        url: `${BaseURL}api/UserSkill/DeleteUserSkill/${id}`,
         beforeSend: (xhr) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
@@ -572,7 +574,7 @@ const getUserSocial = (userId, token) => {
 
         $('.sc-del').click((e) => {
             let id = e.target.id.substring(6) || e.target.parentElement.id.substring(6);
-            deleteUserSocial(id)
+            deleteUserSocial(id, Token)
             $(e.target.closest('.social')).remove()
         })
     })
@@ -601,8 +603,8 @@ const addUserSocial = (userSocial, token) => {
 
 const updateUserSocial = (id, userSocial, token) => {
     $.ajax({
-        type: 'post',
-        url: `${BaseURL}api/UserSocial/UpdateUserSocial?id=${id}`,
+        type: 'put',
+        url: `${BaseURL}api/UserSocial/UpdateUserSocial/${id}`,
         data: JSON.stringify(userSocial),
         dataType: 'json',
         contentType: 'application/json',
@@ -623,7 +625,7 @@ const updateUserSocial = (id, userSocial, token) => {
 const deleteUserSocial = (id, token) => {
     $.ajax({
         type: 'delete',
-        url: `${BaseURL}api/UserSocial/DeleteUserSocial?id=${id}`,
+        url: `${BaseURL}api/UserSocial/DeleteUserSocial/${id}`,
         beforeSend: (xhr) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
@@ -632,7 +634,7 @@ const deleteUserSocial = (id, token) => {
             if(responseModel.success == true){
                 getUserSocial(UserId, Token)
             }
-            popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
+            popUpBox('notify', `Message: ${responseModel.message} `, 'catAlert')
         }
     })
 }

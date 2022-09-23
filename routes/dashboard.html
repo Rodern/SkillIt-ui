@@ -49,7 +49,7 @@
         </ul>
     </nav>
     <div class="dash-body flex flex-row text-slate-300 ">
-        <div class="user-section p-3 absolute md:relative w-full md:w-[38vw] h-[100vh] flex-col flex ">
+        <div class="user-section p-3 absolute md:relative w-full md:w-[38vw] h-auto flex-col flex ">
             <div class="avt w-40 h-40 mb-10 mx-auto">
                 <img class="u-img w-40 h-40 rounded-[85px]" src="assets/images/user-def.png" alt="">
                 <button id="edit-avt" title="Change image" class="edit-avt bg-amber-500 h-10 w-10 p-2 flex justify-center items-center hover:shadow-md">
@@ -58,33 +58,33 @@
             </div>
             <div class="personal flex flex-col w-full">
                 <div class="info mt-1 w-full text-center">
-                    <span class="c font-bold text-center text-3xl u-name">Alain Kimbu</span>
+                    <span class="c font-bold text-center text-3xl u-name">Full Name</span>
                 </div>
                 <div class="info mt-1 text-center">
-                    <span class="c text-center text-xl u-email">alainkimbu@gmail.com</span>
+                    <span class="c text-center text-xl u-email">Email</span>
                 </div>
                 <div class="info mt-1 text-center flex flex-row w-full px-[30%] md:px-[15%]">
-                    <a class="c text-start text-xl u-phone"  aria-label="call"></a>
+                    <a class="c text-start text-xl u-phone"  aria-label="call">Phone</a>
                     <button id="d_phone" title="Edit phone" class="edit-info hover:bg-red-600  h-8 w-8 bg-slate-200 p-[0.1rem] ml-auto rounded-md flex justify-center items-center">
                         <img class=" h-8 w-8 m-5 " src="assets/icons/edit.svg" alt="">
                     </button>
                 </div>
                 <div class="info mt-1 flex flex-row w-full px-[30%] md:px-[15%]">
-                    <span class="c text-start text-lg u-dob w-full">ahaskfj</span>
+                    <span class="c text-start text-lg u-dob w-full">DoB</span>
                     <button id="u_dob" title="Change Date of Birth"
                         class="edit-info hover:bg-red-600  h-8 w-8 bg-slate-200 p-[0.1rem] ml-auto rounded-md flex justify-center items-center">
                         <img class=" h-8 w-8 m-5 " src="assets/icons/edit.svg" alt="">
                     </button>
                 </div>
                 <div class="info mt-1 flex flex-row w-full px-[30%] md:px-[15%]">
-                    <span class="c text-start text-lg u-g w-full">ahaskfj</span>
+                    <span class="c text-start text-lg u-g w-full">Gender</span>
                     <button id="u_g" title="Change gender"
                         class="edit-info hover:bg-red-600  h-8 w-8 bg-slate-200 p-[0.1rem] ml-auto rounded-md flex justify-center items-center">
                         <img class=" h-8 w-8 m-5 " src="assets/icons/edit.svg" alt="">
                     </button>
                 </div>
                 <div class="info mt-1 flex flex-row w-full px-[30%] md:px-[15%]">
-                    <span class="c text-start text-lg u-address w-full">ahaskfj</span>
+                    <span class="c text-start text-lg u-address w-full">Address</span>
                     <button id="u_address" title="Edit address"
                         class="edit-info hover:bg-red-600  h-8 w-8 bg-slate-200 p-[0.1rem] ml-auto rounded-md flex justify-center items-center">
                         <img class=" h-8 w-8 m-5 " src="assets/icons/edit.svg" alt="">
@@ -109,7 +109,7 @@
                                 <option value="Amatuer">
                                 <option value="Intermediate">
                                 <option value="Professional">
-                                <option value="Professional">
+                                <option value="GodLevel">
                             </datalist>
                         </div>
                     </div>
@@ -180,7 +180,7 @@
                 updateUser(UserId, u, Token)
                 $('.u-img').attr('src', val)
             }
-            info_edit_template('image', 'file', 0, 'image', cb, '.jpg, .png, .raw')
+            info_img_template('image', cb, '.jpg, .png, .raw')
         })
 
         $('#d_phone').click((e) => {
