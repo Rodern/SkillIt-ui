@@ -329,7 +329,9 @@ const getUser = (userId, token, callback = () => {}) => {
             getAccountDetail(userId, token)
         }
     }).done(() => {
-        loader.addClass('hidden')
+        let initCPage = location.href.substring(location.href.lastIndexOf('#') + 1)
+        if(initCPage != 'catalogs')
+            loader.addClass('hidden')
         callback()
         //loadDash();
     })

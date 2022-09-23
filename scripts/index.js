@@ -154,7 +154,7 @@ let cat_template = (catalog) => {
                 <img src="${catalog.imgBase64}" alt="" class="w-full h-40 rounded-md">
                 <h4 class="cat-name font-bold text-lg">${catalog.caption}</h4>
                 <p class="cat-desc brak-words truncate  pb-4">${catalog.description}</p>
-                <a
+                <a href="${catalog.catalogLink}" target="_blank"
                     class="view-cat text-md mt-auto text-center text-white bg-blue-600 w-24 hover:shadow-lg hover:bg-blue-700 rounded px-2 py-2" id=${catalog.catalogId}>View</a>
             </div>`
 }
