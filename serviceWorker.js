@@ -1,8 +1,8 @@
-importScripts('/assets/vendors/workbox/workbox-v6.5.4/workbox-sw.js');
+importScripts('./assets/vendors/workbox/workbox-v6.5.4/workbox-sw.js');
 //import { warmStrategyCache } from 'workbox-recipes'
 
 workbox.setConfig({
-    modulePathPrefix: '/assets/vendors/workbox/workbox-v6.5.4/',
+    modulePathPrefix: './assets/vendors/workbox/workbox-v6.5.4/',
 });
 
 const strategy = new workbox.strategies.CacheFirst();

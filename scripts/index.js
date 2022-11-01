@@ -49,7 +49,7 @@ class LoginAttemp {
 }
 
 class User {
-    constructor(userId, gender, firstname, lastname, email, password, dob, address, dateCreated, phone, imgBase64, loginInfos, loginAttemps){
+    constructor(userId, gender, firstname, lastname, email, password, dob, address, dateCreated, phone, image, loginInfos, loginAttemps){
         this.userId = userId
         this.gender = gender
         this.firstName = firstname
@@ -60,7 +60,7 @@ class User {
         this.address = address
         this.dateCreated = dateCreated
         this.phone = phone
-        this.imgBase64 = imgBase64
+        this.image = image
         this.loginInfos = loginInfos
         this.loginAttemps = loginAttemps
     }
@@ -80,17 +80,18 @@ class AccountDetail {
 }
 
 class Catalog {
-    constructor(caption, description, imgBase64, catalogLink = 'not set') {
+    constructor(caption, description, image, catalogLink = 'not set') {
+        this.catalogId = 0
         this.caption = caption
         this.description = description
-        this.imgBase64 = imgBase64
+        this.image = image
         this.catalogLink = catalogLink
     }
 }
 
 const Level = [
     'Beginner',
-    'Amatuer',
+    'Amateur',
     'Intermediate',
     'Professional',
     'GodLevel &#128516'
@@ -151,9 +152,9 @@ const loader = $('.loading-frame')
 
 let cat_template = (catalog) => {
     return `<div class="catalog flex flex-col justify-center shadow-lg rounded-lg w-60 h-auto h-max px-2" id=${catalog.catalogId}>
-                <img src="${catalog.imgBase64}" alt="" class="w-full h-40 rounded-md">
+                <img src="data:image/png;base64,${catalog.image}" alt="" class="w-full h-40 rounded-md">
                 <h4 class="cat-name font-bold text-lg">${catalog.caption}</h4>
-                <p class="cat-desc brak-words truncate  pb-4">${catalog.description}</p>
+                <p class="cat-desc brak-words truncate  pb-4" title="${catalog.description}">${catalog.description}</p>
                 <a href="${catalog.catalogLink}" target="_blank"
                     class="view-cat text-md mt-auto text-center text-white bg-blue-600 w-24 hover:shadow-lg hover:bg-blue-700 rounded px-2 py-2" id=${catalog.catalogId}>View</a>
             </div>`
@@ -161,7 +162,6 @@ let cat_template = (catalog) => {
 
 
 let socialTemplate = (socail, img) => {
-    //if()
     return `<div id="${socail.socialId}" class="social w-full flex flex-row h-9 my-1 items-center rounded-md shadow-md">
 						<img src="${img}"  alt="" class="ml-1 mr-2 s-img h-8 w-8 ">
 						<a href="${socail.link}" target="_blank" rel="noreferrer noopener" class="s-name">${socail.name}</a>
@@ -206,18 +206,24 @@ const info_edit_template = (name, type, max, placeholder, callback) => {
         $(`#save-${name}`).click(()=>{
             let val = $('.in input').val()
             if (val == '') {
-                popUpBox('error1', 'Input was empty.', 'catAlert')
+                popUpBox('fail', 'Input was empty.', 'catAlert')
                 return
             }
-            let temp_user = new User(UserId, _user.gender, _user.firstName, _user.lastName, _user.email, decodeText(getKeyValue('pass')), _user.dob, _user.address, _user.dateCreated, _user.phone, _user.imgBase64, JSON.parse(_Detail.loginInfo), JSON.parse(_Detail.loginAttemp))
-            
-            callback(val, temp_user)
+            loader.removeClass('hidden')
+            callback(val)
+            updateUser(
+                UserId,
+                new User(UserId, _user.gender, _user.firstName, _user.lastName, _user.email, decodeText(getKeyValue('pass')), _user.dob, _user.address, _user.dateCreated, _user.phone, '', JSON.parse(_Detail.loginInfo), JSON.parse(_Detail.loginAttemp)),
+                dataURLtoFile(_user.image, 'userImage'),
+                Token
+            )
+
             $('.in').remove()
         })
     })
 }
 
-const info_img_template = (name, callback, accept = '') => {
+const info_img_template = (name, accept = '') => {
     $('.in').remove()
     let t = '';
     t = `<div id="fl_edit" class="in  absolute bg-white  flex flex-row h-10 rounded-lg border shadow-2xl w-60 justify-center items-center">
@@ -236,10 +242,16 @@ const info_img_template = (name, callback, accept = '') => {
         $(`#save-${name}`).click(()=>{
             let file = $('.in input')
             if (file[0].files[0] === undefined) {
-                popUpBox('error1', 'No img selected.', 'catAlert')
+                popUpBox('fail', 'No img selected.', 'catAlert')
                 return
             }
-            toBase64(file[0].files[0], new User(UserId, _user.gender, _user.firstName, _user.lastName, _user.email, decodeText(getKeyValue('pass')), _user.dob, _user.address, _user.dateCreated, _user.phone, _user.imgBase64, JSON.parse(_Detail.loginInfo), JSON.parse(_Detail.loginAttemp)), callback)
+            loader.removeClass('hidden')
+            updateUser(
+                UserId,
+                new User(UserId, _user.gender, _user.firstName, _user.lastName, _user.email, decodeText(getKeyValue('pass')), _user.dob, _user.address, _user.dateCreated, _user.phone, '', JSON.parse(_Detail.loginInfo), JSON.parse(_Detail.loginAttemp)),
+                file[0].files[0],
+                Token
+            )
             
             $('.in').remove()
         })
@@ -432,6 +444,8 @@ const exitModal = (callback = () => {}) => {
 
 
 function modalInit() {
+    $('.org-info, .menu ul li, .about, #menu_btn, .ml-btn, .nl-btn, .bl-btn, .ms-btn, .ns-btn, .bs-btn, .bc-btn, .nc-btn, .mc-btn, .exit, .to-login, .to-signup, .forgot, .mlg-btn, .nlg-btn, .ds-btn, .m-usr, .n-usr').unbind('click')
+    //$('.pg-section *').unbind('click')
     $('.org-info').click((e)=>{
         _ROUTER.navigate('/home')
     })
@@ -503,6 +517,5 @@ function modalInit() {
     $('.ds-btn, .m-usr, .n-usr').click(()=>{
         _ROUTER.navigate('/dashboard')
     })
-    
 }
 

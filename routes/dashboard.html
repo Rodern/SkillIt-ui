@@ -106,7 +106,7 @@
                             <input class="w-full side-in px-2 py-1" type="url" name="link" id="nskp" placeholder="Level" list="level_list">
                             <datalist id="level_list">
                                 <option value="Beginner">
-                                <option value="Amatuer">
+                                <option value="Amateur">
                                 <option value="Intermediate">
                                 <option value="Professional">
                                 <option value="GodLevel">
@@ -175,46 +175,33 @@
         })
 
         $('#edit-avt').click((e)=>{
-            function cb(val, u) {
-                u.imgBase64 = val;
-                updateUser(UserId, u, Token)
-                $('.u-img').attr('src', val)
-            }
-            info_img_template('image', cb, '.jpg, .png, .raw')
+            info_img_template('image', '.jpg, .png, .raw')
         })
 
         $('#d_phone').click((e) => {
-            function cb(val, u) {
-                u.phone = val;
-                updateUser(UserId, u, Token)
-                $('.u-phone').text(val)
+            function cb(val) {
+                _user.phone = val
             }
             info_edit_template('phone', 'tel', 9, 'Enter phone number', cb)
         })
 
         $('#u_dob').click((e) => {
-            function cb(val, u) {
-                u.dob = val;
-                updateUser(UserId, u, Token)
-                $('.u-dob').text(val)
+            function cb(val) {
+                _user.dob = val
             }
             info_edit_template('dob', 'date', 100, 'Date', cb)
         })
 
         $('#u_g').click((e) => {
-            function cb(val, u) {
-                u.gender = val
-                updateUser(UserId, u, Token)
-                $('.u-g').text(val)
+            function cb(val) {
+                _user.gender = val
             }
             info_edit_template('g', 'text', 1, 'M or F', cb)
         })
 
         $('#u_address').click((e) => {
-            function cb(val, u) {
-                u.address = val;
-                updateUser(UserId, u, Token)
-                $('.u-address').text(val)
+            function cb(val) {
+                _user.address = val
             }
             info_edit_template('add', 'text', 100, 'Address', cb)
         })

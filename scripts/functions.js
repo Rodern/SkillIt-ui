@@ -27,9 +27,10 @@ function popUpBox(boxType, boxMsg, OKCN, cancelCN = "CN_Class", CallBack = funct
     } else if (boxType == "error") {
         $('.typeImg').attr('src', 'assets/icons/error.png');
         $('.typeName').text("Error!");
-    } else if (boxType == "error1") {
+    } else if (boxType == "fail") {
         $('.typeImg').attr('src', 'assets/icons/error.png');
         $('.typeName').text("Failed!");
+        $('.alertBody').text(boxMsg);
     }
     $('.alertCover').attr('tabindex', -1).focus(function () {
         //console.log('hit');
@@ -94,6 +95,69 @@ const encodeText = (text) => {
 const decodeText = (text) => {
     let decoder = new TextDecoder()
     return decoder.decode(Uint8Array.from(text.split(",")));
+}
+
+function blobToBase64Ansync(blob) {
+  return new Promise((resolve, _) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.readAsDataURL(blob);
+  });
+}
+
+function base64ToBlob(base64, mime) 
+{
+    mime = mime || '';
+    var sliceSize = 1024;
+    var byteChars = window.atob(base64.substring(base64.lastIndexOf(',')+1));
+    var byteArrays = [];
+    for (var offset = 0, len = byteChars.length; offset < len; offset += sliceSize) {
+        var slice = byteChars.slice(offset, offset + sliceSize);
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+        var byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+    }
+    return new Blob(byteArrays, {type: mime});
+}
+
+function imageToBase64Async(img) {
+    return new Promise((resolve, _) => {
+        let reader = new FileReader()
+        reader.onload = function () {
+            resolve(reader.result)
+        }
+        reader.error = function (error) {
+            console.log('Error: ', error)
+            popUpBox('error', error)
+        }
+        reader.readAsDataURL(img)
+    })
+}
+
+function blobToStringAsync(blob){
+    return new Promise((resolve, _) => {
+        let reader = new FileReader()
+        let decoder = new TextDecoder()
+        reader.onload = () => {
+            resolve(decoder.decode(reader.result))
+        }
+        reader.readAsArrayBuffer(blob)
+    })
+}
+
+function dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(',')
+        var bstr = atob(arr[0]), 
+        n = bstr.length, 
+        u8arr = new Uint8Array(n);
+        
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, {type:'image/png'});
 }
 
 const getIP = () => {
@@ -206,7 +270,7 @@ function initiateUser(callback = () => {}) {
             })
         } catch (error) {
             console.info(`Error parsing token and userId: ${error}`)
-            popUpBox('error1', `Error parsing token and userId:: ${error} `, 'catAlert')
+            popUpBox('fail', `Error parsing token and userId:: ${error} `, 'catAlert')
         }
     }
 }
@@ -264,13 +328,18 @@ const AuthenticateUser = (userCredential, callback = () => {}) => {
 }
 
 const addUser = (user, callback = () => {}) => {
+    let formData = new FormData()
+    formData.append('image', image)
     $.ajax({
-        type: 'post',
-        url: `${BaseURL}api/User/AddUser`,
-        data: JSON.stringify(user),
-        dataType: "json",
-        contentType: "application/json",
-        error: function(error) {console.log(error.responseText)},
+        type: 'put',
+        url: `${BaseURL}api/User/AddUser?userJson=${JSON.stringify(user)}`,
+        data: formData,
+        contentType: false,
+        processData: false,
+        error: function(error) {
+            console.log(error.responseText)
+            popUpBox('error', `Failed: ${error.responseText}`)
+        },
         success: (responseModel) => {
             if (responseModel.success == true) {
                 console.log(responseModel)
@@ -282,21 +351,30 @@ const addUser = (user, callback = () => {}) => {
     })
 }
 
-const updateUser = (userId, user, token) => {
+const updateUser = (userId, user, image, token) => {
+    let formData = new FormData()
+    formData.append('image', image)
+    user.image = ''
     $.ajax({
         type: 'put',
-        url: `${BaseURL}api/User/UpdateUser/${userId}`,
-        data: JSON.stringify(user),
-        dataType: "json",
-        contentType: "application/json",
+        url: `${BaseURL}api/User/UpdateUser?userJson=${JSON.stringify(user)}`,
+        data: formData,
+        contentType: false,
+        processData: false,
         beforeSend: (xhr) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
-        error: function(error) {console.log(error.responseText)},
+        error: function(error) {
+            console.log(error.responseText)
+            popUpBox('error', `Failed: ${error.responseText}`)
+        },
         success: (responseModel) => {
             if (responseModel.success == true) {
-                getUser(UserId, Token)
-                popUpBox('notify', `Message: Change successful`, 'catAlert')
+                getUser(UserId, Token, ()=>{
+                    loadDash()
+                })
+                loader.addClass('hidden')
+                popUpBox('notify', `Message: Change was successful`, 'catAlert')
                 return
             }
             popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
@@ -345,8 +423,8 @@ function loadDash() {
     $('.u-dob').text(_user.dob === Date ? _user.dob.toDateString() : _user.dob)
     $('.u-g').text(_user.gender)
     $('.u-address').text(_user.address)
-    if (_user.imgBase64 != "" || _user.imgBase64 != "")
-        $('.u-img').attr('src', _user.imgBase64)
+    if (_user.image.length != 0)
+        $('.u-img').attr('src', 'data:image/png;base64,'+_user.image)
     getUserSkill(UserId, Token)
     getUserSocial(UserId, Token)
 }
@@ -391,9 +469,6 @@ const getCatalog = (catalogId, token) => {
     $.ajax({
         type: 'post',
         url: `${BaseURL}api/Catalog/GetCatalog?id=${catalogId}`,
-        beforeSend: (xhr) => {
-            xhr.setRequestHeader('Authorization', `Bearer ${token}`)
-        },
         success: (cat) => {
             catalog = cat
             console.log(cat)
@@ -401,38 +476,49 @@ const getCatalog = (catalogId, token) => {
     })
 }
 
-const addCatalog = (catalog, token) => {
+const addCatalog = (catalog, image, token = '') => {
+    let formData = new FormData()
+    formData.append('image', image);
     $.ajax({
         type: 'post',
-        url: `${BaseURL}api/Catalog/AddCatalog`,
-        data: JSON.stringify(catalog),
-        dataType: "json",
-        contentType: "application/json",
+        url: `${BaseURL}api/Catalog/AddCatalog?catalogJson=${JSON.stringify(catalog)}`,
+        data: formData,
+        /* dataType: "json",
+        contentType: "application/json", */
+        contentType: false, //'multipart/form-data',
+        processData: false,
         beforeSend: (xhr) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
         error: function(error) {
-            console.log(error)
+            console.log(error.responseText)
+            popUpBox('notify', `Failed: ${error.responseText} `, 'catAlert')
+            loader.addClass('hidden')
         },
         success: (responseModel) => {
             if (responseModel.success == true) {
                 getCatalogs(Token)
                 loadCatalog()
                 console.log(responseModel.message)
+                popUpBox('done', 'Success: Catalog successfully added.')
                 return
             }
+            loader.addClass('hidden')
             popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
         }
     })
 }
 
-const updateCatalog = (catalogId, catalog, token) => {
+const updateCatalog = (catalog, image, token) => {
+    let formData = new FormData()
+    formData.append('image', image);
+    catalog.image = ''
     $.ajax({
         type: 'put',
-        url: `${BaseURL}api/Catalog/UpdateCatalog/${catalogId}`,
-        data: JSON.stringify(catalog),
-        dataType: 'json',
-        contentType: 'application/json',
+        url: `${BaseURL}api/Catalog/UpdateCatalog?catalogJson=${JSON.stringify(catalog)}`,
+        data: formData,
+        contentType: false,
+        processData: false,
         beforeSend: (xhr) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
@@ -441,6 +527,7 @@ const updateCatalog = (catalogId, catalog, token) => {
                 getCatalogs(Token)
                 loadCatalog()
                 console.log(responseModel.message)
+                popUpBox('done', 'Success: Catalog successfully updated.')
                 return
             }
             popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')

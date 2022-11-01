@@ -110,7 +110,7 @@
             <div class="list-header mb-12 w-full">
                 <h1 class="font-bold text-2xl text-center">All catalogs</h1>
             </div>
-            <div class="cat-list flex flex-row flex-wrap gap-14 justify-center md:justify-between overflow-y-auto h-[800px] p-3">
+            <div class="cat-list flex flex-row flex-wrap gap-14 justify-center md:justify-between overflow-y-auto h-auto p-3">
                 <div class="catalog flex flex-col justify-center shadow-lg rounded-lg w-60 h-auto h-max px-2 mx-4">
                     <div class="img w-full h-40 rounded-md" ></div>
                     <h4 class="cat-name font-bold text-lg">Learn .NET today</h4>
@@ -146,25 +146,26 @@
             chAuth()
             modalInit()
             //loader.addClass('hidden')
-
             let c_img = $('#catImg')
-            $(c_img).on('change', () => {
-                if (c_img[0].files[0] === undefined) return
-                toBase64(c_img[0].files[0])
+            let image = null
+            let selected = null
+            $(c_img).on('change', async () => {
+                selected = c_img[0].files
+                if (selected === undefined || selected.length == 0) return
+                image = new Array(selected[0])
             })
             $('.save-cat-btn').click(function () {
                 loader.removeClass('hidden')
-                catalog = new Catalog($('#catCaption').val(), $('#catDesc').val(), g_img, $('#catLink').val())
+                catalog = new Catalog($('#catCaption').val(), $('#catDesc').val(), '', $('#catLink').val())
                 if ((catalog.caption == null || catalog.caption == "") || (catalog.description == null || catalog.description == "") || c_img[0].files[0] === undefined) {
                     popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
                     loader.addClass('hidden')
                     return
                 }
-                console.log(catalog)
-                addCatalog(catalog, Token)
+                addCatalog(catalog, image[0], Token)
                 catalog = new Catalog();
-                g_img = ''
                 $('input').val('')
+                $('textarea').val('')
             })
             if (_Detail.accountType == 'admin') {
                 $('.add-catalog-form').removeClass('hidden')
