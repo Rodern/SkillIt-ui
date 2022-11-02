@@ -32,10 +32,23 @@
     <nav
         class="menu hidden absolute ml-auto top-12 right-3 h-auto w-40 rounded-md shadow-2xl text-white text-md p-3 backdrop-blur-sm backdrop-opacity-25 ">
         <ul class="menu-items">
-            <li
-                class="menu-items m-usr flex flex-row justify-between items-center pr-2 hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+            <li class="menu-items m-usr avt-state flex flex-col 
+                                justify-between items-center pr-2 
+                                hover:border-b border-slate-200 my-1 
+                                mb-10 py-1 pl-2 rounded hover:text-white 
+                                text-lg hover:shadow hover:bg-blue-600 
+                                backdrop-blur-sm shadow" style="border: none;">
+                <img src="../assets/images/user-def.png" class="u-img h-[20vh] w-[20vh] mb-3" alt="">
                 <span class="nav-un">AlainKimbu</span>
-                <img src="assets/icons/user.png" class="w-5 h-5" alt="">
+            </li>
+            <li class="menu-items p-avt avt-state flex flex-col 
+                                justify-between items-center pr-2 
+                                hover:border-b border-slate-200 my-1 
+                                mb-10 py-1 pl-2 rounded hover:text-white 
+                                text-lg hover:shadow hover:bg-blue-600 
+                                backdrop-blur-sm shadow" style="border: none;">
+                <img src="../assets/images/user-def.png" class="u-img h-[20vh] w-[20vh] mb-3" alt="">
+                <i class="nav-un " style="font-size:1rem;font-weight: 400;">Not Signed In</i>
             </li>
             <li
                 class="menu-items mc-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-blue-600 backdrop-blur-sm">
@@ -58,7 +71,7 @@
     <script>
         $('.loading-frame').removeClass('hidden')
     </script>
-    <div class="cats-body flex flex-col-reverse md:flex-row text-slate-700 bg-white p-6 md:p-2">
+    <div class="cats-body flex flex-col-reverse md:flex-row text-slate-700 bg-white min-h-[93vh] p-6 md:p-2">
         <div class="add-catalog-form hidden flex flex-col min-w-[auto] md:min-w-[38vh] justify-center items-center h-auto md:h-full mt-24 md:mt-auto md:mb-auto">
             <h1 class="font-bold text-2xl mb-10 text-center">Add new catalog</h1>
             <div class="cat-form roun12ded-lg shadow-lg px-4 py-5">
@@ -140,11 +153,11 @@
                 console.log(error)
             }
         }
-        modalInit()
+        setEventHandlers()
         getCatalogs(Token, gt)
         setTimeout(() => {
             chAuth()
-            modalInit()
+            setEventHandlers()
             //loader.addClass('hidden')
             let c_img = $('#catImg')
             let image = null

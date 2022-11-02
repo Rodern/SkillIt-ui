@@ -1,11 +1,11 @@
 <div class="landing-page page flex flex-col text-white cursor-default">
-    <header class="landing-header flex flex-row shadow items-center px-3 h-12">
+    <header class="landing-header w-[100vw] flex flex-row shadow items-center px-3 h-12">
         <a class="org-info flex flex-row items-center gap-2">
             <img src="assets/icons/skill_it 32x32.png" alt="">
             <h4 class="org-name ml-2 font-bold text-lg">SkillIT</h4>
         </a>
         <button id="menu_btn"
-            class="flex md:hidden flex-row hover:bg-rose-500 hover:shadow-md focus:shadow-lg focus:bg-rose-600 rounded px-1 py-1 ml-auto gap-1 border border-slate-200 focus:border-1 focus:bg-rose-600 hover:border-transparent"
+            class="flex md:hidden flex-row hover:bg-rose-500 hover:bg-blue-700 hover:shadow-md focus:shadow-lg focus:bg-rose-600 focus:bg-blue-800 rounded px-1 py-1 ml-auto gap-1 border border-slate-200 focus:border-1 focus:bg-rose-600 hover:border-transparent"
             id="l-menu-btn">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-6 h-6">
@@ -30,27 +30,44 @@
         </nav>
     </header>
     <nav
-        class="menu hidden absolute ml-auto top-12 right-3 h-auto w-40 rounded-md shadow-2xl text-white text-md p-3 backdrop-blur-sm backdrop-opacity-25 ">
+        class="menu hidden absolute ml-auto shadow-2xl text-slate-900 text-md p-3 backdrop-blur-sm backdrop-opacity-25 bg-white ">
         <ul class="menu-items">
             <li
-                class="menu-items m-usr flex flex-row justify-between items-center pr-2 hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                class="menu-items m-usr avt-state flex flex-col 
+                    justify-between items-center pr-2 
+                    hover:border-b border-slate-200 my-1 
+                    mb-10 py-1 pl-2 rounded hover:text-white 
+                    text-lg hover:shadow hover:bg-blue-600 
+                    backdrop-blur-sm shadow"
+                style="border: none;">
+                <img src="../assets/images/user-def.png" class="u-img h-[20vh] w-[20vh] mb-3" alt="">
                 <span class="nav-un">AlainKimbu</span>
-                <img src="assets/icons/user.png" class="w-5 h-5" alt="">
             </li>
             <li
-                class="menu-items mc-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                class="menu-items p-avt avt-state flex flex-col 
+                    justify-between items-center pr-2 
+                    hover:border-b border-slate-200 my-1 
+                    mb-10 py-1 pl-2 rounded hover:text-white 
+                    text-lg hover:shadow hover:bg-blue-600 
+                    backdrop-blur-sm shadow"
+                style="border: none;">
+                <img src="../assets/images/user-def.png" class="u-img h-[20vh] w-[20vh] mb-3" alt="">
+                <i class="nav-un " style="font-size:1rem;font-weight: 400;">Not Signed In</i>
+            </li>
+            <li
+                class="menu-items mc-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
                 Catalogs
             </li>
             <li
-                class="menu-items ms-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                class="menu-items ms-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
                 Sign Up
             </li>
             <li
-                class="menu-items ml-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                class="menu-items ml-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
                 Sign In
             </li>
             <li
-                class="menu-items about hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                class="menu-items about hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
                 <a>About</a>
             </li>
         </ul>
@@ -187,7 +204,7 @@
     if (_Detail.userId === undefined || _user.userId === undefined) initiateUser()
     setTimeout(() => {
         chAuth()
-        modalInit()
+        setEventHandlers()
         loader.addClass('hidden')
     }, 2000);
 </script>

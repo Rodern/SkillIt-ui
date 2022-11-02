@@ -14,12 +14,6 @@ class Authenticate {
         this.rememberMe = rememberMe;
         this.code = code
     }
-    authString = (val) => {
-        return JSON.stringify(val)
-    }
-    authJson = (val) => {
-        return JSON.parse(val)
-    }
 }
 
 class ResponseModel {
@@ -135,18 +129,6 @@ class UserSocial {
     }
 }
 
-function toBase64(imglink, u = '', callback = () => {}) {
-    var imgSRC = new FileReader();
-    imgSRC.readAsDataURL(imglink)//($('.' + tclass + ' > #imageSelect')[0].files[0]);
-
-    imgSRC.onload = function () {
-        g_img = imgSRC.result;
-        callback(imgSRC.result, u)
-    }
-    imgSRC.error = function (error) {
-        console.log('Error: ', error);
-    }
-}
 
 const loader = $('.loading-frame')
 
@@ -258,6 +240,8 @@ const info_img_template = (name, accept = '') => {
     })
 }
 
+let isMenuOpen = false
+
 $(document).click((e)=>{
     if (e.target.id == 'fl_edit' || e.target.closest('#fl_edit') != null || e.target.id == 'edit-info' || e.target.closest('.edit-info') != null) return
     $('#fl_edit').remove()
@@ -271,7 +255,7 @@ const loadLandingPage = () => {
     $('.page, .modal').remove();
 
     $('.pg-section').load('routes/landing.html').ready(() => {
-        modalInit()
+        setEventHandlers()
     })
 }
 
@@ -285,7 +269,7 @@ const loadDashbaord = () => {
     }
     function cb(){
         $('.pg-section').load('routes/dashboard.html').ready(() => {
-            modalInit()
+            setEventHandlers()
         })
     }
     if (_Detail.userId !== undefined || _user.userId !== undefined){
@@ -293,7 +277,6 @@ const loadDashbaord = () => {
         return
     }
     initiateUser(cb)
-    
 }
 
 const loadCatalog = () => {
@@ -301,7 +284,7 @@ const loadCatalog = () => {
     loader.removeClass('hidden')
     $('.page, .modal').remove()
     $('.pg-section').load('routes/catalogs.html').ready(() => {
-        modalInit()
+        setEventHandlers()
     })
 }
 
@@ -310,7 +293,7 @@ const loadSignup = () => {
     loader.removeClass('hidden')
     $('.modal').remove()
     $('.floating-content-1').load('routes/signup.html').ready(() => {
-        modalInit()
+        setEventHandlers()
     })
 }
 
@@ -323,7 +306,7 @@ let loadSignin = () => {
     loader.removeClass('hidden')
     $('.modal').remove()
     $('.floating-content-1').load('routes/login.html').ready(() => {
-        modalInit()
+        setEventHandlers()
     })
 }
 
@@ -331,17 +314,11 @@ const loadReset = () => {
     loader.removeClass('hidden')
     $('.modal').remove()
     $('.floating-content-2').load('routes/reset.html').ready(() => {
-        modalInit()
+        setEventHandlers()
     })
 }
 
 const loadAbout = () => {
-    if ('about' == location.href.substring(location.href.lastIndexOf('#') + 1)){
-        setTimeout(() => {
-            location.href = location.origin+"#about"
-        }, 500)
-        return
-    }
     if ('home' == location.href.substring(location.href.lastIndexOf('#') + 1)){
         setTimeout(() => {
             location.href = location.origin + "#about"
@@ -393,7 +370,7 @@ const loadSkills = () => {
 }
 
 const initPage = () => {
-    let page = location.href.substring(location.href.lastIndexOf('#') + 1)
+    /* let page = location.href.substring(location.href.lastIndexOf('#') + 1)
     if((page.substring(location.href.lastIndexOf('#') + 1).substring(0, page.substring(location.href.lastIndexOf('#') + 1).lastIndexOf('/')) == location.origin || page == 'home')){
         _ROUTER.navigate('/home')
     }
@@ -408,12 +385,71 @@ const initPage = () => {
     }
     if(page == 'dashboard'){
         _ROUTER.navigate('/dashboard')
-    }
-    modalInit()
+    } */
+    routeToPath(getRouteName());
+    setEventHandlers()
     chAuth()
 }
 
-const list1 = ".ms-btn, .ns-btn, .bs-btn, .ml-btn, .nl-btn, .bl-btn, .for-o"
+
+let getRouteName = (url = location.href) => {
+    return location.href.substring(url.lastIndexOf('#') + 1)
+}
+
+let IsLoggedIn = (callback) => {
+    let IsLoggedIn = getKeyValue(IsLoggedInKeyName);
+    if (IsLoggedIn != 'true') {
+        _ROUTER.navigate('/welcome')
+        return
+    }
+    callback()
+}
+
+const routeToPath = (name) => {
+    /* if (name == 'welcome' && GetKeyValue(IsLoggedInKeyName) == 'true'){
+        history.back()
+        return
+    }
+    IsLoggedIn(() => {
+    }) */
+    _ROUTER.navigate(`/${name}`)
+}
+const pageRoute = (event) => {
+    event = event || window.event
+    event.preventDefault()
+    console.count('RouteCount')
+    routeToPath(getRouteName())
+}
+
+
+window.onload = (e) => {
+    e.preventDefault()
+    let page = location.href.substring(location.href.lastIndexOf('#') + 1)
+    if((page.substring(location.href.lastIndexOf('#') + 1).substring(0, page.substring(location.href.lastIndexOf('#') + 1).lastIndexOf('/')) == location.origin || page == 'home' || page == '')){
+        _ROUTER.navigate('/home')
+        return
+    }
+    initPage();
+}
+
+window.pageRoute = pageRoute
+
+window.onpopstate = ()=>{
+    //routeToPath(getRouteName())
+}
+
+window.onhashchange = (e) => {
+    e.preventDefault()
+    _RouteChanged = true
+    routeToPath(getRouteName(e.newURL))
+}
+
+window.onpageshow = function name(params) {
+    //alert("params")
+}
+
+
+const list1 = ".ms-btn, .ns-btn, .bs-btn, .ml-btn, .nl-btn, .bl-btn, .for-o, .p-avt"
 const list2 = ".m-usr, .n-usr, .for-l"
 function chAuth(){
     if (_Detail.userId === undefined || _user.userId === undefined) {
@@ -424,6 +460,8 @@ function chAuth(){
     else {
         //console.log(false)
         $(' .m-usr > span, .n-usr > span').text(_user.firstName + " " + _user.lastName);
+        if (_user.image.length != 0)
+            $('.u-img').attr('src', 'data:image/png;base64,'+_user.image)
         $("" + list1 + "").hide()
         $("" + list2 + "").show()
     }
@@ -442,8 +480,7 @@ const exitModal = (callback = () => {}) => {
     callback();
 }
 
-
-function modalInit() {
+function setEventHandlers() {
     $('.org-info, .menu ul li, .about, #menu_btn, .ml-btn, .nl-btn, .bl-btn, .ms-btn, .ns-btn, .bs-btn, .bc-btn, .nc-btn, .mc-btn, .exit, .to-login, .to-signup, .forgot, .mlg-btn, .nlg-btn, .ds-btn, .m-usr, .n-usr').unbind('click')
     //$('.pg-section *').unbind('click')
     $('.org-info').click((e)=>{
@@ -455,10 +492,16 @@ function modalInit() {
     $('.about').click((e)=>{
         loadAbout()
     })
+    
     $('#menu_btn').click(() => {
-        $('.menu').fadeIn(200)
+        $('.menu').fadeToggle(200)
     })
-    $('.ml-btn, .nl-btn, .bl-btn').click((e) => {
+    $('nav.menu').css({
+        'top': getComputedStyle(document.querySelector('header')).height,
+        height: innerHeight - parseInt(getComputedStyle(document.querySelector('header')).height.replace('px', '')) + 'px'
+    })
+
+    $('.ml-btn, .nl-btn, .bl-btn, .p-avt').click((e) => {
         e.preventDefault()
         loadSignin()
     })
@@ -507,7 +550,6 @@ function modalInit() {
     $('.forgot').click(()=>{
         loadReset()
     })
-
 
     $('.mlg-btn, .nlg-btn').click((e)=>{
         logout()

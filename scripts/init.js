@@ -66,12 +66,6 @@ window.addEventListener("DOMContentLoaded", () => {
 	}
 })
 
-/* setTimeout(()=>{
-	let initCPage = location.href.substring(location.href.lastIndexOf('#') + 1)
-	if (initCPage != 'dashboard') {
-		
-	}
-}, 2000) */
 
 if(KeyExists("ip_address")){
 	try {
@@ -84,5 +78,7 @@ if(KeyExists("ip_address")){
 getIP();
 
 
-initPage()
-modalInit()
+
+
+//initPage()
+setEventHandlers()

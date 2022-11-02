@@ -27,6 +27,7 @@ function popUpBox(boxType, boxMsg, OKCN, cancelCN = "CN_Class", CallBack = funct
     } else if (boxType == "error") {
         $('.typeImg').attr('src', 'assets/icons/error.png');
         $('.typeName').text("Error!");
+        $('.alertBody').text(boxMsg);
     } else if (boxType == "fail") {
         $('.typeImg').attr('src', 'assets/icons/error.png');
         $('.typeName').text("Failed!");
@@ -459,7 +460,7 @@ const getCatalogs = (token, callback = () => {}) => {
         }
     }).done(()=>{
         callback(cat_template)
-        modalInit()
+        setEventHandlers()
         chAuth()
         loader.addClass('hidden')
     })
@@ -567,7 +568,7 @@ const getUserSkill = (userId, token) => {
             $(e.target.closest('.skill')).remove()
         })
 
-        modalInit()
+        setEventHandlers()
         //loader.addClass('hidden')
     })
 }
