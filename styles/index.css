@@ -10,6 +10,7 @@
 
 *::-webkit-scrollbar {
     width: 3px;
+    height: 3px;
 }
 
 *::-webkit-scrollbar {
@@ -26,9 +27,11 @@
 }
 
 html, body {
+    transition: all .12s ease-in;
     width: 100%;
     min-width: 100%;
     max-width: 100%;
+    overflow-x: hidden;
 }
 
 body {
@@ -36,9 +39,6 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-}
-
-div.landing-header {
 }
 
 header {
@@ -53,16 +53,21 @@ header {
 }
 
 button#menu_btn {
+    transition: all .12s ease-in;
     color: black;
+    font-weight: 500;
 }
 button#menu_btn:hover {
+    transition: all .12s ease-in;
     color: white;
     stroke: white;
 }
 button#menu_btn >svg {
+    transition: all .12s ease-in;
     stroke: black;
 }
 button#menu_btn:hover > svg {
+    transition: all .12s ease-in;
     stroke: white;
 }
 
@@ -75,15 +80,11 @@ nav.menu {
     top: 50px;
     position: fixed;
     right: 0px;
-    width: 50vw;
+    width: 20vw;
+    width: calc(100% - 80vw);
+    width: 250px;
     height: 100%;
     z-index: 9;
-}
-
-@media screen and (max-width: 450px) {
-    nav.menu {
-        width: 70vw;
-    }
 }
 
 @media screen and (max-width: 350px) {
@@ -92,15 +93,51 @@ nav.menu {
     }
 }
 
-nav.menu ul > li {
-    color: rgb(15 23 42);
+nav > .nav-links, nav > .nav-links > svg {
     font-weight: 500;
-    border-bottom: 1px solid slategray;
+    color: rgb(15 23 42);
+    stroke: rgb(15 23 42);
+}
+nav > .nav-links:hover {
+    transition: all .12s ease-in;
+    color: white;
+}
+nav > .nav-links:hover > svg {
+    transition: all .12s ease-in;
+    stroke: white;
+}
+nav>.nav-links.nlgbtn, .menu-items.mlg-btn {
+    transition: all .12s ease-in;
+    color: red;
+}
+nav > .nav-links:hover {
+    transition: all .12s ease-in;
+    color: white;
+}
+
+nav.menu ul > li {
+    transition: all .12s ease-in;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(112, 128, 144, 0.315);
+}
+
+.nav-links.n-usr {
+    align-items: center;
 }
 
 nav.menu ul > li:hover {
+    transition: all .12s ease-in;
     color: white;
+    border-bottom: 1px solid slategray;
 }
+
+/* header.landing-header {
+    background-color: rgba(0, 0, 0, 0.555);
+}
+header.landing-header *, header.landing-header > button#menu_btn>svg, header.landing-header > button#menu_btn {
+    color: whitesmoke;
+    stroke: whitesmoke;
+} */
 
 div.flc {
     z-index: 12;
@@ -138,6 +175,22 @@ div.landing-info {
     backdrop-filter: blur(50px);
 }
 
+div.landing-about > div.about-card {
+    justify-content: space-around;
+}
+
+div.landing-info._contact a {
+    transition: all .12s ease-in;
+    padding-inline: 2px;
+    width: 230px;
+}
+
+div.landing-info._contact a:hover {
+    transition: all .12s ease-in;
+    background-color: rgba(33, 179, 241, 0.514);
+    border-radius: 3px;
+}
+
 div.landing-footer {
     -webkit-backdrop-filter: blur(100px);
     backdrop-filter: blur(100px);
@@ -147,12 +200,13 @@ div.slide-wrapper {
     max-width: 80vw;
     padding-inline: 20px;
     overflow-x: auto;
-    height: fit-content;
-    min-height: max-content;
+    height: auto;
+    display: inline-flex;
 }
 
 div.slide-card {
     min-width: 200px;
+    display: inline-block;
 }
 
 div.input-wrapper {

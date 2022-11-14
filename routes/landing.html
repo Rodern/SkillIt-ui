@@ -7,8 +7,8 @@
         <nav class="header-nav hidden md:flex ml-auto gap-5 flex-row text-slate-200">
             <a
                 class="nav-links n-usr flex flex-row justify-between hover:bg-blue-700 hover:shadow-md focus:bg-blue-800 rounded w-auto px-3 py-1 border border-slate-200 hover:border-transparent ">
-                <span class="nav-un">AlainKimbu</span>
-                <img src="assets/icons/user.png" class="w-5 h-5 ml-5" alt="">
+                <span class="nav-un">Dashboard</span>
+                <!-- <img src="assets/icons/user.png" class="w-5 h-5 ml-5" alt=""> -->
             </a>
             <a
                 class="nav-links nl-btn hover:bg-rose-500 hover:shadow-md focus:bg-rose-600 rounded px-3 py-1 border border-slate-200 hover:border-transparent">Sign
@@ -16,10 +16,10 @@
             <a
                 class="nav-links ns-btn hover:bg-blue-500 hover:shadow-md focus:bg-blue-600 rounded px-3 py-1 border border-slate-200 hover:border-transparent ">Sign
                 Up</a>
-            <a class="nav-links about hover:shadow-md hover:bg-amber-500 focus:bg-amber-600 rounded px-3 py-1 border border-slate-200 hover:border-transparent ">About</a>
+            <a href="#about" class="nav-links _about hover:shadow-md hover:bg-amber-500 focus:bg-amber-600 rounded px-3 py-1 border border-slate-200 hover:border-transparent ">About</a>
         </nav>
         <button id="menu_btn"
-            class="flex  flex-row hover:bg-rose-500 hover:bg-blue-700 hover:shadow-md focus:shadow-lg focus:bg-rose-600 focus:bg-blue-800 rounded px-1 py-1 ml-5 gap-1 border border-slate-200 focus:border-1 focus:bg-rose-600 hover:border-transparent"
+            class="flex  flex-row hover:bg-blue-700 hover:shadow-md focus:shadow-lg rounded px-1 py-1 ml-5 gap-1 border border-slate-200 focus:border-1 hover:border-transparent focus:outline-blue-800"
             id="l-menu-btn">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="w-6 h-6">
                 <path fill="black" stroke-linecap="round" stroke-linejoin="round"
@@ -70,12 +70,16 @@
                 Sign In
             </li>
             <li
-                class="menu-items about hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
-                <a>About</a>
+                class="menu-items _about hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                <a href="#about" style="width: -webkit-fill-available; display: block;">About</a>
             </li>
             <li
                 class="menu-items about hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
                 <a>Feedback</a>
+            </li>
+            <li
+                class="menu-items mlg-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-red-700 backdrop-blur-sm">
+                Logout
             </li>
         </ul>
     </nav>
@@ -98,7 +102,7 @@
     </div>
     <div class="py-5 landing-content flex flex-col justify-center items-center h-[100vh] w-full bg-white text-slate-700">
         <h1 class="font-bold text-2xl md:text-4xl sm:text-3xl mb-4 md:mb-5">What do we do?</h1>
-        <div class="slide-wrapper pb-4 py-0 gap-10 rounded-md flex flex-row text-center items-center">
+        <div class="slide-wrapper py-0 gap-10 rounded-md text-center items-center">
             <div
                 class="slide-card w-64 min-h-[320px] shadow-lg rounded-md flex flex-col text-center justify-center items-center py-4 px-4">
                 <img class=" rounded mb-auto" src="assets/images/ignite-100859919-large.jpg" alt="">
@@ -141,7 +145,7 @@
                     for the tech world</p>
             </div>
         </div>
-        <div class="flex for-o flex-col text-center mt-10">
+        <div class="flex for-o flex-col text-center mt-5">
             <h1 class="font-bold text-2xl md:text-4xl sm:text-3xl">Get started and be part</h1>
             <p class="m-5 text-lg md:text-md">Login for there is more for you or join us here by signig up and start skilling the IT world
             </p>
@@ -155,7 +159,7 @@
             </div>
         </div>
         <div class="flex for-l flex-col text-center">
-            <h1 class="font-bold text-4xl md:text-5xl sm:text-4xl mt-20">Continue where you left</h1>
+            <h1 class="font-bold text-4xl md:text-5xl sm:text-4xl mt-10">Continue where you left</h1>
             <p class="m-5 text-lg md:text-md">There is more for you. Jump back right in and continue skilling the IT world
             </p>
             <div class="flex flex-wrap gap-5 justify-center">
@@ -166,7 +170,7 @@
     </div>
     <div class="landing-about flex flex-col justify-center items-center" id="about">
         <div
-            class="flex flex-wrap gap-10 w-auto mx-0 sm:mx-auto sm:w-full p-6 justify-center sm:justify-between my-auto">
+            class="about-card flex flex-wrap gap-10 w-auto mx-0 sm:mx-auto sm:w-full p-6 space-between justify-center md:justify-between my-auto">
             <div class="landing-info w-80 md:w-96 h-9/12 rounded shadow-lg items-start p-4">
                 <h1 class="font-bold text-2xl text-sky-400 mb-2">About Us</h1>
                 <p>
@@ -181,19 +185,19 @@
                     system.
                 </p>
             </div>
-            <div class="landing-info w-80 md:w-96 h-9/12 rounded shadow-lg items-start p-4">
+            <div class="landing-info _contact w-80 md:w-96 h-9/12 rounded shadow-lg items-start p-4">
                 <h1 class="font-bold text-xl text-sky-400 mb-2">Contact Us</h1>
-                <a class="ml-5 flex flex-row gap-2 w-full">
+                <a class="ml-5 flex flex-row gap-2 w-full" href="mailto:it.skill4all@gmail.com" target="_blank" rel="noopener">
                     <img class="w-5 h-5" src="assets/icons/gmail.png" alt="">
                     &nbsp;
                     it.skill4all@gmail.com
                 </a>
-                <a class="ml-5 flex flex-row gap-2 w-full">
+                <a class="ml-5 flex flex-row gap-2 w-full" href="https://twitter.com/skill_IT4All" target="_blank" rel="noopener">
                     <img class="w-5 h-5" src="assets/icons/twitter.png" alt="">
                     &nbsp;
                     @skill_IT4All
                 </a>
-                <a class="ml-5 flex flex-row gap-2 w-full">
+                <a class="ml-5 flex flex-row gap-2 w-full" href="tel:+237673576291" target="_blank" rel="noopener">
                     <img class="w-5 h-5" src="assets/icons/phone.png" alt="">
                     &nbsp;
                     + 237 673 576 291

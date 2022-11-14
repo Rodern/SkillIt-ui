@@ -1,14 +1,18 @@
 <div class="dashboard-page cursor-default w-full ">
-    <header class="landing-header text-white flex flex-row shadow items-center px-3 h-12">
+    <header class="dashboard-header text-white flex flex-row shadow items-center px-3 h-12">
         <a class="org-info flex flex-row items-center gap-2 ml-0 mr-auto">
-            <img src="assets/icons/logo.png" alt="">
+            <img src="assets/icons/logo.png" class="h-24" alt="">
             <h4 class="org-name ml-2 font-bold text-lg">SkillIT</h4>
         </a>
         <nav class="header-nav hidden md:flex ml-auto gap-5 flex-row text-slate-200">
-            <a
+            <!-- <a
                 class="nav-links n-usr flex flex-row justify-between hover:bg-blue-700 hover:shadow-md focus:bg-blue-800 rounded w-auto px-3 py-1 border border-slate-200 hover:border-transparent ">
                 <span class="nav-un">AlainKimbu</span>
                 <img src="assets/icons/user.png" class="w-5 h-5 ml-5" alt="">
+            </a> -->
+            <a
+                class="nav-links nc-btn flex flex-row justify-between hover:bg-blue-700 hover:shadow-md focus:bg-blue-800 rounded w-auto px-3 py-1 border border-slate-200 hover:border-transparent ">
+                Catalogs
             </a>
             <a
                 class="nav-links nl-btn hover:bg-rose-500 hover:shadow-md focus:bg-rose-600 rounded px-3 py-1 border border-slate-200 hover:border-transparent">Sign
@@ -17,10 +21,12 @@
                 class="nav-links ns-btn hover:bg-blue-500 hover:shadow-md focus:bg-blue-600 rounded px-3 py-1 border border-slate-200 hover:border-transparent ">Sign
                 Up</a>
             <a
-                class="nav-links about hover:shadow-md hover:bg-amber-500 focus:bg-amber-600 rounded px-3 py-1 border border-slate-200 hover:border-transparent ">About</a>
+                class="nav-links nlg-btn flex flex-row justify-between hover:bg-red-700 hover:shadow-md focus:bg-red-800 rounded w-auto px-3 py-1 border border-slate-200 hover:border-transparent ">
+                Logout
+            </a>
         </nav>
         <button id="menu_btn"
-            class="flex  flex-row hover:bg-rose-500 hover:bg-blue-700 hover:shadow-md focus:shadow-lg focus:bg-rose-600 focus:bg-blue-800 rounded px-1 py-1 ml-5 gap-1 border border-slate-200 focus:border-1 focus:bg-rose-600 hover:border-transparent"
+            class="flex  flex-row hover:bg-blue-700 hover:shadow-md focus:shadow-lg rounded px-1 py-1 ml-5 gap-1 border border-slate-200 focus:border-1 hover:border-transparent  focus:outline-blue-800"
             id="l-menu-btn">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="w-6 h-6">
                 <path fill="black" stroke-linecap="round" stroke-linejoin="round"
@@ -32,7 +38,7 @@
         <nav
             class="menu hidden absolute ml-auto shadow-2xl text-slate-900 text-md p-3 backdrop-blur-sm backdrop-opacity-25 bg-white ">
             <ul class="menu-items">
-                <li class="menu-items m-usr avt-state flex flex-col 
+                <!-- <li class="menu-items hidden m-usr avt-state flex flex-col 
                             justify-between items-center pr-2 
                             hover:border-b border-slate-200 my-1 
                             mb-10 py-1 pl-2 rounded hover:text-white 
@@ -49,7 +55,7 @@
                             backdrop-blur-sm shadow" style="border: none;">
                     <img src="../assets/images/user-def.png" class="u-img h-[20vh] w-[20vh] mb-3" alt="">
                     <i class="nav-un " style="font-size:1rem;font-weight: 400;">Not Signed In</i>
-                </li>
+                </li> -->
                 <li
                     class="menu-items mc-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
                     Catalogs
@@ -73,6 +79,10 @@
                 <li
                     class="menu-items about hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
                     <a>Feedback</a>
+                </li>
+                <li
+                    class="menu-items mlg-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-red-700 backdrop-blur-sm">
+                    Logout
                 </li>
             </ul>
         </nav>
