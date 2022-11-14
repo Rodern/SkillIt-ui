@@ -1,7 +1,7 @@
 //const BaseURL = 'http://localhost:5000/'
-//const BaseURL = 'https://localhost:5001/'
+const BaseURL = 'https://localhost:5001/'
 //const BaseURL = 'https://localhost:7165/'
-const BaseURL = 'https://skillitapi.herokuapp.com/'
+//const BaseURL = 'https://skillitapi.herokuapp.com/'
 const ipAddressKey = 'ip_address'
 const tokenKey = 'skillit-user-token'
 const userIdKey = 'userId'
@@ -34,7 +34,6 @@ let social = new Social()//(9, 'Twitter', 'https://twitter/profile');
 let userSocial = new UserSocial()//(8, 9, UserId, social)
 let userSocials = new Array()
 
-let responseModel = new ResponseModel();
 
 let _Detail = new AccountDetail()
 let _user = new User();

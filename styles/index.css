@@ -43,12 +43,27 @@ div.landing-header {
 
 header {
     background-color: rgba(0, 0, 0, 0.555);
+    background-color: white;
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
     position: -webkit-sticky;
     position: sticky;
     top: 0%;
     z-index: 8;
+}
+
+button#menu_btn {
+    color: black;
+}
+button#menu_btn:hover {
+    color: white;
+    stroke: white;
+}
+button#menu_btn >svg {
+    stroke: black;
+}
+button#menu_btn:hover > svg {
+    stroke: white;
 }
 
 nav.menu {

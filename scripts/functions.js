@@ -62,12 +62,26 @@ function popUpBox(boxType, boxMsg, OKCN, cancelCN = "CN_Class", CallBack = funct
 }
 
 function clearPopUpBox() {
+    $(globalAlertConfirm).unbind('click')
+    $(globalAlertCancel).unbind('click')
+    $('.alertCover').unbind('keyup')
     $('.alertCover').fadeOut(150, function () {
         $('.typeImg').attr('src', '');
         $('.typeName').text("");
         $('.alertBody').text("");
         $('.alertCancel').hide();
     });
+}
+
+function menuFactory(pageName, isLoggedIn){
+    switch (pageName) {
+        case 'home':
+            
+            break;
+    
+        default:
+            break;
+    }
 }
 
 function IsValid(val) {
@@ -172,14 +186,20 @@ const getIP = () => {
     })
 }
 
-const getResetCode = (email) => {
+const getResetCode = (email, callback) => {
     $.ajax({
         type: 'post',
         url: `${BaseURL}api/GenerateCode?email=${email}`,
-        data: '',
-        success: (responseModel) => {
-            if (responseModel.success == true) {
-                popUpBox('notify', 'Check your mail box for the reset code. Donot close this page yet', 'catAlert')
+        error: (error) => {
+            console.error(error.responseText);
+        },
+        success: (response) => {
+            if (response.success == true) {
+                callback(response.message)
+                setKeyValue('reset-email', email)
+                setKeyValue('reset-code', response.message)
+                loader.addClass('hidden')
+                //popUpBox('notify', 'Check your mail box for the reset code. Donot close this page yet', 'catAlert')
                 return
             }
             popUpBox('notify', responseModel.message, 'catAlert')
@@ -207,29 +227,29 @@ const getGeoLoc = () => {
     })
 }
 
-const resetPassword = (userCredential) => {
+const resetPassword = (userCredential, callback) => {
+    console.log(JSON.stringify(userCredential));
     $.ajax({
         type: 'post',
         url: `${BaseURL}api/Reset`,
-        data: `{
-			"email": "${userCredential.email}",
-			"password": "${userCredential.password}",
-			"rememberMe": ${userCredential.rememberMe},
-			"code": "${userCredential.code}"
-		}`,
+        data: JSON.stringify(userCredential),
         dataType: "json",
         contentType: "application/json",
+        error: (error) => {
+            console.error(error.responseText);
+        },
         success: (responseModel) => {
+            loader.addClass('hidden')
             if (responseModel.success == true) {
-                function cb(){
-                    clearFlc('floating-content-2')
-                    loadSignin()
-                }
-                popUpBox('notify', responseModel.message, 'catAlert', 'caR', cb)
+                popUpBox('notify', 'Password reseted. Now login with your new password', 'catAlert', 'caR', callback)
                 return
             }
             function cb() {
-
+                exitModal(()=>{
+                    loadReset()
+                })
+                clearFlc('floating-content-2')
+                clearPopUpBox()
             }
             popUpBox('notify', 'Failed: Restart the reset process', 'catAlert', '', cb)
         }

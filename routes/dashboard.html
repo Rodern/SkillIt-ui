@@ -1,19 +1,9 @@
 <div class="dashboard-page cursor-default w-full ">
     <header class="landing-header text-white flex flex-row shadow items-center px-3 h-12">
-        <a class="org-info flex flex-row items-center gap-2">
-            <img src="assets/icons/skill_it 32x32.png" alt="">
+        <a class="org-info flex flex-row items-center gap-2 ml-0 mr-auto">
+            <img src="assets/icons/logo.png" alt="">
             <h4 class="org-name ml-2 font-bold text-lg">SkillIT</h4>
         </a>
-        <button id="menu_btn"
-            class="flex md:hidden flex-row hover:bg-rose-500 hover:shadow-md focus:shadow-lg focus:bg-rose-600 rounded px-1 py-1 ml-auto gap-1 border border-slate-200 focus:border-1 focus:bg-rose-600 hover:border-transparent"
-            id="l-menu-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-6 h-6">
-                <path fill="white" stroke-linecap="round" stroke-linejoin="round"
-                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            </svg>
-            Menu
-        </button>
         <nav class="header-nav hidden md:flex ml-auto gap-5 flex-row text-slate-200">
             <a
                 class="nav-links n-usr flex flex-row justify-between hover:bg-blue-700 hover:shadow-md focus:bg-blue-800 rounded w-auto px-3 py-1 border border-slate-200 hover:border-transparent ">
@@ -21,46 +11,71 @@
                 <img src="assets/icons/user.png" class="w-5 h-5 ml-5" alt="">
             </a>
             <a
-                class="nav-links nc-btn flex flex-row justify-between hover:bg-blue-700 hover:shadow-md focus:bg-blue-800 rounded w-auto px-3 py-1 border border-slate-200 hover:border-transparent ">
-                Catalogs
-            </a>
+                class="nav-links nl-btn hover:bg-rose-500 hover:shadow-md focus:bg-rose-600 rounded px-3 py-1 border border-slate-200 hover:border-transparent">Sign
+                In</a>
             <a
-                class="nav-links nlg-btn flex flex-row justify-between hover:bg-red-700 hover:shadow-md focus:bg-red-800 rounded w-auto px-3 py-1 border border-slate-200 hover:border-transparent ">
-                Logout
-            </a>
+                class="nav-links ns-btn hover:bg-blue-500 hover:shadow-md focus:bg-blue-600 rounded px-3 py-1 border border-slate-200 hover:border-transparent ">Sign
+                Up</a>
+            <a
+                class="nav-links about hover:shadow-md hover:bg-amber-500 focus:bg-amber-600 rounded px-3 py-1 border border-slate-200 hover:border-transparent ">About</a>
         </nav>
-    </header>
-    <nav
-        class="menu hidden absolute ml-auto top-12 right-3 h-auto w-40 rounded-md shadow-2xl text-white text-md p-3 backdrop-blur-sm backdrop-opacity-25 ">
-        <ul class="menu-items">
-            <li class="menu-items m-usr avt-state flex flex-col 
-                                justify-between items-center pr-2 
-                                hover:border-b border-slate-200 my-1 
-                                mb-10 py-1 pl-2 rounded hover:text-white 
-                                text-lg hover:shadow hover:bg-blue-600 
-                                backdrop-blur-sm shadow" style="border: none;">
-                <img src="../assets/images/user-def.png" class="u-img h-[20vh] w-[20vh] mb-3" alt="">
-                <span class="nav-un">AlainKimbu</span>
-            </li>
-            <li class="menu-items p-avt avt-state flex flex-col 
-                                justify-between items-center pr-2 
-                                hover:border-b border-slate-200 my-1 
-                                mb-10 py-1 pl-2 rounded hover:text-white 
-                                text-lg hover:shadow hover:bg-blue-600 
-                                backdrop-blur-sm shadow" style="border: none;">
-                <img src="../assets/images/user-def.png" class="u-img h-[20vh] w-[20vh] mb-3" alt="">
-                <i class="nav-un " style="font-size:1rem;font-weight: 400;">Not Signed In</i>
-            </li>
-            <li
-                class="menu-items mc-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-blue-600 backdrop-blur-sm">
-                Catalogs
-            </li>
-            <li
-                class="menu-items mlg-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:shadow hover:bg-blue-600 backdrop-blur-sm">
-                Logout
-            </li>
-        </ul>
-    </nav>
+        <button id="menu_btn"
+            class="flex  flex-row hover:bg-rose-500 hover:bg-blue-700 hover:shadow-md focus:shadow-lg focus:bg-rose-600 focus:bg-blue-800 rounded px-1 py-1 ml-5 gap-1 border border-slate-200 focus:border-1 focus:bg-rose-600 hover:border-transparent"
+            id="l-menu-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="w-6 h-6">
+                <path fill="black" stroke-linecap="round" stroke-linejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+            Menu
+        </button>
+        </header>
+        <nav
+            class="menu hidden absolute ml-auto shadow-2xl text-slate-900 text-md p-3 backdrop-blur-sm backdrop-opacity-25 bg-white ">
+            <ul class="menu-items">
+                <li class="menu-items m-usr avt-state flex flex-col 
+                            justify-between items-center pr-2 
+                            hover:border-b border-slate-200 my-1 
+                            mb-10 py-1 pl-2 rounded hover:text-white 
+                            text-lg hover:shadow hover:bg-blue-600 
+                            backdrop-blur-sm shadow" style="border: none;">
+                    <img src="../assets/images/user-def.png" class="u-img h-[20vh] w-[20vh] mb-3" alt="">
+                    <span class="nav-un">AlainKimbu</span>
+                </li>
+                <li class="menu-items p-avt avt-state flex flex-col 
+                            justify-between items-center pr-2 
+                            hover:border-b border-slate-200 my-1 
+                            mb-10 py-1 pl-2 rounded hover:text-white 
+                            text-lg hover:shadow hover:bg-blue-600 
+                            backdrop-blur-sm shadow" style="border: none;">
+                    <img src="../assets/images/user-def.png" class="u-img h-[20vh] w-[20vh] mb-3" alt="">
+                    <i class="nav-un " style="font-size:1rem;font-weight: 400;">Not Signed In</i>
+                </li>
+                <li
+                    class="menu-items mc-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                    Catalogs
+                </li>
+                <li
+                    class="menu-items mcb-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                    Courses
+                </li>
+                <li
+                    class="menu-items ms-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                    Sign Up
+                </li>
+                <li
+                    class="menu-items ml-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                    Sign In
+                </li>
+                <li
+                    class="menu-items about hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                    <a>About</a>
+                </li>
+                <li
+                    class="menu-items about hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                    <a>Feedback</a>
+                </li>
+            </ul>
+        </nav>
     <div class="dash-body flex flex-row text-slate-300 ">
         <div class="user-section p-3 absolute md:relative w-full md:w-[38vw] h-auto flex-col flex ">
             <div class="avt w-40 h-40 mb-10 mx-auto">

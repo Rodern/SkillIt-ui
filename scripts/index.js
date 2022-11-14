@@ -481,7 +481,17 @@ const exitModal = (callback = () => {}) => {
 }
 
 function setEventHandlers() {
-    $('.org-info, .menu ul li, .about, #menu_btn, .ml-btn, .nl-btn, .bl-btn, .ms-btn, .ns-btn, .bs-btn, .bc-btn, .nc-btn, .mc-btn, .exit, .to-login, .to-signup, .forgot, .mlg-btn, .nlg-btn, .ds-btn, .m-usr, .n-usr').unbind('click')
+    $(`
+        .org-info,.menu ul li, 
+        .about, #menu_btn, .ml-btn, 
+        .nl-btn, .bl-btn, .ms-btn, .ns-btn, 
+        .bs-btn, .bc-btn, .nc-btn, .mc-btn, 
+        .exit, .to-login, .to-signup, .forgot, 
+        .mlg-btn, .nlg-btn, .ds-btn, .m-usr, 
+        .n-usr, .code-submit, .email-submit, 
+        .submit-email-btn, .code-send-btn, 
+        #reset_email
+    `).unbind('click')
     //$('.pg-section *').unbind('click')
     $('.org-info').click((e)=>{
         _ROUTER.navigate('/home')
@@ -496,10 +506,15 @@ function setEventHandlers() {
     $('#menu_btn').click(() => {
         $('.menu').fadeToggle(200)
     })
-    $('nav.menu').css({
+    
+    try {
+        $('nav.menu').css({
         'top': getComputedStyle(document.querySelector('header')).height,
         height: innerHeight - parseInt(getComputedStyle(document.querySelector('header')).height.replace('px', '')) + 'px'
     })
+    } catch (error) {
+        
+    }
 
     $('.ml-btn, .nl-btn, .bl-btn, .p-avt').click((e) => {
         e.preventDefault()
@@ -545,6 +560,63 @@ function setEventHandlers() {
 
     $('.to-login').click(()=>{
         loadSignin()
+    })
+
+    $('.submit-email-btn').click((e)=>{
+        let email = $('#reset_email').val()
+        if(email == '' || email == null){
+            popUpBox('alert', 'Enter your email!')
+            return
+        }
+        function callback(){
+            clearPopUpBox()
+            loader.removeClass('hidden')
+            getResetCode(email, (msg) => {
+                popUpBox('notify', msg)
+                $('.email-submit').fadeOut(100)
+                $('.code-submit').fadeIn(100)
+            })
+        }
+        popUpBox('warn', 'Complete this process in one session or you will lose your reset code.', 'confirmWarning', '', callback)
+    })
+
+    $('.code-send-btn').click((e)=>{
+        let code = $('#code').val()
+        if(code == '') {
+            popUpBox('alert', 'No code provided, enter the code sent your email.')
+            return
+        }
+        if(code != getKeyValue('reset-code')){
+            popUpBox('error', 'Wrong Code: Do copy and paste the code exact else restart the process.')
+            return
+        }
+        $('.code-submit').fadeOut(100)
+        $('.pass-reset').fadeIn(100)
+    })
+
+    $('.pass-reset-btn').click((e)=>{
+        let pass1 = $('#password').val()
+        let pass2 = $('#cpassword').val()
+        pass1 = TrimSpace(pass1)
+        pass2 = TrimSpace(pass2)
+        if(pass1 == '' || pass2 == '') {
+            popUpBox('alert', 'Enter and confirm your new password!')
+            return
+        }
+        if(pass1 != pass2){
+            popUpBox('error', 'Password does not match, kindly check again.')
+            return
+        }
+        loader.removeClass('hidden')
+        resetPassword(new UserCredential(getKeyValue('reset-email'), pass1, false, getKeyValue('reset-code')), function(){
+                    //clearFlc('floating-content-2')
+                    deleteKey('reset-email')
+                    deleteKey('reset-code')
+                    exitModal(()=>{
+                        loadSignin()
+                        clearPopUpBox()
+                    })
+                })
     })
 
     $('.forgot').click(()=>{
