@@ -489,7 +489,7 @@ const exitModal = (callback = () => {}) => {
 
 function setEventHandlers() {
     $(`
-        .org-info,.menu ul li, 
+        .org-info, .home-btn, .menu ul li, 
         .about, #menu_btn, .ml-btn, 
         .nl-btn, .bl-btn, .ms-btn, .ns-btn, 
         .bs-btn, .bc-btn, .nc-btn, .mc-btn, 
@@ -500,7 +500,7 @@ function setEventHandlers() {
         #reset_email
     `).unbind('click')
     //$('.pg-section *').unbind('click')
-    $('.org-info').click((e)=>{
+    $('.org-info, .home-btn').click((e)=>{
         _ROUTER.navigate('/home')
     })
     $('.menu ul li').click(()=>{
