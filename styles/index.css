@@ -5,7 +5,7 @@
 * {
     padding: 0px;
     margin: 0px;
-    font-family: 'Nunito Regular', ;
+    font-family: 'Nunito Regular';
 }
 
 *::-webkit-scrollbar {
@@ -41,15 +41,18 @@ body {
     background-attachment: fixed;
 }
 
-header {
+html > body > div.pg-section > div > header {
+    transition: all .12s ease-in;
     background-color: rgba(0, 0, 0, 0.555);
     background-color: white;
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
     position: -webkit-sticky;
-    position: sticky;
-    top: 0%;
+    position: static;
+    min-width: 100vw;
+    top: 0px;
     z-index: 8;
+    overflow: hidden;
 }
 
 button#menu_btn {
@@ -87,6 +90,22 @@ nav.menu {
     z-index: 9;
 }
 
+.org-info img {
+    transition: all .2s ease-in;
+}
+
+.org-info:hover {
+    transition: all .2s ease-in;
+    background-color: #4299e149;
+}
+
+.org-info:hover img {
+    transition: all .2s ease-in;
+    width: 98px;
+    height: 98px;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 350px) {
     nav.menu {
         width: 100vw;
@@ -104,7 +123,7 @@ nav > .nav-links:hover {
 }
 nav > .nav-links:hover > svg {
     transition: all .12s ease-in;
-    stroke: white;
+    stroke: rgb(29, 78, 216);
 }
 nav>.nav-links.nlgbtn, .menu-items.mlg-btn {
     transition: all .12s ease-in;
@@ -129,6 +148,27 @@ nav.menu ul > li:hover {
     transition: all .12s ease-in;
     color: white;
     border-bottom: 1px solid slategray;
+}
+
+nav.header-nav a.nav-links {
+    transition: all .12s ease-in;
+    border: 0px solid #000;
+    cursor: pointer;
+}
+
+nav.header-nav a.nav-links:hover {
+    transition: all .12s ease-in;
+    color: #4299e1;
+    color: rgb(29, 78, 216);
+    background-color: #00000000;
+    border: 0px solid #000;
+    box-shadow: unset;
+    font-size: 1.01rem;
+}
+
+nav.header-nav a.nav-links.nlg-btn:hover {
+    transition: all .12s ease-in;
+    color: red;
 }
 
 /* header.landing-header {
@@ -213,6 +253,24 @@ div.input-wrapper {
     border-radius: 6px;
 }
 
+div.input-wrapper input:not(browser-default) {
+    transition: all .12s ease-in;
+}
+
+div.input-wrapper input:not(browser-default)::placeholder {
+    color: rgb(41, 41, 41);
+}
+
+div.input-wrapper input:not(browser-default):focus-visible {
+    outline-width: 0px;
+    transition: all .12s ease-in;
+    border: 1px solid #ddd;
+    border-top: 0px solid #ddd;
+    border-bottom: 0px solid #ddd;
+    border-right: 0px;
+    border-radius: inherit;
+}
+
 div.in input::placeholder {
     color: rgb(12, 12, 12);
 }
@@ -264,3 +322,227 @@ input.side-in {
 input.side-in::placeholder {
     color: black;
 }
+
+/**dashboard**/
+.skills .skill, .socials .social {
+    box-shadow: none;
+    font-size: medium;
+}
+
+div.main-view{
+    padding-block: 10px;
+    gap: 15px;
+    overflow-y: auto;
+}
+
+div.dash-header {
+    width: 100%;
+    font-size: 1rem;
+    height: 45px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding-inline: 15px;
+}
+
+span.left-section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+span.left-section h3.dash-greetings {
+    font-weight: 600;
+}
+
+span.right-section {
+    margin-inline: auto 0px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+span.right-section a.p-detail-btn, a.pl-toggle-btn {
+    color: rgb(29, 78, 216);
+}
+
+a.p-detail-btn:hover, a.pl-toggle-btn:hover {
+    transition: all .12s ease-in;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+div.main-view * {
+    border-radius: 5px;
+}
+
+div.main-view div.dash-element {
+    width: -webkit-fill-available;
+    padding: 5px 3px;
+    margin: 10px;
+}
+
+div.de-header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    /* background-color: rgb(223, 223, 223); */
+    border-bottom: 1px;
+    padding: 2px 5px;
+    height: 50px;
+    font-size: 1.4rem;
+    font-weight: 500;
+    align-items: center;
+    border-radius: 5px 5px 0px 0px;
+}
+
+div.dash-element .list {
+    padding: 5px;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 3px 5px;
+}
+
+@media screen and (max-width: 500px) {
+    div.dash-element .list {
+        grid-template-columns: auto;
+    }
+}
+
+div.dash-element .list .list-item {
+    display: block;
+}
+
+div.dash-element .list .list-item a {
+    transition: all .12s ease-in;
+    padding: 5px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 0px;
+}
+
+div.dash-element .list .list-item a:hover {
+    transition: all .12s ease-in;
+    background-color: rgb(223, 223, 223);
+}
+
+
+/**Catalogs**/
+.cw {
+    width: 100vw;
+    height: 100vh;
+}
+
+.cw-header {
+    width: 100vw;
+    height: 40px;
+    background-color: white;
+    padding: 2px 10px;
+    align-items: center;
+    overflow: hidden;
+}
+
+.cw-header .left-section .cw-name {
+    font-size: 1.2rem;
+}
+
+.cw-header .right-section .exit {
+    color: black;
+    text-align: center;
+    align-items: center;
+}
+
+.cw-header .right-section .exit:hover {
+    transition: all .12s ease-in;
+    background-color: red;
+    border-radius: 2px;
+    color: white;
+}
+
+.cw-header .right-section .exit:hover svg {
+    transition: all .12s ease-in;
+    stroke: white;
+}
+
+.cw-header .right-section {
+    gap: 5px;
+}
+
+.cw-body {
+    width: 100vw;
+    height: 100%;
+    height: calc(100vh - 41px);
+    background-color: white;
+}
+
+.cw-body .playlist-wrapper {
+    position: absolute;
+    background-color: #fff;
+    width: 50vw;
+    height: inherit;
+    right: 0px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.video-box {
+    width: 100%;
+    height: auto;
+}
+
+.cw-body .playlist-wrapper .playlist {
+    width: 100%;
+    height: auto;
+    padding: 5px;
+    padding-top: 41px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.playlist-wrapper .pl-header {
+    width: inherit;
+    height: 40px;
+    padding: 2px 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: 600;
+    justify-content: space-between;
+    position: fixed;
+    background-color: inherit;
+}
+
+.playlist .list-item {
+    transition: all .12s ease-in;
+    display: flex;
+    gap: 10px;
+    overflow: hidden;
+    margin-block: 5px;
+    cursor: pointer;
+    padding: 1px;
+}
+
+.playlist .list-item:hover {
+    transition: all .12s ease-in;
+    background-color: #ddd;
+}
+
+.list-item span {
+    overflow: hidden;
+}
+
+.list-item img {
+    width: 100px;
+    height: 70px;
+}
+
+.list-item h3 {
+    font-weight: 600;
+}
+
+.list-item p {
+    
+}
+

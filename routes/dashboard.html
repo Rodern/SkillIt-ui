@@ -2,7 +2,7 @@
     <header class="dashboard-header text-white flex flex-row shadow items-center px-3 h-12">
         <a class="org-info flex flex-row items-center gap-2 ml-0 mr-auto">
             <img src="assets/icons/logo.png" class="h-24" alt="">
-            <h4 class="org-name ml-2 font-bold text-lg">SkillIT</h4>
+            <h4 class="org-name hidden ml-2 font-bold text-lg">SkillIT</h4>
         </a>
         <nav class="header-nav hidden md:flex ml-auto gap-5 flex-row text-slate-200">
             <!-- <a
@@ -65,7 +65,7 @@
                     Catalogs
                 </li>
                 <li
-                    class="menu-items mcb-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                    class="menu-items hidden mcb-btn hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
                     Courses
                 </li>
                 <li
@@ -81,7 +81,7 @@
                     <a>About</a>
                 </li>
                 <li
-                    class="menu-items about hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
+                    class="menu-items hidden about hover:border-b border-slate-200 my-1 py-1 pl-2 rounded hover:text-white text-lg hover:shadow hover:bg-blue-600 backdrop-blur-sm">
                     <a>Feedback</a>
                 </li>
                 <li
@@ -91,7 +91,7 @@
             </ul>
         </nav>
     <div class="dash-body flex flex-row text-slate-300 ">
-        <div class="user-section p-3 absolute md:relative w-full md:w-[38vw] h-auto flex-col flex ">
+        <div class="user-section hidden md:flex p-3 absolute md:relative w-full md:w-[38vw] h-auto flex-col">
             <div class="avt w-40 h-40 mb-10 mx-auto">
                 <img class="u-img w-40 h-40 rounded-[85px]" src="assets/images/user-def.png" alt="">
                 <button id="edit-avt" title="Change image" class="edit-avt bg-amber-500 h-10 w-10 p-2 flex justify-center items-center hover:shadow-md">
@@ -179,8 +179,87 @@
                 </div>
             </div>
         </div>
-        <div class="main-view pb-1 text-center text-xl font-bold bg-amber-500 text-white w-[100%] h-full flex flex-col justify-center items-center">
-            More coming soon...
+        <div class="main-view pb-1 text-center text-slate-900 bg-white text-xl w-[100%] h-full flex flex-col justify-center items-center">
+            <div class="dash-header">
+                <span class="left-section">
+                    <h3 class="dash-greetings hidden">Welcome back</h3>
+                </span>
+                <span class="right-section">
+                    <a class="p-detail-btn flex md:hidden">Profile</a>
+                </span>
+            </div>
+            <div class="dash-element shadow border">
+                <div class="de-header">Courses In-progress</div>
+                <ul class="list">
+                    <li class="list-item">
+                        <a class="flex border" href="">
+                            <h4>Python for beginners</h4>
+                        </a>
+                    </li>
+                    <li class="list-item">
+                        <a class="flex border" href="">
+                            <h4>Python for beginners</h4>
+                        </a>
+                    </li>
+                    <li class="list-item">
+                        <a class="flex border" href="">
+                            <h4>Python for beginners</h4>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="dash-element shadow border">
+                <div class="de-header">Certificates</div>
+                <ul class="list">
+                    <li class="list-item">
+                        <a class="flex border" href="">
+                            <h4>Python for beginners</h4>
+                        </a>
+                    </li>
+                    <li class="list-item">
+                        <a class="flex border" href="">
+                            <h4>Python for beginners</h4>
+                        </a>
+                    </li>
+                    <li class="list-item">
+                        <a class="flex border" href="">
+                            <h4>Python for beginners</h4>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="dash-element shadow border">
+                <div class="de-header">Achievements</div>
+                <ul class="list">
+                    <li class="list-item">
+                        <a class="flex border" href="">
+                            <h4>Python for beginners</h4>
+                        </a>
+                    </li>
+                    <li class="list-item">
+                        <a class="flex border" href="">
+                            <h4>Python for beginners</h4>
+                        </a>
+                    </li>
+                    <li class="list-item">
+                        <a class="flex border" href="">
+                            <h4>Python for beginners</h4>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="dash-element shadow border">
+                <div class="de-header">On going courses</div>
+                <div class="skills flex flex-col w-full rounded-lg">
+                
+                </div>
+            </div>
+            <div class="dash-element shadow border">
+                <div class="de-header">On going courses</div>
+                <div class="socials flex flex-col w-full rounded-lg">
+                
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -190,6 +269,7 @@
         loadDash()
         chAuth()
         setEventHandlers()
+        stickyHeader()
         loader.addClass('hidden')
         $('.save-social-btn').click((e) => {
             social = new Social(0, $('#nscn').val(), $('#nscp').val())
@@ -200,6 +280,12 @@
             userSocial = new UserSocial(0, 0, UserId, social)
             addUserSocial(userSocial, Token)
             $('input').val('')
+        })
+
+        $('.p-detail-btn').click((e)=>{
+            $('.user-section').fadeIn(100, (e)=>{
+                $('.user-section').css('background-color', 'rgba(0, 0, 0, 0.863)')
+            })
         })
 
         $('.save-skill-btn').click((e) => {

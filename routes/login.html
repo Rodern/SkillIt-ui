@@ -10,27 +10,27 @@
         <h1 class="font-bold text-2xl text-center">Skill-IT</h1>
         <img class="w-24 h-24 my-4 mx-auto" src="assets/images/user-def.png" alt="">
         <h3 class="font-bold text-center">User Login</h3>
-        <div class="user-login">
+        <form action="" method="post" class="user-login">
             <div class="input-group mb-6 flex flex-col">
                 <h4 class="text-lg font-md ">Email</h4>
-                <div class="input-wrapper rounded-md flex flex-row w-full h-9 border shadow overflow-hidden"
+                <div class="input-wrapper rounded-md flex flex-row w-full h-9 border hover:shadow overflow-hidden"
                     style="border-radius: 5px;">
                     <label class="w-10 h-full flex justify-center items-center pl-1" for="email">
                         <img class="h-auto w-auto" src="assets/icons/cat-name-icon.svg" alt="">
                     </label>
                     <input class="w-full px-2 py-1" type="email" name="email" id="email" placeholder="email"
-                        title="Email" />
+                        title="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"/>
                 </div>
             </div>
             <div class="input-group mb-6 flex flex-col items-end">
                 <h4 class="text-lg font-md text-start w-full">Password</h4>
-                <div class="input-wrapper rounded-md flex flex-row w-full h-9 border shadow overflow-hidden"
+                <div class="input-wrapper rounded-md flex flex-row w-full h-9 border hover:shadow overflow-hidden"
                     style="border-radius: 5px;">
                     <label class="w-10 h-full flex toggleLock justify-center items-center pl-1" for="catName">
                         <img class="h-auto w-auto" src="assets/icons/locked.svg" alt="">
                     </label>
                     <input class="w-full px-2 py-1" type="password" name="Password" id="password" placeholder="password"
-                        title="Password" />
+                        title="Password" maxlength="15" pattern=".{8,15}"/>
                 </div>
                 <a
                     class="forgot ml-auto right-1 text-end mt-1 w-max hover:text-white hover:bg-blue-600 rounded px-1 cursor-pointer r-signin">Forgot
@@ -46,7 +46,7 @@
                         class="text-blue-500 to-signup hover:text-white hover:bg-blue-600 rounded px-1 cursor-pointer r-signin">Sign
                         up</a></span>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 <script>
@@ -54,8 +54,10 @@
     loader.addClass('hidden')
     chAuth()
     
+    entryValidityCheck()
 
     $('.login-btn').click((e) => {
+        e.preventDefault()
         let cred = new UserCredential($('#email').val(), $('#password').val(), false, "");
         if (cred.email == '' || cred.password == '') {
             popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')

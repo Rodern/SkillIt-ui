@@ -84,6 +84,31 @@ function menuFactory(pageName, isLoggedIn){
     }
 }
 
+function entryValidityCheck(){
+    $('input').unbind('keyup')
+    $('input').keyup((e)=>{
+        let invalid = $('div.input-wrapper input:not(browser-default):focus:invalid')
+        if(invalid.length == 0) {
+            $(e.target.parentElement).css('border-color', '#ddd')
+            return
+        }
+        $(e.target.parentElement).css('border-color', 'red')
+
+    })
+}
+
+function padTo2Digits(num){
+    return num.toString().padStart(2,'0')
+}
+
+function formatDate(date = new Date()) {
+    return [
+        padTo2Digits(date.getDate()),
+        padTo2Digits(date.getMonth()+1),
+        date.getFullYear()
+    ].join('-')
+}
+
 function IsValid(val) {
     if (val.success == true) console.log(true)
 }
@@ -270,7 +295,7 @@ const IsTokenValid = (token, callback = () => { console.info(" ") }) => {
         success: (responseModel) => {
             if (responseModel.success == true) {
                 callback()
-                console.log(responseModel.success)
+                //console.log(responseModel.success)
             }
             else {
                 var cred = decryptToken(Token)
@@ -304,11 +329,11 @@ const checkEmail = (email, callback = () => {}) => {
             console.log(error)
         },
         success: (message) => {
-            if(message.status == false){
+            if(message.success == true){
                 popUpBox('alert', 'This email exists already!', 'catAlert')
                 return
             }
-            console.log(message)
+            //console.log(message)
             callback()
         }
     })
@@ -328,7 +353,7 @@ const AuthenticateUser = (userCredential, callback = () => {}) => {
         contentType: "application/json",
         success: (responseModel) => {
             if (responseModel.success == true) {
-                console.log(responseModel.message)
+                //console.log(responseModel.message)
                 let data = JSON.parse(responseModel.message)
                 UserId = parseInt(data.userId);
                 Token = data.token;
@@ -348,11 +373,11 @@ const AuthenticateUser = (userCredential, callback = () => {}) => {
     })
 }
 
-const addUser = (user, callback = () => {}) => {
+const addUser = (user, image, callback = () => {}) => {
     let formData = new FormData()
     formData.append('image', image)
     $.ajax({
-        type: 'put',
+        type: 'post',
         url: `${BaseURL}api/User/AddUser?userJson=${JSON.stringify(user)}`,
         data: formData,
         contentType: false,
@@ -424,7 +449,8 @@ const getUser = (userId, token, callback = () => {}) => {
         },
         success: (user) => {
             _user = user
-            console.log(user)
+            _user.dob = new Date(_user.dob)
+            //console.log(user)
             getAccountDetail(userId, token)
         }
     }).done(() => {
@@ -438,16 +464,31 @@ const getUser = (userId, token, callback = () => {}) => {
 
 function loadDash() {
     $('.u-name').text(_user.firstName + " " + _user.lastName)
+    $('.dash-greetings').append(" " + _user.firstName)
     $('.u-email').text(_user.email)
     $('.u-phone').text(_user.phone)
     $('.u-phone').attr('href', `tel:${_user.phone}`)
-    $('.u-dob').text(_user.dob === Date ? _user.dob.toDateString() : _user.dob)
+    $('.u-dob').text(formatDate(_user.dob))
     $('.u-g').text(_user.gender)
     $('.u-address').text(_user.address)
     if (_user.image.length != 0)
         $('.u-img').attr('src', 'data:image/png;base64,'+_user.image)
     getUserSkill(UserId, Token)
     getUserSocial(UserId, Token)
+    $('.dash-greetings').fadeIn(100)
+}
+
+function stickyHeader(){
+    var header = $('header')
+    header.unbind('scroll')
+    let headerOffset = header.offset().top
+    $(document).scroll((event)=>{
+        if(header.offset().top < scrollY){
+            header.css('position', 'fixed')
+        } else
+        if(scrollY == headerOffset)
+            header.css('position', 'static')
+    })
 }
 
 const getAccountDetail = (userId, token) => {
@@ -462,7 +503,7 @@ const getAccountDetail = (userId, token) => {
         },
         success: (detail) => {
             _Detail = detail
-            console.log(detail)
+            //console.log(detail)
         }
     })
 }

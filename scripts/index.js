@@ -459,7 +459,7 @@ function chAuth(){
     }
     else {
         //console.log(false)
-        //$(' .m-usr > span, .n-usr > span').text(_user.firstName + " " + _user.lastName);
+        $(' .m-usr > span, n-usr > span').text(_user.firstName + " " + _user.lastName);
         //$(' .m-usr > span, .n-usr').append(``)
         $('.user-svg').remove()
         $('.nav-links.n-usr').append(`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -480,6 +480,7 @@ window.addEventListener("popstate", function (e) {
     let v = location.href.substring(location.href.lastIndexOf('#') + 1)
     //initPage()
 });
+
 
 
 const exitModal = (callback = () => {}) => {

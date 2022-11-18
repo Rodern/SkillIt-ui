@@ -2,7 +2,7 @@
     <header class="landing-header w-[100vw] flex flex-row shadow items-center px-3 h-12">
         <a class="org-info flex flex-row items-center gap-2 ml-0 mr-auto">
             <img src="assets/icons/logo.png" class="h-24" alt="">
-            <h4 class="org-name ml-2 font-bold text-lg hidden">SkillIT</h4>
+            <h4 class="org-name hidden ml-2 font-bold text-lg hidden">SkillIT</h4>
         </a>
         <nav class="header-nav hidden md:flex ml-auto gap-5 flex-row text-slate-200">
             <a
@@ -212,10 +212,11 @@
     </div>
 </div>
 <script>
+        stickyHeader()
+        setEventHandlers()
     if (_Detail.userId === undefined || _user.userId === undefined) initiateUser()
     setTimeout(() => {
         chAuth()
-        setEventHandlers()
         loader.addClass('hidden')
     }, 2000);
 </script>
