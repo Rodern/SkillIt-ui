@@ -579,7 +579,7 @@ function setEventHandlers() {
         function callback(){
             clearPopUpBox()
             loader.removeClass('hidden')
-            getResetCode(email, (msg) => {
+            sendResetcode(email, (msg) => {
                 popUpBox('notify', msg)
                 $('.email-submit').fadeOut(100)
                 $('.code-submit').fadeIn(100)

@@ -145,8 +145,7 @@ function blobToBase64Ansync(blob) {
   });
 }
 
-function base64ToBlob(base64, mime) 
-{
+function base64ToBlob(base64, mime) {
     mime = mime || '';
     var sliceSize = 1024;
     var byteChars = window.atob(base64.substring(base64.lastIndexOf(',')+1));
@@ -204,6 +203,9 @@ const getIP = () => {
     $.ajax({
         type: 'get',
         url: 'https://api.ipify.org/?format=json',
+        error: (error) => {
+            console.info(error.responseText);
+        },
         success: (ipAdress) => {
             ip_address = ipAdress;
             setKeyValue('ip_address', JSON.stringify(ipAdress))
@@ -211,10 +213,10 @@ const getIP = () => {
     })
 }
 
-const getResetCode = (email, callback) => {
+const sendResetcode = (email, callback) => {
     $.ajax({
         type: 'post',
-        url: `${BaseURL}api/GenerateCode?email=${email}`,
+        url: `${BaseURL}api/CreateOTP/${email}?otpId=${newUserId()}`,
         error: (error) => {
             console.error(error.responseText);
         },

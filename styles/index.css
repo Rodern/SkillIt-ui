@@ -134,6 +134,10 @@ nav > .nav-links:hover {
     color: white;
 }
 
+nav.menu {
+    border-left: 1px solid rgba(112, 128, 144, 0.315);
+}
+
 nav.menu ul > li {
     transition: all .12s ease-in;
     font-weight: 500;
@@ -373,6 +377,20 @@ a.p-detail-btn:hover, a.pl-toggle-btn:hover {
     cursor: pointer;
 }
 
+div.info {
+    height: 33px;
+}
+
+div.info button {
+    transition: all .12s ease-in;
+    display: flex;
+}
+
+div.info:hover button {
+    transition: all .12s ease-in;
+    display: flex;
+}
+
 div.main-view * {
     border-radius: 5px;
 }
@@ -494,6 +512,7 @@ div.dash-element .list .list-item a:hover {
 .cw-body .playlist-wrapper .playlist {
     width: 100%;
     height: auto;
+    min-width: max-content;
     padding: 5px;
     padding-top: 41px;
     display: flex;
