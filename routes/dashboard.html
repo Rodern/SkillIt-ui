@@ -91,14 +91,17 @@
             </ul>
         </nav>
     <div class="dash-body flex flex-row text-slate-300 ">
-        <div class="user-section hidden md:flex p-3 absolute md:relative w-full md:w-[38vw] h-auto flex-col">
+        <div class="user-section hidden md:flex p-3 absolute md:relative w-full md:w-[45vw] h-auto flex-col">
+            <button class="exit-cp absolute h-7 w-7 flex md:hidden justify-center items-center text-2xl text-center text-white top-2 right-2">
+                X
+            </button>
             <div class="avt w-40 h-40 mb-10 mx-auto">
                 <img class="u-img w-40 h-40 rounded-[85px]" src="assets/images/user-def.png" alt="">
                 <button id="edit-avt" title="Change image" class="edit-avt bg-amber-500 h-10 w-10 p-2 flex justify-center items-center hover:shadow-md">
                     <img class=" h-9 w-9 m-5 " src="assets/icons/edit.svg" alt="">
                 </button>
             </div>
-            <div class="personal flex flex-col w-full">
+            <div class="personal flex flex-col w-full h-auto">
                 <div class="info mt-1 w-full text-center">
                     <span class="c font-bold text-center text-3xl u-name">Full Name</span>
                 </div>
@@ -133,7 +136,7 @@
                     </button>
                 </div>
             </div>
-            <div class="skills-wrapper flex flex-col mt-4 p-2 rounded-lg shadow-lg">
+            <div class="skills-wrapper flex flex-col mt-6 p-2 rounded-lg shadow-lg">
                 <h1 class="font-bold text-xl text-start mr-auto">My Skills</h1>
                 <div class="skills flex flex-col w-full rounded-lg">
 
@@ -190,74 +193,42 @@
             </div>
             <div class="dash-element shadow border">
                 <div class="de-header">Courses In-progress</div>
-                <ul class="list">
-                    <li class="list-item">
-                        <a class="flex border" href="">
-                            <h4>Python for beginners</h4>
-                        </a>
-                    </li>
-                    <li class="list-item">
-                        <a class="flex border" href="">
-                            <h4>Python for beginners</h4>
-                        </a>
-                    </li>
-                    <li class="list-item">
-                        <a class="flex border" href="">
-                            <h4>Python for beginners</h4>
-                        </a>
-                    </li>
+                <ul class="list in-progess-list">
+                    <div class="empty-list">
+                        Nothing here yet!
+                    </div>
                 </ul>
             </div>
             <div class="dash-element shadow border">
                 <div class="de-header">Certificates</div>
                 <ul class="list">
-                    <li class="list-item">
-                        <a class="flex border" href="">
-                            <h4>Python for beginners</h4>
-                        </a>
-                    </li>
-                    <li class="list-item">
-                        <a class="flex border" href="">
-                            <h4>Python for beginners</h4>
-                        </a>
-                    </li>
-                    <li class="list-item">
-                        <a class="flex border" href="">
-                            <h4>Python for beginners</h4>
-                        </a>
-                    </li>
+                    <div class="empty-list">
+                        Nothing here yet!
+                    </div>
                 </ul>
             </div>
             <div class="dash-element shadow border">
                 <div class="de-header">Achievements</div>
                 <ul class="list">
-                    <li class="list-item">
-                        <a class="flex border" href="">
-                            <h4>Python for beginners</h4>
-                        </a>
-                    </li>
-                    <li class="list-item">
-                        <a class="flex border" href="">
-                            <h4>Python for beginners</h4>
-                        </a>
-                    </li>
-                    <li class="list-item">
-                        <a class="flex border" href="">
-                            <h4>Python for beginners</h4>
-                        </a>
-                    </li>
+                    <div class="empty-list">
+                        Nothing here yet!
+                    </div>
                 </ul>
             </div>
             <div class="dash-element shadow border">
                 <div class="de-header">Skills</div>
                 <div class="skills flex flex-col w-full rounded-lg">
-                
+                <div class="empty-list">
+                    Nothing here yet!
+                </div>
                 </div>
             </div>
             <div class="dash-element shadow border">
                 <div class="de-header">Socials</div>
                 <div class="socials flex flex-col w-full rounded-lg">
-                
+                <div class="empty-list">
+                    Nothing here yet!
+                </div>
                 </div>
             </div>
         </div>
@@ -283,9 +254,19 @@
         })
 
         $('.p-detail-btn').click((e)=>{
-            $('.user-section').fadeIn(100, (e)=>{
+            /* $('.user-section').fadeIn(100, (e)=>{
                 $('.user-section').css('background-color', 'rgba(0, 0, 0, 0.863)')
-            })
+            }) */
+            $('.user-section').css('background-color', 'rgba(0, 0, 0, 0.863)')
+            $('.user-section').removeClass('hidden')
+        })
+
+        $('.exit-cp').click((e) => {
+            /* $('.user-section').fadeOut(100, (e) => {
+                $('.user-section').show() */
+                $('.user-section').addClass('hidden')
+                $('.user-section').css('background-color', 'rgba(0, 0, 0, 0.507)')
+            //})
         })
 
         $('.save-skill-btn').click((e) => {

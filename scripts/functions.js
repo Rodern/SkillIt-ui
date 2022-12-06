@@ -206,9 +206,9 @@ const getIP = () => {
         error: (error) => {
             console.info(error.responseText);
         },
-        success: (ipAdress) => {
-            ip_address = ipAdress;
-            setKeyValue('ip_address', JSON.stringify(ipAdress))
+        success: (ip) => {
+            userIPAddress = ip;
+            setKeyValue(skillitUserIPKey, JSON.stringify(ip))
         }
     })
 }
@@ -301,7 +301,7 @@ const IsTokenValid = (token, callback = () => { console.info(" ") }) => {
             }
             else {
                 var cred = decryptToken(Token)
-                AuthenticateUser(new UserCredential(cred.email, decodeText(getKeyValue('pass')), false, "", ""))
+                AuthenticateUser(new UserCredential(cred.email, decodeText(getKeyValue(userPassKey)), false, "", ""))
             }
         }
     })
@@ -362,7 +362,7 @@ const AuthenticateUser = (userCredential, callback = () => {}) => {
                 getUser(data.userId, data.token)
                 setKeyValue(userIdKey, encodeText(`${UserId}`))
                 setKeyValue(tokenKey, encodeText(Token))
-                setKeyValue('pass', encodeText(userCredential.password))
+                setKeyValue(userPassKey, encodeText(userCredential.password))
                 callback()
                 chAuth()
                 return
@@ -436,7 +436,7 @@ const logout = () => {
     _user = new User()
     deleteKey(userIdKey)
     deleteKey(tokenKey)
-    deleteKey('pass')
+    deleteKey(userPassKey)
     _ROUTER.navigate('/home');
     chAuth()
 }
@@ -475,6 +475,24 @@ function loadDash() {
     $('.u-address').text(_user.address)
     if (_user.image.length != 0)
         $('.u-img').attr('src', 'data:image/png;base64,'+_user.image)
+    
+    getCatalogCaptions(Token, ()=>{
+        getEngagements(UserId, Token, (data)=>{
+            //try {
+                data.forEach(element => {
+                    console.log(CatalogCaptions, element)
+                    for(let i = 0; i < CatalogCaptions.length; i++){
+                        if(element.catalogId == CatalogCaptions[i].item1) {
+                            $('.in-progess-list').html('')
+                            $('.in-progess-list').append(progress_template(element, CatalogCaptions[i].item2))
+                        }
+                    }
+                });
+            /* } catch (error) {
+                
+            } */
+        })
+    })
     getUserSkill(UserId, Token)
     getUserSocial(UserId, Token)
     $('.dash-greetings').fadeIn(100)
@@ -529,6 +547,26 @@ const getCatalogs = (token, callback = () => {}) => {
     })
 }
 
+const getCatalogCaptions = (token, callback = () => {}) => {
+    $.ajax({
+        type: 'get',
+        url: `${BaseURL}api/Catalog/captions`,
+        /* beforeSend: (xhr) => {
+            xhr.setRequestHeader('Authorization', `Bearer ${token}`)
+        }, */
+        success: (captions) => {
+            CatalogCaptions = captions
+            console.log(captions)
+            callback()
+        }
+    }).done(()=>{
+        /* callback(cat_template)
+        setEventHandlers()
+        chAuth()
+        loader.addClass('hidden') */
+    })
+}
+
 const getCatalog = (catalogId, token) => {
     $.ajax({
         type: 'post',
@@ -555,7 +593,7 @@ const addCatalog = (catalog, image, token = '') => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
         error: function(error) {
-            console.log(error.responseText)
+            console.error(error.responseText)
             popUpBox('notify', `Failed: ${error.responseText} `, 'catAlert')
             loader.addClass('hidden')
         },
@@ -592,6 +630,84 @@ const updateCatalog = (catalog, image, token) => {
                 loadCatalog()
                 console.log(responseModel.message)
                 popUpBox('done', 'Success: Catalog successfully updated.')
+                return
+            }
+            popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
+        }
+    })
+}
+
+const engageRequest = (engagement, token, callback) => {
+    console.log(JSON.stringify(engagement))
+    $.ajax({
+        type: 'post',
+        url: `${BaseURL}api/Engagement/add`,
+        data: JSON.stringify(engagement),
+        dataType: 'json',
+        contentType: 'application/json',
+        beforeSend: (xhr) => {
+            xhr.setRequestHeader('Authorization', `Bearer ${token}`)
+        },
+        success: (responseModel) => {
+            callback()
+            if (responseModel.success == true) {
+                console.log(responseModel.message)
+                return
+            }
+            popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
+        }
+    })
+}
+
+const getEngagements = (userId, token, callback) => {
+    $.ajax({
+        type: 'get',
+        url: `${BaseURL}api/Engagement/get?userId=${userId}`,
+        beforeSend: (xhr) => {
+            xhr.setRequestHeader('Authorization', `Bearer ${token}`)
+        },
+        error: (error) => {
+            console.log(error.responseText)
+        },
+        success: (data) => {
+            Engagements = data
+            console.log(data)
+            getEngagementslist(userId, token)
+            callback(data)
+        }
+    })
+}
+
+const getEngagementslist = (userId, token) => {
+    $.ajax({
+        type: 'get',
+        url: `${BaseURL}api/Engagement/getList?userId=${userId}`,
+        beforeSend: (xhr) => {
+            xhr.setRequestHeader('Authorization', `Bearer ${token}`)
+        },
+        error: (error) => {
+            console.log(error.responseText)
+        },
+        success: (data) => {
+            EngagementsUserIdList = data.join(', ')
+            console.log(data)
+        }
+    })
+}
+
+const disengageRequest = (engagement, token, callback) => {
+    $.ajax({
+        type: 'post',
+        url: `${BaseURL}api/Engagement/remove`,
+        data: JSON.stringify(engagement),
+        dataType: 'json',
+        contentType: 'application/json',
+        beforeSend: (xhr) => {
+            xhr.setRequestHeader('Authorization', `Bearer ${token}`)
+        },
+        success: (responseModel) => {
+            if (responseModel.success == true) {
+                console.log(responseModel.message)
                 return
             }
             popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')

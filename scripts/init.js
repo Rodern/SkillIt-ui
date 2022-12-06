@@ -3,10 +3,11 @@
 //const BaseURL = 'https://localhost:7165/'
 const BaseURL = 'http://aprilman-001-site1.atempurl.com/'
 //const BaseURL = 'https://skillitapi.herokuapp.com/'
-const ipAddressKey = 'ip_address'
-const tokenKey = 'skillit-user-token'
-const userIdKey = 'userId'
-let ip_address = {
+const skillitUserIPKey = 'skillit_userIP'
+const tokenKey = 'skillit_user-token'
+const userIdKey = 'skillit_userId'
+const userPassKey = 'skillit_user-pass'
+let userIPAddress = {
 	ip: ''
 };
 let UserId = ''
@@ -25,7 +26,7 @@ getGeoLoc()
 let loginInfos = new Array()
 let loginAttemps = new Array()
 
-let loginInfo = new LoginInfo()//('userLocation.coords.latitude', 'userLocation.coords.longitude', new Date(), false, true, ip_address.ip)
+let loginInfo = new LoginInfo()//('userLocation.coords.latitude', 'userLocation.coords.longitude', new Date(), false, true, userIPAddress.ip)
 let loginAttemp = new LoginAttemp()//(new Date(), 'Justified', 'success')
 
 //let user = new User(newUserId(), 'T-Rex', 'M', 'Tekoh', 't.rex@outlook.com', 't#rex', new Date(), 'Fundong', new Date(), '679097623', "", loginInfos, loginAttemps)
@@ -54,6 +55,9 @@ setInterval(()=>{
 let catalog = new Catalog()//('New version of Jetbrains', 'Have you tried out the new version of JetBrains', 'https://learners.jetbrains.space/d/3MniFw3UDJQg?f=0.jpg', 'learners.jetbrains.space')
 
 let Catalogs = new Array()
+let CatalogCaptions = new Array()
+let Engagements = new Array()
+let EngagementsUserIdList = new Array()
 
 window.addEventListener("DOMContentLoaded", () => {
 	if ('serviceWorker' in navigator) {
@@ -67,9 +71,9 @@ window.addEventListener("DOMContentLoaded", () => {
 })
 
 
-if(KeyExists("ip_address")){
+if(KeyExists(skillitUserIPKey)){
 	try {
-		ip_address = JSON.parse(getKeyValue('ip_address'))
+		userIPAddress = JSON.parse(getKeyValue(skillitUserIPKey))
 	} catch (error) {
 		console.info(error)
 	}

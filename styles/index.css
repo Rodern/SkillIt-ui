@@ -41,6 +41,10 @@ body {
     background-attachment: fixed;
 }
 
+a {
+    cursor: pointer;
+}
+
 html > body > div.pg-section > div > header {
     transition: all .12s ease-in;
     background-color: rgba(0, 0, 0, 0.555);
@@ -439,10 +443,63 @@ div.dash-element .list .list-item a {
     border: none;
     border-radius: 0px;
 }
+div.dash-element .list .list-item a h4 {
+    
+}
+div.dash-element .list .list-item a img.bdg_img {
+    height: 32px;
+    width: 32px;
+    margin-inline-end: 8px;
+}
+
+.empty-list {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: medium;
+    padding-block: 10%;
+    font-style: italic;
+}
 
 div.dash-element .list .list-item a:hover {
     transition: all .12s ease-in;
     background-color: rgb(223, 223, 223);
+}
+
+.skill button svg, .social button svg {
+    transition: all .12s ease-in;
+    display: none;
+    stroke: #000;
+}
+
+.skill, .social {
+    transition: all .12s ease-in;
+    align-items: center;
+}
+
+.skill:hover, .social:hover {
+    transition: all .12s ease-in;
+    background-color: rgb(221, 221, 221);
+    border: 0px solid rgb(163, 163, 163);
+}
+
+.skill:hover button svg, .social:hover button svg {
+    transition: all .12s ease-in;
+    display: block;
+}
+
+.skill button:hover,
+.social button:hover {
+    transition: all .12s ease-in;
+    background-color: red;
+}
+
+.skill button:hover svg,
+.social button:hover svg {
+    transition: all .12s ease-in;
+    stroke: white;
 }
 
 
@@ -463,22 +520,23 @@ div.dash-element .list .list-item a:hover {
 
 .cw-header .left-section .cw-name {
     font-size: 1.2rem;
+    font-weight: 600
 }
 
-.cw-header .right-section .exit {
+.cw-header .right-section .exit-cw {
     color: black;
     text-align: center;
     align-items: center;
 }
 
-.cw-header .right-section .exit:hover {
+.cw-header .right-section .exit-cw:hover, .exit-cp:hover {
     transition: all .12s ease-in;
     background-color: red;
     border-radius: 2px;
     color: white;
 }
 
-.cw-header .right-section .exit:hover svg {
+.cw-header .right-section .exit-cw:hover svg {
     transition: all .12s ease-in;
     stroke: white;
 }
@@ -502,6 +560,27 @@ div.dash-element .list .list-item a:hover {
     right: 0px;
     overflow-x: hidden;
     overflow-y: auto;
+}
+
+.cw-video-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cw-detail-box{
+    padding: 10px;
+}
+
+.vid-caption {
+    font-weight: 600;
+    font-size: large;
+    margin-block: 15px;
+    margin-block-end: 5px;
+}
+
+.vid-desc {
+    
 }
 
 .video-box {

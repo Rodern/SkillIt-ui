@@ -74,12 +74,15 @@ class AccountDetail {
 }
 
 class Catalog {
-    constructor(caption, description, image, catalogLink = 'not set') {
+    constructor(caption, description, image, data, catalogLink = 'not set') {
         this.catalogId = 0
         this.caption = caption
         this.description = description
         this.image = image
+        this.data = data
         this.catalogLink = catalogLink
+        this.userAchievements = []
+        this.engagements = []
     }
 }
 
@@ -90,6 +93,17 @@ const Level = [
     'Professional',
     'GodLevel &#128516'
 ]
+
+class Engagement {
+    constructor(userId, catalogId) {
+        this.engagementId = 0
+        this.userId = userId
+        this.catalogId = catalogId
+        this.engagedDate = new Date()
+        this.user = null
+        this.catalog = null
+    }
+}
 
 class Skill {
     constructor(skillId, name, level) {
@@ -129,31 +143,46 @@ class UserSocial {
     }
 }
 
-
 const loader = $('.loading-frame')
+
+const progress_template = (item, caption) => {
+    return `<li class="list-item">
+                <a id="eng_${item.engagementId}" class="flex border" href="">
+                    <img class="bdg_img" src="assets/icons/skill_it 256x256.png" alt="bage_image">
+                    <h4 class="truncate" >${caption}</h4>
+                </a>
+            </li>`
+}
+
+const badge_template = (badge) => {
+    return `<a class="flex border" href="">
+                <img src="" alt="bage_image">
+                <h4>${badge}</h4>
+            </a>`
+}
 
 let cat_template = (catalog) => {
     return `<div class="catalog flex flex-col justify-center shadow-lg rounded-lg w-60 h-auto h-max px-2" id=${catalog.catalogId}>
-                <img src="data:image/png;base64,${catalog.image}" alt="" class="w-full h-40 rounded-md">
+                <img src="${JSON.parse(catalog.data).thumbnail_url}" alt="" class="w-full h-40 rounded-md">
                 <h4 class="cat-name font-bold text-lg">${catalog.caption}</h4>
                 <p class="cat-desc brak-words truncate  pb-4" title="${catalog.description}">${catalog.description}</p>
-                <a href="${catalog.catalogLink}" target="_blank"
-                    class="view-cat text-md mt-auto text-center text-white bg-blue-600 w-24 hover:shadow-lg hover:bg-blue-700 rounded px-2 py-2" id=${catalog.catalogId}>View</a>
+                <a id="cat_${catalog.catalogId}"
+                    class="view-cat text-md mt-auto text-center text-white bg-blue-600 w-24 hover:shadow-lg hover:bg-blue-700 rounded px-2 py-2" >View</a>
             </div>`
 }
 
 
 let socialTemplate = (socail, img) => {
     return `<div id="${socail.socialId}" class="social w-full flex flex-row h-9 my-1 items-center rounded-md shadow-md">
-						<img src="${img}"  alt="" class="ml-1 mr-2 s-img h-8 w-8 ">
-						<a href="${socail.link}" target="_blank" rel="noreferrer noopener" class="s-name">${socail.name}</a>
-						<button id="sc_del${socail.socialId}" title="Delete" class="sc-del  h-7 w-7 ml-auto mr-1 text-white flex justify-center items-center text-2xl text-center text-white">
-							<svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-								class="w-6 h-6">
-								<path stroke-linecap="round" fill="black" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-							</svg>
-						</button>
-					</div>`
+                <img src="${img}"  alt="" class="ml-1 mr-2 s-img h-8 w-8 ">
+                <a href="${socail.link}" target="_blank" rel="noreferrer noopener" class="s-name">${socail.name}</a>
+                <button id="sc_del${socail.socialId}" title="Delete" class="sc-del  h-7 w-7 ml-auto mr-1 text-white flex justify-center items-center text-2xl text-center text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                        class="w-6 h-6">
+                        <path stroke-linecap="round" fill="black" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>`
 }
 
 let skillTemplate = (skill) => {
@@ -456,9 +485,10 @@ function chAuth(){
         //console.log(true)
         $("" + list2 + "").hide()
         $("" + list1 + "").show()
+        $('.addToProfileBtn').addClass('hidden')
     }
     else {
-        //console.log(false)
+        $('.addToProfileBtn').removeClass('hidden')
         $(' .m-usr > span, n-usr > span').text(_user.firstName + " " + _user.lastName);
         //$(' .m-usr > span, .n-usr').append(``)
         $('.user-svg').remove()
@@ -471,6 +501,13 @@ function chAuth(){
             $('.u-img').attr('src', 'data:image/png;base64,'+_user.image)
         $("" + list1 + "").hide()
         $("" + list2 + "").show()
+        /* try {
+            if (_Detail.accountType == 'admin') {
+                $('.add-catalog-form').removeClass('hidden')
+            }
+        } catch (error) {
+            
+        } */
     }
 }
 

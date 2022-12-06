@@ -110,7 +110,7 @@
                                 id="catDesc" autocapitalize="on" title="Catalog description"></textarea>
                         </div>
                 </div>
-                <div class="input-group mb-6">
+                <div class="input-group hidden mb-6">
                     <h4 class="text-lg font-md ">Image</h4>
                     <div class="input-wrapper items-center rounded-md flex flex-row w-full h-10 border hover:shadow overflow-hidden">
                         <input class="w-full px-2 py-1" type="file" name="catalog-img" id="catImg" placeholder="catalog's image"
@@ -140,41 +140,30 @@
                 <h1 class="font-bold text-2xl text-center">All catalogs</h1>
             </div>
             <div class="cat-list flex flex-row flex-wrap gap-14 justify-center md:justify-between overflow-y-auto h-auto p-3">
-                <div class="catalog flex flex-col justify-center shadow-lg rounded-lg w-60 h-auto h-max px-2 mx-4">
-                    <div class="img w-full h-40 rounded-md" ></div>
-                    <h4 class="cat-name font-bold text-lg">Learn .NET today</h4>
-                    <p class="cat-desc brak-words truncate">fo;d jsdfa hfojdasfuif fiuif g dhfjhi uiofjefui daufd ajfkfie
-                        atha t jiteo jt ioja apoj fsdaf hfaffoif faifkdiflafiaisyrtiokldzvhigjklkgj vzgijrag 0isjkglwjf
-                        asgjkaj sgreaj gdsgkaj fsikl dsf are tyou kidding me n ringht right now sajfd ag ir jiwrelaj
-                        weoijhifwaio j wejfafjhw jofn fa joknf jf as fjdflkasdhgig gaskgdghajgi ug[raj gsg agijio g[agj[
-                        gag[jagoaigoiwepisdg ajgkghiadkdihgikdg] DGJAP JKJ GAI[GAJ[IGI IJjskdfgj fgf </p>
-                    <a
-                        class="view-cat text-md mt-auto text-center text-white bg-blue-600 w-24 hover:shadow-lg hover:bg-blue-700 rounded px-2 py-1">View</a>
+                <div class="empty-list">
+                    Nothing here yet!
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="modal cw">
+<div class="modal hidden cw">
     <div class="cw-header border-b flex flex-row flex-nowrap shadow-lg">
         <span class="left-section">
             <h3 class="cw-name">Python for beginners</h3>
         </span>
         <span class="right-section">
-            <button class="addToProfileBtn relative text-md ml-auto font-bold text-white bg-blue-600 w-24 md:text-center hover:shadow-lg hover:bg-blue-700 rounded px-2 sm:px-4">ENROLL</button>
-            <button class="exit h-7 w-7 flex justify-center items-center text-2xl text-center text-white top-2 right-2">
+            <button class="addToProfileBtn engage-user-btn relative text-md ml-auto font-bold text-white bg-blue-600 w-24 md:text-center hover:shadow-lg hover:bg-blue-700 rounded px-2 sm:px-2">ENGAGE</button>
+            <button class="exit-cw h-7 w-7 flex justify-center items-center text-2xl text-center text-white top-2 right-2">
                 X
             </button>
         </span>
     </div>
     <div class="cw-body">
         <div class="cw-video-box">
-            <iframe class="video-box" src="https://www.youtube.com/embed/videoseries?list=PLzewa6pjbr3IQEUfNiK2SROQC1NuKl6PV"
-                title="YouTube video player" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen></iframe>
+            
         </div>
-        <div class="playlist-wrapper border shadow hidden">
+        <div class="playlist-wrapper border hidden shadow">
             <div class="pl-header border-b">
                 <h3>Playlist</h3>
                 <a class="pl-toggle-btn">Hide</a>
@@ -253,6 +242,7 @@
             </ul>
         </div>
         <div class="cw-detail-box">
+            <h3 class="vid-caption"></h3>
             <p class="vid-desc">
 
             </p>
@@ -260,14 +250,65 @@
     </div>
 </div>
 <script>
+        var cw_modal = $('.cw'),
+        cw_video_box = $('.cw-video-box'),
+        cw_name = $('.cw-name'),
+        vid_desc = $('.vid-desc'),
+        vid_caption = $('.vid-caption')
+    function openCatalog(catalog){
+        cw_name.text(catalog.caption)
+        vid_caption.text(catalog.caption)
+        cw_video_box.html(JSON.parse(catalog.data).html)
+        vid_desc.text(catalog.description)
+
+        $('.cw-video-box iframe').removeAttr('width')
+        $('.cw-video-box iframe').removeAttr('height')
+        $('.cw-video-box iframe').css('width', `560px`)
+        $('.cw-video-box iframe').css('height', `315px`)
+
+        if(EngagementsUserIdList.includes(UserId.toString())) {
+            $('.engage-user-btn').css('filter', 'grayscale(1)')
+            $('.engage-user-btn').text('ENGAGED')
+            $('.engage-user-btn').attr('disabled', '')
+        }
+        cw_modal.fadeIn(100)
+        $('.engage-user-btn').off('click')
+        $('.engage-user-btn').click((e)=>{
+            loader.removeClass('hidden')
+            engageUser(catalog.catalogId)
+        })
+    }
+
+    function engageUser(catId) {
+        let engagement = new Engagement(_user.userId, catId)
+        engageRequest(engagement, Token, () => {
+            loader.addClass('hidden')
+        })
+    }
+
+    $('.exit-cw').click(()=>{
+        cw_modal.fadeOut(100)
+    })
+
     if (_Detail.userId === undefined || _user.userId === undefined) initiateUser()
     let = catList = $('.cat-list')
         function gt(cat_template) {
             try {
                 catList.html('')
                 Catalogs.forEach(catalog => {
-                    catList.append(cat_template(catalog));
+                    catList.append(cat_template(catalog)).ready(()=>{
+                        $('.view-cat').off('click')
+                        $(`#cat_${catalog.catalogId}`).click((e)=>{
+                            let index
+                            for(i = 0; i < Catalogs.length; i++){
+                                if(Catalogs[i].catalogId == parseInt(e.target.id.substring(4))) index = i
+                            }
+                            //console.log(Catalogs[index])
+                            openCatalog(Catalogs[index])
+                        })
+                    });
                 });
+                getEngagements(UserId, Token)
                 loader.addClass('hidden')
             } catch (error) {
                 console.log(error)
@@ -292,16 +333,32 @@
             $('.save-cat-btn').click(function (e) {
                 e.preventDefault()
                 loader.removeClass('hidden')
-                catalog = new Catalog($('#catCaption').val(), $('#catDesc').val(), '', $('#catLink').val())
-                if ((catalog.caption == null || catalog.caption == "") || (catalog.description == null || catalog.description == "") || c_img[0].files[0] === undefined) {
+                let catalog = new Catalog($('#catCaption').val(), $('#catDesc').val(), '', '', $('#catLink').val())
+                if ((catalog.caption == null || catalog.caption == "") || (catalog.description == null || catalog.description == "") /* || c_img[0].files[0] === undefined) */) {
                     popUpBox('info', 'There are empty field(s), please check again!', 'catAlert')
                     loader.addClass('hidden')
                     return
                 }
-                addCatalog(catalog, images[0], Token)
-                catalog = new Catalog();
-                $('input').val('')
-                $('textarea').val('')
+                let res = $.ajax({
+                    type: 'get',
+                    url: `https://www.youtube.com/oembed?url=${catalog.catalogLink}`,
+                    error: (error) => {
+                        popUpBox('info', 'Unable to get data from url! Reason:' + error.responseText, 'catAlert')
+                        loader.addClass('hidden')
+                        catalog.data = ''
+                    },
+                    success: (data) => {
+                        //console.log(data)
+                    }
+                }).done(()=>{
+                    catalog.data = JSON.stringify(res.responseJSON)
+                    console.log(JSON.stringify(catalog))
+                    addCatalog(catalog, new File([], 'image', { type: 'image/jpg' }), Token)
+                    catalog = new Catalog()
+                    $('input').val('')
+                    $('textarea').val('')
+                })
+                
             })
             if (_Detail.accountType == 'admin') {
                 $('.add-catalog-form').removeClass('hidden')
