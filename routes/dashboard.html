@@ -232,10 +232,26 @@
                 </div>
             </div>
         </div>
+        
     </div>
 </div>
 <script>
-    
+    function disengageUser(engagement) {
+        /* engagement.engagedDate = new Date(engagement.engagedDate)
+        console.log(engagement) */
+        disengageRequest(engagement, Token, (response) => {
+            //disableEngageBtn()
+            popUpBox('done', response.message)
+            loader.addClass('hidden')
+        })
+    }
+    $(document).click((e)=>{
+        if(e.target.closest('.e-view-box') != null || e.target.closest('.list-item')) return
+        remove_eng_item_template()
+    })
+    $(document).scroll((e)=>{
+        remove_eng_item_template()
+    })
     setTimeout(() => {
         loadDash()
         chAuth()

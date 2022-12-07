@@ -480,11 +480,41 @@ function loadDash() {
         getEngagements(UserId, Token, (data)=>{
             //try {
                 data.forEach(element => {
-                    console.log(CatalogCaptions, element)
                     for(let i = 0; i < CatalogCaptions.length; i++){
                         if(element.catalogId == CatalogCaptions[i].item1) {
                             $('.in-progess-list').html('')
                             $('.in-progess-list').append(progress_template(element, CatalogCaptions[i].item2))
+                            
+                            $(`#eng_${element.engagementId}`).off('click')
+                            $(`#eng_${element.engagementId}`).click((e)=>{
+                                $('.e-view-box').remove()
+                                $('.dash-body').append(eng_item_template(element, CatalogCaptions[i].item2))
+                                $('.e-view-box').fadeIn(200, ()=>{
+                                    //$('.e-view-box').css('display', 'flex')
+                                    $(`#diseng_${element.engagementId}`).off('click')
+                                    $(`#diseng_${element.engagementId}`).click((e)=>{
+                                        loader.removeClass('hidden')
+                                        disengageUser(element)
+                                        remove_eng_item_template()
+                                    })
+                                    $('.e-view-box').get(0).style.top = e.pageY + ($(`#eng_${element.engagementId}`).get(0).offsetHeight - (e.pageY - $(`#eng_${element.engagementId}`).get(0).offsetTop)) + 'px'
+                                    if(innerWidth <= parseInt(getComputedStyle($('.e-view-box').get(0)).width.replace('px', '')) * 2){
+                                        $('.e-view-box').get(0).style.left = (innerWidth/2 - parseInt(getComputedStyle($('.e-view-box').get(0)).width.replace('px', ''))/2) + 'px'
+                                        return
+                                    }
+                                    $('.e-view-box').get(0).style.left = (e.pageX - parseInt(getComputedStyle($('.e-view-box').get(0)).width.replace('px', ''))/2) + 'px'
+                                })
+                                /* let elementId = e.target.closest('.e-item').id
+                                try {
+                                    Engagements.forEach(item => {
+                                        if(item.engagementId == parseInt(elementId.substring(5))){
+                                            
+                                        }
+                                    })
+                                } catch (error) {
+                                    
+                                } */
+                            })
                         }
                     }
                 });
@@ -537,7 +567,7 @@ const getCatalogs = (token, callback = () => {}) => {
         }, */
         success: (catalogs) => {
             Catalogs = catalogs
-            console.log(catalogs)
+            //console.log(catalogs)
         }
     }).done(()=>{
         callback(cat_template)
@@ -556,7 +586,7 @@ const getCatalogCaptions = (token, callback = () => {}) => {
         }, */
         success: (captions) => {
             CatalogCaptions = captions
-            console.log(captions)
+            //console.log(captions)
             callback()
         }
     }).done(()=>{
@@ -573,7 +603,6 @@ const getCatalog = (catalogId, token) => {
         url: `${BaseURL}api/Catalog/GetCatalog?id=${catalogId}`,
         success: (cat) => {
             catalog = cat
-            console.log(cat)
         }
     })
 }
@@ -628,7 +657,7 @@ const updateCatalog = (catalog, image, token) => {
             if (responseModel.success == true) {
                 getCatalogs(Token)
                 loadCatalog()
-                console.log(responseModel.message)
+                //console.log(responseModel.message)
                 popUpBox('done', 'Success: Catalog successfully updated.')
                 return
             }
@@ -637,7 +666,7 @@ const updateCatalog = (catalog, image, token) => {
     })
 }
 
-const engageRequest = (engagement, token, callback) => {
+const engageRequest = (engagement, token, callback = () => {}) => {
     console.log(JSON.stringify(engagement))
     $.ajax({
         type: 'post',
@@ -648,18 +677,22 @@ const engageRequest = (engagement, token, callback) => {
         beforeSend: (xhr) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
+        error: (error) => {
+            loader.addClass('hidden')
+            popUpBox('error', `Failed: ${error.responseText} `, 'catAlert')
+        },
         success: (responseModel) => {
-            callback()
             if (responseModel.success == true) {
-                console.log(responseModel.message)
+                callback()
                 return
             }
+            loader.addClass('hidden')
             popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
         }
     })
 }
 
-const getEngagements = (userId, token, callback) => {
+const getEngagements = (userId, token, callback = () => {}) => {
     $.ajax({
         type: 'get',
         url: `${BaseURL}api/Engagement/get?userId=${userId}`,
@@ -667,11 +700,11 @@ const getEngagements = (userId, token, callback) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
         error: (error) => {
-            console.log(error.responseText)
+            loader.addClass('hidden')
+            popUpBox('error', `Failed: ${error.responseText} `, 'catAlert')
         },
         success: (data) => {
             Engagements = data
-            console.log(data)
             getEngagementslist(userId, token)
             callback(data)
         }
@@ -690,14 +723,13 @@ const getEngagementslist = (userId, token) => {
         },
         success: (data) => {
             EngagementsUserIdList = data.join(', ')
-            console.log(data)
         }
     })
 }
 
-const disengageRequest = (engagement, token, callback) => {
+const disengageRequest = (engagement, token, callback = () => {}) => {
     $.ajax({
-        type: 'post',
+        type: 'delete',
         url: `${BaseURL}api/Engagement/remove`,
         data: JSON.stringify(engagement),
         dataType: 'json',
@@ -705,11 +737,16 @@ const disengageRequest = (engagement, token, callback) => {
         beforeSend: (xhr) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
+        error: (error) => {
+            loader.addClass('hidden')
+            popUpBox('error', `Failed: ${error.responseText} `, 'catAlert')
+        },
         success: (responseModel) => {
             if (responseModel.success == true) {
-                console.log(responseModel.message)
+                callback(responseModel)
                 return
             }
+            loader.addClass('hidden')
             popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
         }
     })
@@ -722,8 +759,8 @@ const getUserSkills = (token) => {
         beforeSend: (xhr) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
-        success: (catalogs) => {
-            console.log(catalogs)
+        success: (skills) => {
+            //console.log(skills)
         }
     })
 }
@@ -737,11 +774,11 @@ const getUserSkill = (userId, token) => {
         },
         success: (skills) => {
             userSkills = skills;
-            console.log(skills);
         },
     }).done(()=> {
         loadSkills()
-        $('.sk-del').click((e) => {
+        $('.sk-del').click((e) => 
+        {
             let id = e.target.parentElement.id.substring(6) || e.target.id.substring(6);
             deleteUserSkill(id, Token)
             $(e.target.closest('.skill')).remove()
@@ -765,7 +802,7 @@ const addUserSkills = (userSkill, token) => {
         success: (responseModel) => {
             if (responseModel.success == true) {
                 getUserSkill(UserId, Token)
-                console.log(responseModel.message)
+                //console.log(responseModel.message)
                 return
             }
             popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
@@ -822,7 +859,7 @@ const getUserSocials = (token) => {
             xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         },
         success: (socials) => {
-            console.log(socials)
+            //console.log(socials)
         }
     })
 }
@@ -836,7 +873,6 @@ const getUserSocial = (userId, token) => {
         },
         success: (socials) => {
             userSocials = socials;
-            console.log(socials);
         },
     }).done(() => {
         loadSocials()
@@ -862,7 +898,7 @@ const addUserSocial = (userSocial, token) => {
         success: (responseModel) => {
             if (responseModel.success == true) {
                 getUserSocial(UserId, Token)
-                console.log(responseModel.message)
+                //console.log(responseModel.message)
                 return
             }
             popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')

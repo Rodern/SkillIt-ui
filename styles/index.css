@@ -477,6 +477,7 @@ div.dash-element .list .list-item a:hover {
 .skill, .social {
     transition: all .12s ease-in;
     align-items: center;
+    color: black;
 }
 
 .skill:hover, .social:hover {
@@ -502,6 +503,56 @@ div.dash-element .list .list-item a:hover {
     stroke: white;
 }
 
+.e-view-box {
+    transition: all .12s ease-in;
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    justify-self: center;
+    align-self: center;
+    background-color: white;
+    border: 1px solid rgb(163, 163, 163);
+    padding: 5px;
+    width: 300px;
+    min-height: 100px;
+    height: auto;
+    top: 50vh;
+    left: 50vh;
+    border-radius: 5px;
+    overflow: hidden;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.e-view-box div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 10px;
+}
+
+.e-view-box div img {
+    width: 50px;
+    height: 50px;
+}
+
+.e-view-box button {
+    transition: all .1s ease-in;
+    border: 1px solid rgba(255, 255, 255, 0);
+}
+
+.e-view-box div h4 {
+    word-wrap: n;
+}
+
+.e-view-box .disengage-user-btn:hover {
+    transition: all .1s ease-in;
+    border: 1px solid red;
+}
+
 
 /**Catalogs**/
 .cw {
@@ -518,7 +569,7 @@ div.dash-element .list .list-item a:hover {
     overflow: hidden;
 }
 
-.cw-header .left-section .cw-name {
+.cw-header .left-section .cw-name, .e-view-box div h4 {
     font-size: 1.2rem;
     font-weight: 600
 }

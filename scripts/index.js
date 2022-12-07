@@ -145,9 +145,28 @@ class UserSocial {
 
 const loader = $('.loading-frame')
 
+const eng_item_template = (item, caption) => {
+    return `<div class="e-view-box shadow-lg">
+                <div class="mb-2">
+                    <img src="../assets/icons/skill_it 256x256.png" alt="image">
+                    <h4 class="text-slate-800">
+                        .Net MAUI for beginners
+                    </h4>
+                </div>
+                <button id="diseng_${item.engagementId}" class="disengage-user-btn text-slate-800 relative text-md font-bold text-white w-auto md:text-center hover:border hover:text-[red] rounded px-2 sm:px-2">DISENGAGE</button>
+                <button id="visit_${item.catalogId}" class="visit-cat relative text-md font-bold text-white w-24 md:text-center bg-blue-600 hover:bg-blue-800 rounded px-2 sm:px-2">VISIT</button>
+            </div>`
+}
+
+function remove_eng_item_template() {
+    $('.e-view-box').fadeOut(120, ()=>{
+        $('.e-view-box').remove()
+    })
+}
+
 const progress_template = (item, caption) => {
     return `<li class="list-item">
-                <a id="eng_${item.engagementId}" class="flex border" href="">
+                <a id="eng_${item.engagementId}" class="e-item flex border">
                     <img class="bdg_img" src="assets/icons/skill_it 256x256.png" alt="bage_image">
                     <h4 class="truncate" >${caption}</h4>
                 </a>
@@ -173,16 +192,16 @@ let cat_template = (catalog) => {
 
 
 let socialTemplate = (socail, img) => {
-    return `<div id="${socail.socialId}" class="social w-full flex flex-row h-9 my-1 items-center rounded-md shadow-md">
+    return `<a href="${socail.link}" id="${socail.socialId}" target="_blank" rel="noreferrer noopener" class="social text-slate-800 w-full flex flex-row h-9 my-1 items-center rounded-md shadow-md">
                 <img src="${img}"  alt="" class="ml-1 mr-2 s-img h-8 w-8 ">
-                <a href="${socail.link}" target="_blank" rel="noreferrer noopener" class="s-name">${socail.name}</a>
+                <span target="_blank" rel="noreferrer noopener" class="s-name">${socail.name}</span>
                 <button id="sc_del${socail.socialId}" title="Delete" class="sc-del  h-7 w-7 ml-auto mr-1 text-white flex justify-center items-center text-2xl text-center text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                         class="w-6 h-6">
                         <path stroke-linecap="round" fill="black" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
-            </div>`
+            </a>`
 }
 
 let skillTemplate = (skill) => {

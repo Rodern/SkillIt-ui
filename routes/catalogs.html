@@ -250,11 +250,13 @@
     </div>
 </div>
 <script>
-        var cw_modal = $('.cw'),
-        cw_video_box = $('.cw-video-box'),
-        cw_name = $('.cw-name'),
-        vid_desc = $('.vid-desc'),
-        vid_caption = $('.vid-caption')
+    var cw_modal = $('.cw'),
+    cw_video_box = $('.cw-video-box'),
+    cw_name = $('.cw-name'),
+    vid_desc = $('.vid-desc'),
+    vid_caption = $('.vid-caption'),
+    engage_btn = $('.engage-user-btn')
+
     function openCatalog(catalog){
         cw_name.text(catalog.caption)
         vid_caption.text(catalog.caption)
@@ -267,21 +269,31 @@
         $('.cw-video-box iframe').css('height', `315px`)
 
         if(EngagementsUserIdList.includes(UserId.toString())) {
-            $('.engage-user-btn').css('filter', 'grayscale(1)')
-            $('.engage-user-btn').text('ENGAGED')
-            $('.engage-user-btn').attr('disabled', '')
+            disableEngageBtn()
         }
         cw_modal.fadeIn(100)
-        $('.engage-user-btn').off('click')
-        $('.engage-user-btn').click((e)=>{
+        engage_btn.off('click')
+        engage_btn.click((e)=>{
             loader.removeClass('hidden')
             engageUser(catalog.catalogId)
         })
     }
 
+    function disableEngageBtn() {
+        engage_btn.css('filter', 'grayscale(1)')
+        engage_btn.text('ENGAGED')
+        engage_btn.attr('disabled', '')
+    }
+
+    function enableEngageBtn() {
+        engage_btn.css('filter', 'grayscale(0)')
+        engage_btn.text('ENGAGE')
+        engage_btn.removeAttr('disabled')
+    }
+
     function engageUser(catId) {
-        let engagement = new Engagement(_user.userId, catId)
-        engageRequest(engagement, Token, () => {
+        engageRequest(new Engagement(_user.userId, catId), Token, () => {
+            disableEngageBtn()
             loader.addClass('hidden')
         })
     }
@@ -304,7 +316,7 @@
                                 if(Catalogs[i].catalogId == parseInt(e.target.id.substring(4))) index = i
                             }
                             //console.log(Catalogs[index])
-                            openCatalog(Catalogs[index])
+                            openCatalog(catalog)
                         })
                     });
                 });
