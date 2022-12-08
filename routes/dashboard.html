@@ -237,6 +237,7 @@
 </div>
 <script>
     function disengageUser(engagement) {
+        makeGrid()
         /* engagement.engagedDate = new Date(engagement.engagedDate)
         console.log(engagement) */
         disengageRequest(engagement, Token, (response) => {
@@ -247,10 +248,10 @@
     }
     $(document).click((e)=>{
         if(e.target.closest('.e-view-box') != null || e.target.closest('.list-item')) return
-        remove_eng_item_template()
+        remove_engagement_view_box()
     })
     $(document).scroll((e)=>{
-        remove_eng_item_template()
+        remove_engagement_view_box()
     })
     setTimeout(() => {
         loadDash()

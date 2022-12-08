@@ -485,6 +485,7 @@ function loadDash() {
                             $('.in-progess-list').html('')
                             $('.in-progess-list').append(progress_template(element, CatalogCaptions[i].item2))
                             
+                            makeGrid()
                             $(`#eng_${element.engagementId}`).off('click')
                             $(`#eng_${element.engagementId}`).click((e)=>{
                                 $('.e-view-box').remove()
@@ -492,10 +493,11 @@ function loadDash() {
                                 $('.e-view-box').fadeIn(200, ()=>{
                                     //$('.e-view-box').css('display', 'flex')
                                     $(`#diseng_${element.engagementId}`).off('click')
-                                    $(`#diseng_${element.engagementId}`).click((e)=>{
-                                        loader.removeClass('hidden')
+                                    $(`#diseng_${element.engagementId}`).click((event)=>{
+                                        //loader.removeClass('hidden')
                                         disengageUser(element)
-                                        remove_eng_item_template()
+                                        remove_eng_item_template(e.target.closest('.list-item'))
+                                        remove_engagement_view_box()
                                     })
                                     $('.e-view-box').get(0).style.top = e.pageY + ($(`#eng_${element.engagementId}`).get(0).offsetHeight - (e.pageY - $(`#eng_${element.engagementId}`).get(0).offsetTop)) + 'px'
                                     if(innerWidth <= parseInt(getComputedStyle($('.e-view-box').get(0)).width.replace('px', '')) * 2){
@@ -690,6 +692,15 @@ const engageRequest = (engagement, token, callback = () => {}) => {
             popUpBox('notify', `Failed: ${responseModel.message} `, 'catAlert')
         }
     })
+}
+
+function makeGrid() {
+    var el = $('div.dash-element .list').get(0)
+    if(el.childElementCount <= 0) {
+        el.classList.remove('list-grid')
+        return
+    }
+    el.classList.add('list-grid')
 }
 
 const getEngagements = (userId, token, callback = () => {}) => {

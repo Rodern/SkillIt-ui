@@ -422,12 +422,15 @@ div.de-header {
 div.dash-element .list {
     padding: 5px;
     display: grid;
-    grid-template-columns: auto auto;
     gap: 3px 5px;
 }
 
+div.dash-element .list-grid {
+    grid-template-columns: auto auto;
+}
+
 @media screen and (max-width: 500px) {
-    div.dash-element .list {
+    div.dash-element .list-grid {
         grid-template-columns: auto;
     }
 }

@@ -158,10 +158,16 @@ const eng_item_template = (item, caption) => {
             </div>`
 }
 
-function remove_eng_item_template() {
+function remove_engagement_view_box() {
     $('.e-view-box').fadeOut(120, ()=>{
         $('.e-view-box').remove()
     })
+}
+
+function remove_eng_item_template(item) {
+    //item.fadeOut(10, ()=>{
+        item.remove()
+    //})
 }
 
 const progress_template = (item, caption) => {
